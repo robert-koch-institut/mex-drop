@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "mex-drop"
+version = "0.1.0"
+description = "Data upload API for the MEx project."
+authors = ["RKI MEx Team <mex@rki.de>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "mex_drop"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core>=1.6.1"]
+build-backend = "poetry.core.masonry.api"
