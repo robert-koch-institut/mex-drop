@@ -3,10 +3,12 @@ import re
 from pathlib import Path
 from typing import Any
 
+import uvicorn
 from fastapi import FastAPI
 from pydantic import ConstrainedStr
 
-OUTPUT_DIRECTORY = "."
+from mex.common.cli import entrypoint
+from mex.drop.settings import DropSettings
 
 
 class SafePath(ConstrainedStr):
@@ -41,12 +43,28 @@ async def post_data(
     Returns:
         None
     """
-    out_file = Path(OUTPUT_DIRECTORY, x_system, entity_type + ".json")
+    settings = DropSettings.get()
+    out_file = Path(settings.drop_root_path, x_system, entity_type + ".json")
 
     if out_file.is_file():
         out_file.rename(out_file.as_posix() + ".bk")
     else:
-        out_file.parent.mkdir(exist_ok=True)
+        out_file.parent.mkdir(exist_ok=True, parents=True)
     print(out_file.absolute().as_posix())
     with open(out_file, "w") as handle:
         json.dump(data, handle, sort_keys=True)
+
+
+@entrypoint(DropSettings)
+def main() -> None:  # pragma: no cover
+    """Start the drop server process."""
+    settings = DropSettings.get()
+    uvicorn.run(
+        "mex.drop.main:app",
+        host=settings.drop_host,
+        port=settings.drop_port,
+        root_path=settings.drop_root_path,
+        reload=settings.debug,
+        # log_config=UVICORN_LOGGING_CONFIG,
+        headers=[("server", "mex-drop")],
+    )
