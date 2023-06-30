@@ -10,8 +10,11 @@ packages = [{include = "mex"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = "^0.98.0"
+mex-common = { git = "https://github.com/robert-koch-institut/mex-common.git", rev = "0.7.1" }
 uvicorn = {extras = ["standard"], version = "^0.22.0"}
 
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.0"
 
 [build-system]
 requires = ["poetry-core>=1.6.1"]
