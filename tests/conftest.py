@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -8,9 +10,11 @@ pytest_plugins = ("mex.common.testing.plugin",)
 
 
 @pytest.fixture(autouse=True)
-def settings() -> DropSettings:
+def settings(tmp_path: Path) -> DropSettings:
     """Load the settings for this pytest session."""
-    return DropSettings.get()
+    settings = DropSettings.get()
+    settings.drop_root_path = str(tmp_path)
+    return settings
 
 
 @pytest.fixture
