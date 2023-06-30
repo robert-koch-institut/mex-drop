@@ -13,8 +13,10 @@ fastapi = "^0.98.0"
 mex-common = { git = "https://github.com/robert-koch-institut/mex-common.git", rev = "0.7.1" }
 uvicorn = {extras = ["standard"], version = "^0.22.0"}
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+httpx = "^0.24.1"
 pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
 
 [tool.poetry.scripts]
 drop = "mex.drop.main:main"
