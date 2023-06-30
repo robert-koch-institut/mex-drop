@@ -14,7 +14,7 @@ Data upload API for the MEx project.
   - use env `pyenv local mex`
   - run `make install`
 - on windows, see https://python-poetry.org/docs/managing-environments
-  - install `python3.11` in your the preferred way
+  - install `python3.11` in your preferred way
   - go to repo root
   - run `.\mex.bat install`
 
@@ -47,3 +47,7 @@ Data upload API for the MEx project.
 
 - run `poetry run {command} --help` to print instructions
 - run `poetry run {command} --debug` for interactive debugging
+
+### mex drop
+
+- `drop` starts the drop server

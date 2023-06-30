@@ -16,6 +16,9 @@ uvicorn = {extras = ["standard"], version = "^0.22.0"}
 [tool.poetry.dev-dependencies]
 pytest = "^7.4.0"
 
+[tool.poetry.scripts]
+drop = "mex.drop.main:main"
+
 [build-system]
 requires = ["poetry-core>=1.6.1"]
 build-backend = "poetry.core.masonry.api"
