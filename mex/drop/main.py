@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from pydantic import ConstrainedStr
 
 from mex.common.cli import entrypoint
+from mex.drop.logging import UVICORN_LOGGING_CONFIG
 from mex.drop.settings import DropSettings
 
 
@@ -65,6 +66,6 @@ def main() -> None:  # pragma: no cover
         port=settings.drop_port,
         root_path=settings.drop_root_path,
         reload=settings.debug,
-        # log_config=UVICORN_LOGGING_CONFIG,
+        log_config=UVICORN_LOGGING_CONFIG,
         headers=[("server", "mex-drop")],
     )
