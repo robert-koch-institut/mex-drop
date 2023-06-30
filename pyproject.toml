@@ -5,7 +5,7 @@ description = "Data upload API for the MEx project."
 authors = ["RKI MEx Team <mex@rki.de>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "mex_drop"}]
+packages = [{include = "mex"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
