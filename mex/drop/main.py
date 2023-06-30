@@ -1,10 +1,10 @@
 import json
 import re
 from pathlib import Path
-from typing import Any
+from typing import Annotated, Any
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import Body, FastAPI
 from pydantic import ConstrainedStr
 
 from mex.common.cli import entrypoint
@@ -32,7 +32,14 @@ def read_root() -> dict[str, str]:
 
 @app.post("/{x_system}/{entity_type}")
 async def post_data(
-    x_system: SafePath, entity_type: SafePath, data: dict[str, Any]
+    x_system: SafePath,
+    entity_type: SafePath,
+    data: Annotated[
+        dict[str, Any],
+        Body(
+            example={"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}},
+        ),
+    ],
 ) -> None:
     """Post arbitrary json.
 
@@ -51,7 +58,6 @@ async def post_data(
         out_file.rename(out_file.as_posix() + ".bk")
     else:
         out_file.parent.mkdir(exist_ok=True, parents=True)
-    print(out_file.absolute().as_posix())
     with open(out_file, "w") as handle:
         json.dump(data, handle, sort_keys=True)
 
