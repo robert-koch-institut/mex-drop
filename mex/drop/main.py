@@ -8,6 +8,7 @@ from fastapi import Body, FastAPI
 from pydantic import ConstrainedStr
 
 from mex.common.cli import entrypoint
+from mex.common.logging import logger
 from mex.drop.logging import UVICORN_LOGGING_CONFIG
 from mex.drop.settings import DropSettings
 
@@ -55,10 +56,14 @@ async def post_data(
     out_file = Path(settings.drop_root_path, x_system, entity_type + ".json")
 
     if out_file.is_file():
-        out_file.rename(out_file.as_posix() + ".bk")
+        backup = Path(out_file.as_posix() + ".bk")
+        logger.info(f"moving {out_file.as_posix()} to {backup.as_posix()}")
+        backup.unlink(missing_ok=True)
+        out_file.rename(backup.as_posix())
     else:
         out_file.parent.mkdir(exist_ok=True, parents=True)
     with open(out_file, "w") as handle:
+        logger.info(f"writing data to {out_file.absolute().as_posix()}")
         json.dump(data, handle, sort_keys=True)
 
 
