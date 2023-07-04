@@ -31,7 +31,7 @@ def read_root() -> dict[str, str]:
     return {"Hello": "World"}
 
 
-@app.post("/{x_system}/{entity_type}")
+@app.post("/{x_system}/{entity_type}", status_code=201)
 async def post_data(
     x_system: SafePath,
     entity_type: SafePath,
