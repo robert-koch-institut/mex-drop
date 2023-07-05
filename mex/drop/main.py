@@ -56,15 +56,8 @@ async def post_data(
     """
     settings = DropSettings.get()
     out_file = Path(settings.drop_root_path, x_system, entity_type + ".json")
-
-    if out_file.is_file():
-        backup = Path(out_file.as_posix() + ".bk")
-        logger.info(f"moving {out_file.as_posix()} to {backup.as_posix()}")
-        backup.unlink(missing_ok=True)
-        out_file.rename(backup.as_posix())
-    else:
-        out_file.parent.mkdir(exist_ok=True, parents=True)
-    with open(out_file, "w") as handle:
+    out_file.parent.mkdir(exist_ok=True, parents=True)
+    with open(out_file, "w", encoding="utf-8") as handle:
         logger.info(f"writing data to {out_file.absolute().as_posix()}")
         json.dump(data, handle, sort_keys=True)
 
