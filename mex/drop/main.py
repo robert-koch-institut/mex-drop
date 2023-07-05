@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Annotated, Any
 
 import uvicorn
-from fastapi import Body, FastAPI
+from fastapi import APIRouter, Body, FastAPI
 from pydantic import ConstrainedStr
 
 from mex.common.cli import entrypoint
@@ -22,16 +22,18 @@ class SafePath(ConstrainedStr):
     regex = re.compile(r"^[a-zA-Z0-9_-]+$")
 
 
-app = FastAPI(title="mex-drop", version="v0")
+router = APIRouter(
+    prefix="/api/v0",
+)
 
 
-@app.get("/")
+@router.get("/")
 def read_root() -> dict[str, str]:
     """Get hello world object from api root."""
     return {"Hello": "World"}
 
 
-@app.post("/{x_system}/{entity_type}", status_code=201)
+@router.post("/{x_system}/{entity_type}", status_code=201)
 async def post_data(
     x_system: SafePath,
     entity_type: SafePath,
@@ -65,6 +67,12 @@ async def post_data(
     with open(out_file, "w") as handle:
         logger.info(f"writing data to {out_file.absolute().as_posix()}")
         json.dump(data, handle, sort_keys=True)
+
+
+app = FastAPI(
+    title="mex-drop", version="v0", contact={"name": "MEx Team", "email": "mex@rki.de"}
+)
+app.include_router(router)
 
 
 @entrypoint(DropSettings)
