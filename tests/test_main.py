@@ -1,5 +1,10 @@
+import json
+from pathlib import Path
+
 import pytest
 from fastapi.testclient import TestClient
+
+from mex.drop.settings import DropSettings
 
 
 def test_read_root(client: TestClient) -> None:
@@ -26,3 +31,23 @@ def test_post_data(
 ) -> None:
     response = client.post(f"/api/v0/{x_system}/{entity}", json={"asd": "def"})
     assert response.status_code == expected_response_code, response.text
+
+
+def test_post_data_is_written_to_file(
+    client: TestClient, settings: DropSettings
+) -> None:
+    relative_path = "wasd/def"
+    expected_file = Path(settings.drop_root_path, relative_path + ".json")
+    expected_content = {
+        "asd": "def",
+        "foo": 1,
+        "bar": 1.2,
+        "list": [1, 2, 3],
+        "dict": {"a": "b"},
+    }
+    response = client.post("/api/v0/" + relative_path, json=expected_content)
+    assert response.status_code == 201
+    assert expected_file.is_file()
+    with expected_file.open(encoding="utf-8") as handle:
+        content = json.load(handle)
+    assert content == expected_content
