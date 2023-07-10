@@ -39,11 +39,11 @@ async def post_data(
     data: Annotated[
         dict[str, Any],
         Body(
-            example={"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}},
+            examples=[{"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}}],
         ),
     ],
 ) -> None:
-    """Post arbitrary json.
+    """Upload arbitrary json data.
 
     Args:
         x_system: name of the x-system that the data comes from
@@ -59,7 +59,10 @@ async def post_data(
 
 
 app = FastAPI(
-    title="mex-drop", version="v0", contact={"name": "MEx Team", "email": "mex@rki.de"}
+    title="mex-drop",
+    version="v0",
+    contact={"name": "MEx Team", "email": "mex@rki.de"},
+    description="Upload your data for the MEx service.",
 )
 app.include_router(router)
 
