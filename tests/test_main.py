@@ -14,12 +14,6 @@ class AsyncMock(MagicMock):
         return super(AsyncMock, self).__call__(*args, **kwargs)
 
 
-def test_read_root(client: TestClient) -> None:
-    response = client.get("/api/v0/")
-    assert response.status_code == 200, response.text
-    assert response.json() == {"Hello": "World"}
-
-
 @pytest.mark.parametrize(
     "x_system, entity, expected_response_code",
     [

@@ -26,12 +26,6 @@ router = APIRouter(
 )
 
 
-@router.get("/")
-def read_root() -> dict[str, str]:
-    """Get hello world object from api root."""
-    return {"Hello": "World"}
-
-
 @router.post("/{x_system}/{entity_type}", status_code=201)
 async def post_data(
     x_system: SafePath,
