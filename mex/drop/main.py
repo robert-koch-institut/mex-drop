@@ -1,4 +1,3 @@
-import json
 import re
 from pathlib import Path
 from typing import Annotated, Any
@@ -8,9 +7,9 @@ from fastapi import APIRouter, Body, FastAPI
 from pydantic import ConstrainedStr
 
 from mex.common.cli import entrypoint
-from mex.common.logging import logger
 from mex.drop.logging import UVICORN_LOGGING_CONFIG
 from mex.drop.settings import DropSettings
+from mex.drop.sinks.json import json_sink
 
 
 class SafePath(ConstrainedStr):
@@ -56,10 +55,7 @@ async def post_data(
     """
     settings = DropSettings.get()
     out_file = Path(settings.drop_root_path, x_system, entity_type + ".json")
-    out_file.parent.mkdir(exist_ok=True, parents=True)
-    with open(out_file, "w", encoding="utf-8") as handle:
-        logger.info(f"writing data to {out_file.absolute().as_posix()}")
-        json.dump(data, handle, sort_keys=True)
+    await json_sink(data, out_file)
 
 
 app = FastAPI(
