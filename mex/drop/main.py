@@ -3,11 +3,13 @@ from pathlib import Path
 from typing import Annotated, Any
 
 import uvicorn
-from fastapi import APIRouter, Body, FastAPI
+from fastapi import APIRouter, Body, Depends, FastAPI, HTTPException
 from pydantic import ConstrainedStr
+from starlette import status
 
 from mex.common.cli import entrypoint
 from mex.drop.logging import UVICORN_LOGGING_CONFIG
+from mex.drop.security import User, get_current_user
 from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
 
@@ -36,6 +38,7 @@ async def post_data(
             examples=[{"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}}],
         ),
     ],
+    current_user: Annotated[User, Depends(get_current_user)],
 ) -> None:
     """Upload arbitrary json data.
 
@@ -43,10 +46,17 @@ async def post_data(
         x_system: name of the x-system that the data comes from
         entity_type: name of the data file that is uploaded, if unsure use 'default'
         data: dictionary with string key and arbitrary values
+        current_user: the current User
 
     Returns:
         None
     """
+    if current_user.x_system != x_system:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="API Key not authorized for the current x_system",
+            headers={"X-API-Key": ""},
+        )
     settings = DropSettings.get()
     out_file = Path(settings.drop_root_path, x_system, entity_type + ".json")
     await json_sink(data, out_file)

@@ -20,4 +20,6 @@ def settings(tmp_path: Path) -> DropSettings:
 @pytest.fixture
 def client() -> TestClient:
     """Return a fastAPI test client initialized with our app."""
-    return TestClient(app)
+    client = TestClient(app)
+    client.headers = {"X-API-Key": "johndoe"}
+    return client
