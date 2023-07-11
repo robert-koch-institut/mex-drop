@@ -1,6 +1,7 @@
 from pydantic import Field
 
 from mex.common.settings import BaseSettings
+from mex.drop.types.user_database import UserDatabase
 
 
 class DropSettings(BaseSettings):
@@ -24,4 +25,9 @@ class DropSettings(BaseSettings):
         "data",
         description="Root path that the drop server should run under.",
         env="MEX_DROP_ROOT_PATH",
+    )
+    drop_user_database: UserDatabase = Field(
+        {},
+        description="Database of users.",
+        env="MEX_DROP_USER_DATABASE",
     )

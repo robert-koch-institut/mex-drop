@@ -9,7 +9,8 @@ from starlette import status
 
 from mex.common.cli import entrypoint
 from mex.drop.logging import UVICORN_LOGGING_CONFIG
-from mex.drop.security import User, get_current_user
+from mex.drop.models.user import User
+from mex.drop.security import get_current_user
 from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
 
