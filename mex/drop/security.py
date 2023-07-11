@@ -1,4 +1,4 @@
-from typing import Annotated, Any
+from typing import Annotated
 
 from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyHeader
@@ -8,18 +8,6 @@ from starlette import status
 X_API_KEY = APIKeyHeader(name="X-API-Key")
 
 
-FAKE_USERS_DB = {
-    "johndoe": {
-        "username": "johndoe",
-        "x_system": "test_system",
-    },
-    "alice": {
-        "username": "alice",
-        "x_system": "foo_system",
-    },
-}
-
-
 class User(BaseModel):
     """User model."""
 
@@ -27,7 +15,25 @@ class User(BaseModel):
     x_system: str
 
 
-def get_user(db: dict[str, Any], username: str) -> User | None:
+UserDatabase = dict[str, User]
+
+
+FAKE_USERS_DB: UserDatabase = {
+    k: User(**v)
+    for k, v in {
+        "johndoe": {
+            "username": "johndoe",
+            "x_system": "test_system",
+        },
+        "alice": {
+            "username": "alice",
+            "x_system": "foo_system",
+        },
+    }.items()
+}
+
+
+def get_user(db: UserDatabase, username: str) -> User | None:
     """Get user from database.
 
     Args:
@@ -38,8 +44,7 @@ def get_user(db: dict[str, Any], username: str) -> User | None:
         User if username in db, else None
     """
     if username in db:
-        user_dict = db[username]
-        return User(**user_dict)
+        return db[username]
     else:
         return None
 
