@@ -4,48 +4,49 @@ from fastapi import Depends, HTTPException
 from fastapi.security import APIKeyHeader
 from starlette import status
 
-from mex.drop.models.user import User
 from mex.drop.settings import DropSettings
 from mex.drop.types.user_database import UserDatabase
 
 X_API_KEY = APIKeyHeader(name="X-API-Key")
 
 
-def get_user(db: UserDatabase, username: str) -> User | None:
-    """Get user from database.
+def get_authorized_x_systems(db: UserDatabase, api_token: str) -> list[str]:
+    """Get authorized x-systems from database.
 
     Args:
         db: database dictionary
-        username: username
+        api_token: API token
 
     Returns:
-        User if username in db, else None
+        list of authorized x-systems
     """
-    return db.get(username)
+    return db.get(api_token, [])
 
 
-def get_current_user(api_key: Annotated[str, Depends(X_API_KEY)]) -> User:
-    """Get the current user.
+def get_current_authorized_x_systems(
+    api_key: Annotated[str, Depends(X_API_KEY)]
+) -> list[str]:
+    """Get the current authorized x-systems.
 
     Raises HTTPException if user is not present
 
     Args:
-        api_key: the API key for user lookup
+        api_key: the API key for x-system lookup
 
     Settings:
         drop_user_database: checked for presence of api_key
 
     Returns:
-        User
+        list of x-systems
     """
     settings = DropSettings.get()
     user_db = settings.drop_user_database
 
-    user = get_user(user_db, api_key)
-    if not user:
+    x_systems = get_authorized_x_systems(user_db, api_key)
+    if not x_systems:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid API Key",
             headers={"X-API-Key": ""},
         )
-    return user
+    return x_systems

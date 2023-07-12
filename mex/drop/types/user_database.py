@@ -1,3 +1,1 @@
-from mex.drop.models.user import User
-
-UserDatabase = dict[str, User]
+UserDatabase = dict[str, list[str]]

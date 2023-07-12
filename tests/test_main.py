@@ -18,12 +18,14 @@ class AsyncMock(MagicMock):
     "x_system, entity, expected_response_code",
     [
         ("test_system", "bar", 201),
+        ("foo_system", "bar", 201),
         ("test_system", "invalid entity", 422),
         ("unauthorized_system", "bar", 401),
         ("invalid x_system", "bar", 422),
     ],
     ids=(
         "valid",
+        "valid2",
         "invalid entity",
         "unauthorized x_system",
         "invalid x_system",

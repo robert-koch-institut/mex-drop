@@ -9,8 +9,7 @@ from starlette import status
 
 from mex.common.cli import entrypoint
 from mex.drop.logging import UVICORN_LOGGING_CONFIG
-from mex.drop.models.user import User
-from mex.drop.security import get_current_user
+from mex.drop.security import get_current_authorized_x_systems
 from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
 
@@ -39,7 +38,7 @@ async def post_data(
             examples=[{"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}}],
         ),
     ],
-    current_user: Annotated[User, Depends(get_current_user)],
+    x_systems: Annotated[list[str], Depends(get_current_authorized_x_systems)],
 ) -> None:
     """Upload arbitrary json data.
 
@@ -47,12 +46,12 @@ async def post_data(
         x_system: name of the x-system that the data comes from
         entity_type: name of the data file that is uploaded, if unsure use 'default'
         data: dictionary with string key and arbitrary values
-        current_user: the current User
+        x_systems: list of authorized x-systems
 
     Returns:
         None
     """
-    if current_user.x_system != x_system:
+    if x_system not in x_systems:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="API Key not authorized for the current x_system",
