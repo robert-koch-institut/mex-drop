@@ -21,6 +21,7 @@ pytest-asyncio = "^0.21.0"
 
 [tool.poetry.scripts]
 drop = "mex.drop.main:main"
+token = "mex.drop.security:generate_token"
 
 [build-system]
 requires = ["poetry-core>=1.6.1"]

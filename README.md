@@ -51,3 +51,4 @@ Data upload API for the MEx project.
 ### mex drop
 
 - `drop` starts the drop server
+- `token` generate a cryptographically sound token

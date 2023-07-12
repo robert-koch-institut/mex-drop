@@ -1,3 +1,4 @@
+import secrets
 from typing import Annotated
 
 from fastapi import Depends, HTTPException
@@ -50,3 +51,8 @@ def get_current_authorized_x_systems(
             headers={"X-API-Key": ""},
         )
     return x_systems
+
+
+def generate_token() -> None:
+    """Generate a token."""
+    print(secrets.token_urlsafe())
