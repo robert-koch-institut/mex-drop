@@ -29,7 +29,8 @@ def get_current_authorized_x_systems(
 ) -> list[str]:
     """Get the current authorized x-systems.
 
-    Raises HTTPException if user is not present
+    Raises:
+        HTTPException if no x-system is authorized
 
     Args:
         api_key: the API key for x-system lookup
