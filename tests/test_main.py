@@ -17,8 +17,8 @@ class AsyncMock(MagicMock):
 @pytest.mark.parametrize(
     "x_system, entity, expected_response_code",
     [
-        ("test_system", "bar", 201),
-        ("foo_system", "bar", 201),
+        ("test_system", "bar", 202),
+        ("foo_system", "bar", 202),
         ("test_system", "invalid entity", 422),
         ("unauthorized_system", "bar", 401),
         ("invalid x_system", "bar", 422),

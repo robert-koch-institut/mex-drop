@@ -28,7 +28,7 @@ router = APIRouter(
 )
 
 
-@router.post("/{x_system}/{entity_type}", status_code=201)
+@router.post("/{x_system}/{entity_type}", status_code=202)
 async def post_data(
     x_system: SafePath,
     entity_type: SafePath,
