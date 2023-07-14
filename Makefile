@@ -32,9 +32,3 @@ build:
 	# build the python package
 	@ echo building wheel; \
 	poetry build --no-interaction --format wheel; \
-
-docs:
-	# use sphinx to auto-generate html docs from code
-	@ echo generating api docs; \
-	poetry run sphinx-apidoc -f -o docs/source mex; \
-	poetry run sphinx-build -b dirhtml docs docs/dist; \
