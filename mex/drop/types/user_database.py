@@ -1,3 +1,1 @@
-from pydantic import SecretStr
-
-UserDatabase = dict[SecretStr, list[SecretStr]]
+UserDatabase = dict[str, list[str]]
