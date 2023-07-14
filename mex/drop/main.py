@@ -79,7 +79,6 @@ def main() -> None:  # pragma: no cover
         "mex.drop.main:app",
         host=settings.drop_host,
         port=settings.drop_port,
-        root_path=settings.drop_root_path,
         reload=settings.debug,
         log_config=UVICORN_LOGGING_CONFIG,
         headers=[("server", "mex-drop")],
