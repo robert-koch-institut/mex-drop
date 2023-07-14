@@ -1,6 +1,7 @@
 from pydantic import Field
 
 from mex.common.settings import BaseSettings
+from mex.common.types import WorkPath
 from mex.drop.types.user_database import UserDatabase
 
 
@@ -21,9 +22,10 @@ class DropSettings(BaseSettings):
         description="Port that the drop server should listen on.",
         env="MEX_DROP_PORT",
     )
-    drop_root_path: str = Field(
+    drop_root_path: WorkPath = Field(
         "data",
-        description="Root path that the drop server should run under.",
+        description="Root path that the drop server should run under, "
+        "absolute or relative to `work_dir`.",
         env="MEX_DROP_ROOT_PATH",
     )
     drop_user_database: UserDatabase = Field(
