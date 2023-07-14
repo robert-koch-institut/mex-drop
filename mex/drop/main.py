@@ -20,7 +20,7 @@ class SafePath(ConstrainedStr):
     Allowed characters: a-z, A-Z, 0-9, -, _
     """
 
-    regex = re.compile(r"^[a-zA-Z0-9_-]+$")
+    regex = re.compile(r"^[a-zA-Z0-9_-]{1,128}$")
 
 
 router = APIRouter(
