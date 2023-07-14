@@ -5,7 +5,7 @@ from typing import Any
 from mex.common.logging import logger
 
 
-async def json_sink(data: dict[str, Any], out_file: Path) -> None:
+def json_sink(data: dict[str, Any], out_file: Path) -> None:
     """Write data as json to file.
 
     Args:

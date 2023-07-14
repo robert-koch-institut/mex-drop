@@ -9,11 +9,6 @@ import mex
 from mex.drop.settings import DropSettings
 
 
-class AsyncMock(MagicMock):
-    async def __call__(self, *args, **kwargs):
-        return super(AsyncMock, self).__call__(*args, **kwargs)
-
-
 @pytest.mark.parametrize(
     "x_system, entity, expected_response_code",
     [
@@ -39,7 +34,7 @@ def test_post_data(
     monkeypatch: MonkeyPatch,
     settings: DropSettings,
 ) -> None:
-    mocked_sink = AsyncMock()
+    mocked_sink = MagicMock()
     monkeypatch.setattr(mex.drop.main, "json_sink", mocked_sink)
     expected_content = {
         "asd": "def",

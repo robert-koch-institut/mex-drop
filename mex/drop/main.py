@@ -59,7 +59,7 @@ async def post_data(
         )
     settings = DropSettings.get()
     out_file = Path(settings.drop_root_path, x_system, entity_type + ".json")
-    await json_sink(data, out_file)
+    json_sink(data, out_file)
 
 
 app = FastAPI(
