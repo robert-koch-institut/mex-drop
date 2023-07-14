@@ -24,7 +24,7 @@ class SafePath(ConstrainedStr):
 
 
 router = APIRouter(
-    prefix="/api/v0",
+    prefix="/v0",
 )
 
 

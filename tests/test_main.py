@@ -49,7 +49,7 @@ def test_post_data(
         "dict": {"a": "b"},
     }
     expected_file = Path(settings.drop_root_path, x_system, entity + ".json")
-    response = client.post(f"/api/v0/{x_system}/{entity}", json=expected_content)
+    response = client.post(f"/v0/{x_system}/{entity}", json=expected_content)
     assert response.status_code == expected_response_code, response.text
     if 200 <= response.status_code < 300:
         assert mocked_sink.call_args == call(expected_content, expected_file)
