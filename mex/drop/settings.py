@@ -16,7 +16,7 @@ class DropSettings(BaseSettings):
         env="MEX_DROP_HOST",
     )
     drop_port: int = Field(
-        8080,
+        8081,
         gt=0,
         lt=65536,
         description="Port that the drop server should listen on.",
