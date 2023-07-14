@@ -48,8 +48,8 @@ async def post_data(
         data: dictionary with string key and arbitrary values
         x_systems: list of authorized x-systems
 
-    Returns:
-        None
+    Settings:
+        drop_root_path: where accepted data is stored
     """
     if x_system not in x_systems:
         raise HTTPException(
