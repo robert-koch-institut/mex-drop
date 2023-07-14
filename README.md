@@ -23,6 +23,8 @@ For further details, please consult the
 ## package
 
 The `mex-drop` package provides an API for uploading data to the MEx project.
+Request payloads need to be JSON-formatted but can have arbitrary structures.
+Accepted data will be ingested and processed asynchronously.
 
 ## commands
 
