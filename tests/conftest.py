@@ -5,15 +5,16 @@ from fastapi.testclient import TestClient
 
 from mex.drop.main import app
 from mex.drop.settings import DropSettings
+from mex.drop.types import APIKey
 
 pytest_plugins = ("mex.common.testing.plugin",)
 
 
 TEST_USER_DATABASE = {
-    "api-key-one": ["test_system"],
-    "johndoe": ["test_system", "foo_system"],
-    "api-test-key": ["test_system", "foo_system"],
-    "alice": ["foo_system"],
+    APIKey("api-key-one"): ["test_system"],
+    APIKey("john-doe"): ["test_system", "foo_system"],
+    APIKey("api-test-key"): ["test_system", "foo_system"],
+    APIKey("alice"): ["foo_system"],
 }
 
 
@@ -29,6 +30,4 @@ def settings(tmp_path: Path) -> DropSettings:
 @pytest.fixture
 def client() -> TestClient:
     """Return a fastAPI test client initialized with our app."""
-    client = TestClient(app)
-    client.headers = {"X-API-Key": "api-test-key"}
-    return client
+    return TestClient(app)

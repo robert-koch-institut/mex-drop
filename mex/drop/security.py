@@ -6,31 +6,33 @@ from fastapi.security import APIKeyHeader
 from starlette import status
 
 from mex.drop.settings import DropSettings
-from mex.drop.types.user_database import UserDatabase
+from mex.drop.types import APIKey, UserDatabase, XSystem
 
-X_API_KEY = APIKeyHeader(name="X-API-Key")
+X_API_KEY = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
-def get_authorized_x_systems(db: UserDatabase, api_token: str) -> list[str]:
+def get_authorized_x_systems(
+    user_database: UserDatabase, api_key: APIKey
+) -> list[XSystem] | None:
     """Get authorized x-systems from database.
 
     Args:
-        db: database dictionary
-        api_token: API token
+        user_database: database dictionary
+        api_key: API key to check
 
     Returns:
-        list of authorized x-systems
+        optional list of authorized x-systems
     """
-    return db.get(api_token, [])
+    return user_database.get(api_key)
 
 
 def get_current_authorized_x_systems(
-    api_key: Annotated[str, Depends(X_API_KEY)]
-) -> list[str]:
+    api_key: Annotated[str | None, Depends(X_API_KEY)]
+) -> list[XSystem]:
     """Get the current authorized x-systems.
 
     Raises:
-        HTTPException if no x-system is authorized
+        HTTPException if no header is provided or no x-system is authorized
 
     Args:
         api_key: the API key for x-system lookup
@@ -39,21 +41,27 @@ def get_current_authorized_x_systems(
         drop_user_database: checked for presence of api_key
 
     Returns:
-        list of x-systems
+        list of authorized x-systems
     """
-    settings = DropSettings.get()
-    user_db = settings.drop_user_database
+    if not api_key:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Missing authentication header X-API-Key.",
+        )
 
-    x_systems = get_authorized_x_systems(user_db, api_key)
+    settings = DropSettings.get()
+    user_database = settings.drop_user_database
+    x_systems = get_authorized_x_systems(user_database, APIKey(api_key))
+
     if not x_systems:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid API Key",
-            headers={"X-API-Key": ""},
+            detail="The provided API Key is not recognized.",
         )
+
     return x_systems
 
 
 def generate_token() -> None:
-    """Generate a token."""
+    """Generate and print a safe token."""
     print(secrets.token_urlsafe())

@@ -7,12 +7,12 @@ repos:
     hooks:
       - id: isort
   - repo: https://github.com/myint/autoflake
-    rev: v2.1.1
+    rev: v2.2.0
     hooks:
       - id: autoflake
         args: [--in-place, --remove-all-unused-imports]
   - repo: https://github.com/psf/black
-    rev: 23.3.0
+    rev: 23.7.0
     hooks:
       - id: black
   - repo: https://github.com/PyCQA/bandit
@@ -38,7 +38,7 @@ repos:
     hooks:
       - id: poetry-check
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.3.0
+    rev: v1.4.1
     hooks:
       - id: mypy
         name: mypy
@@ -48,4 +48,4 @@ repos:
           - "mex-common@git+https://github.com/robert-koch-institut/mex-common.git@0.9.1"
           - "pydantic[dotenv,email]>=1.10.9,<2"
           - "pytest>=7.4.0,<8"
-          - "uvicorn>=0.22.0,<1"
+          - "uvicorn>=0.23.1,<1"

@@ -2,7 +2,7 @@ from pydantic import Field
 
 from mex.common.settings import BaseSettings
 from mex.common.types import WorkPath
-from mex.drop.types.user_database import UserDatabase
+from mex.drop.types import UserDatabase
 
 
 class DropSettings(BaseSettings):

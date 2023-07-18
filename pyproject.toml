@@ -11,16 +11,24 @@ packages = [{include = "mex"}]
 python = "^3.11"
 fastapi = "^0.100.0"
 mex-common = { git = "https://github.com/robert-koch-institut/mex-common.git", rev = "0.9.1" }
-uvicorn = {extras = ["standard"], version = "^0.22.0"}
+uvicorn = {extras = ["standard"], version = "^0.23.1"}
 
 [tool.poetry.group.dev.dependencies]
+autoflake = "^2.2.0"
+black = "^23.7.0"
 httpx = "^0.24.1"
-pytest = "^7.4.0"
+ipdb = "^0.13.13"
+isort = "^5.12.0"
+mypy = "^1.4.1"
+mypy-extensions = "^1.0.0"
 pytest-cov = "^4.1.0"
 
 [tool.poetry.scripts]
 drop = "mex.drop.main:main"
 token = "mex.drop.security:generate_token"
+
+[tool.ipdb]
+context=5
 
 [build-system]
 requires = ["poetry-core>=1.6.1"]
