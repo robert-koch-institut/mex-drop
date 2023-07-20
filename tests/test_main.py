@@ -49,7 +49,7 @@ def test_post_data(
         "list": [1, 2, 3],
         "dict": {"a": "b"},
     }
-    expected_file = Path(settings.drop_root_path, x_system, entity_type + ".json")
+    expected_file = Path(settings.drop_directory, x_system, entity_type + ".json")
     response = client.post(
         f"/v0/{x_system}/{entity_type}",
         headers={"X-API-Key": api_key} if api_key else {},

@@ -22,7 +22,7 @@ TEST_USER_DATABASE = {
 def settings(tmp_path: Path) -> DropSettings:
     """Load the settings for this pytest session."""
     settings = DropSettings.get()
-    settings.drop_root_path = str(tmp_path)
+    settings.drop_directory = str(tmp_path)
     settings.drop_user_database = TEST_USER_DATABASE
     return settings
 

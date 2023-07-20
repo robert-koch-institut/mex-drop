@@ -44,7 +44,7 @@ async def post_data(
         x_systems: list of authorized x-systems
 
     Settings:
-        drop_root_path: where accepted data is stored
+        drop_directory: where accepted data is stored
 
     Returns:
         A JSON response
@@ -55,7 +55,7 @@ async def post_data(
             detail="API Key not authorized to drop data for this x_system.",
         )
     settings = DropSettings.get()
-    out_file = Path(settings.drop_root_path, x_system, entity_type + ".json")
+    out_file = Path(settings.drop_directory, x_system, entity_type + ".json")
     return Response(
         status_code=202, background=BackgroundTask(json_sink, data, out_file)
     )
@@ -100,6 +100,7 @@ def main() -> None:  # pragma: no cover
         "mex.drop.main:app",
         host=settings.drop_host,
         port=settings.drop_port,
+        root_path=settings.drop_root_path,
         reload=settings.debug,
         log_config=UVICORN_LOGGING_CONFIG,
         headers=[("server", "mex-drop")],

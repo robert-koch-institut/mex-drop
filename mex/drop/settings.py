@@ -22,11 +22,16 @@ class DropSettings(BaseSettings):
         description="Port that the drop server should listen on.",
         env="MEX_DROP_PORT",
     )
-    drop_root_path: WorkPath = Field(
-        "data",
-        description="Root path that the drop server should run under, "
-        "absolute or relative to `work_dir`.",
+    drop_root_path: str = Field(
+        "",
+        description="Root path that the drop server should run under.",
         env="MEX_DROP_ROOT_PATH",
+    )
+    drop_directory: WorkPath = Field(
+        "data",
+        description="Root directory that the drop server should save files in, "
+        "absolute or relative to `work_dir`.",
+        env="MEX_DROP_DIRECTORY",
     )
     drop_user_database: UserDatabase = Field(
         {},
