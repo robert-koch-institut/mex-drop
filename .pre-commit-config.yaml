@@ -45,7 +45,7 @@ repos:
         files: ^mex/
         additional_dependencies:
           - "fastapi>=0.100,<1"
-          - "mex-common@git+https://github.com/robert-koch-institut/mex-common.git@0.9.1"
+          - "mex-common@git+https://github.com/robert-koch-institut/mex-common.git@0.10.0"
           - "pydantic[dotenv,email]>=1.10.9,<2"
           - "pytest>=7.4.0,<8"
           - "uvicorn>=0.23.1,<1"
