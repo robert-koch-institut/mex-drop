@@ -27,7 +27,7 @@ def get_authorized_x_systems(
 
 
 def get_current_authorized_x_systems(
-    api_key: Annotated[str | None, Depends(X_API_KEY)]
+    api_key: Annotated[APIKey | None, Depends(X_API_KEY)]
 ) -> list[XSystem]:
     """Get the current authorized x-systems.
 
@@ -51,7 +51,7 @@ def get_current_authorized_x_systems(
 
     settings = DropSettings.get()
     user_database = settings.drop_user_database
-    x_systems = get_authorized_x_systems(user_database, APIKey(api_key))
+    x_systems = get_authorized_x_systems(user_database, api_key)
 
     if not x_systems:
         raise HTTPException(

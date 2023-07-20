@@ -5,11 +5,11 @@ from typing import Any
 from mex.common.logging import logger
 
 
-def json_sink(data: dict[str, Any], out_file: Path) -> None:
+def json_sink(data: dict[str, Any] | list[Any], out_file: Path) -> None:
     """Write data as json to file.
 
     Args:
-        data: dictionary that is dumped as json
+        data: dictionary or list that is dumped as json
         out_file: path to output file, parent directories are created if they do not
             exist
 

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mex-drop</title>
+    <link rel="icon" href="data:,">
+    <script>
+        const submit = async function () {
+            const message = document.getElementById("message");
+            message.innerText = "...";
+            const dataInput = document.getElementById("data");
+            const keyInput = document.getElementById("key");
+            const response = await fetch(document.URL, {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-API-Key": keyInput.value,
+                },
+                body: await dataInput.files.item(0).text()
+            });
+            if (response.status < 400) {
+                message.innerText = `Dropped ${dataInput.files.item(0).name}`
+            } else {
+                message.innerText = await response.text();
+            }
+        };
+    </script>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            user-select: none;
+        }
+
+        footer {
+            bottom: 10px;
+            position: absolute;
+            width: 99%;
+        }
+
+        footer a,
+        a:visited {
+            color: #003fa0;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .drop {
+            background: #003fa0;
+            box-shadow: 10px 10px 0 0 #002860;
+            font-size: 160%;
+            line-height: 200%;
+            margin: 10% auto 0;
+            padding: 10px;
+            width: 560px;
+        }
+
+        .drop h1 {
+            color: #fff;
+        }
+
+        .drop form {
+            background: #fff;
+        }
+
+        .drop form label {
+            display: inline-block;
+            min-width: 160px;
+        }
+
+        .drop form input[type="password"], input[type="file"] {
+            min-width: 320px;
+        }
+
+        .drop .message {
+            background: #fff;
+            font-family: monospace;
+            line-height: 100%;
+            margin: 0;
+            padding: 10px;
+            user-select: text;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="drop">
+            <h1>mex-drop</h1>
+            <form action="javascript:submit()" class="inset">
+                <label for="key">API Schlüssel</label>
+                <input type="password" name="key" id="key" required><br>
+                <label for="data">JSON Datei</label>
+                <input type="file" id="data" id="data" accept="application/json" required><br>
+                <input type="submit" value="Abschicken">
+            </form>
+            <p id="message" class="inset message"><br></p>
+        </div>
+    </div>
+    <footer>
+        <a href="../../docs">OpenAPI</a>
+        | <a href="https://www.rki.de/DE/Content/Forsch/MEx/MEx_inhalt.html">Über MEx</a> |
+        <a href="mailto:mex@rki.de">Kontakt</a>
+    </footer>
+</body>
+
+</html>

@@ -2,7 +2,8 @@ from pathlib import Path
 from typing import Annotated, Any
 
 import uvicorn
-from fastapi import APIRouter, Body, Depends, FastAPI, HTTPException, Response
+from fastapi import APIRouter, Body, Depends, FastAPI, HTTPException, Request, Response
+from fastapi.templating import Jinja2Templates
 from starlette import status
 from starlette.background import BackgroundTask
 
@@ -13,6 +14,7 @@ from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
 from mex.drop.types import EntityType, XSystem
 
+templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
 router = APIRouter(
     prefix="/v0",
 )
@@ -23,9 +25,12 @@ async def post_data(
     x_system: XSystem,
     entity_type: EntityType,
     data: Annotated[
-        dict[str, Any],
+        dict[str, Any] | list[Any],
         Body(
-            examples=[{"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}}],
+            examples=[
+                {"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}},
+                [{"foo": "bar"}, {"bar": [1, 2, 3]}],
+            ],
         ),
     ],
     x_systems: Annotated[list[XSystem], Depends(get_current_authorized_x_systems)],
@@ -35,11 +40,14 @@ async def post_data(
     Args:
         x_system: name of the x-system that the data comes from
         entity_type: name of the data file that is uploaded, if unsure use 'default'
-        data: dictionary with string key and arbitrary values
+        data: dictionary with string keys or list with and arbitrary values
         x_systems: list of authorized x-systems
 
     Settings:
         drop_root_path: where accepted data is stored
+
+    Returns:
+        A JSON response
     """
     if x_system not in x_systems:
         raise HTTPException(
@@ -50,6 +58,28 @@ async def post_data(
     out_file = Path(settings.drop_root_path, x_system, entity_type + ".json")
     return Response(
         status_code=202, background=BackgroundTask(json_sink, data, out_file)
+    )
+
+
+@router.get("/{x_system}/{entity_type}")
+def upload_form(
+    request: Request,
+    x_system: XSystem,
+    entity_type: EntityType,
+) -> Response:
+    """Render an HTML upload form.
+
+    Args:
+        request: the incoming request
+        x_system: name of the x-system that the data comes from
+        entity_type: name of the data file that is uploaded, if unsure use 'default'
+
+    Returns:
+        An HTML response
+    """
+    return templates.TemplateResponse(
+        "upload.html",
+        {"request": request, "x_system": x_system, "entity_type": entity_type},
     )
 
 

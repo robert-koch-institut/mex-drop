@@ -58,3 +58,14 @@ def test_post_data(
     assert response.status_code == expected_response_code, response.text
     if 200 <= response.status_code < 300:
         assert mocked_sink.call_args == call(expected_content, expected_file)
+
+
+def test_upload_form(
+    client: TestClient,
+):
+    response = client.get(
+        "/v0/test_system/test_type",
+    )
+
+    assert response.status_code == 200, response.text
+    assert "<title>mex-drop</title>" in response.text
