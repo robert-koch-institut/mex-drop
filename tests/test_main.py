@@ -31,7 +31,7 @@ from mex.drop.types import EntityType, XSystem
         "unauthorized x_system",
     ),
 )
-def test_post_data(
+def test_drop_data(
     client: TestClient,
     api_key: str | None,
     x_system: XSystem,
@@ -60,9 +60,7 @@ def test_post_data(
         assert mocked_sink.call_args == call(expected_content, expected_file)
 
 
-def test_upload_form(
-    client: TestClient,
-):
+def test_show_form(client: TestClient) -> None:
     response = client.get(
         "/v0/test_system/test_type",
     )

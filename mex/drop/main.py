@@ -1,8 +1,17 @@
-from pathlib import Path
+import pathlib
 from typing import Annotated, Any
 
 import uvicorn
-from fastapi import APIRouter, Body, Depends, FastAPI, HTTPException, Request, Response
+from fastapi import (
+    APIRouter,
+    Body,
+    Depends,
+    FastAPI,
+    HTTPException,
+    Path,
+    Request,
+    Response,
+)
 from fastapi.templating import Jinja2Templates
 from starlette import status
 from starlette.background import BackgroundTask
@@ -14,19 +23,34 @@ from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
 from mex.drop.types import EntityType, XSystem
 
-templates = Jinja2Templates(directory=Path(__file__).parent / "templates")
+templates = Jinja2Templates(directory=pathlib.Path(__file__).parent / "templates")
 router = APIRouter(
     prefix="/v0",
 )
 
 
-@router.post("/{x_system}/{entity_type}", status_code=202)
-async def post_data(
-    x_system: XSystem,
-    entity_type: EntityType,
+@router.post(
+    "/{x_system}/{entity_type}",
+    description="Upload arbitrary JSON data to MEx.",
+    tags=["API"],
+    status_code=202,
+)
+async def drop_data(
+    x_system: Annotated[
+        XSystem,
+        Path(default=..., description="Name of the system that the data comes from"),
+    ],
+    entity_type: Annotated[
+        EntityType,
+        Path(
+            default=...,
+            description="Name of the data file that is uploaded, if unsure use 'default'",
+        ),
+    ],
     data: Annotated[
         dict[str, Any] | list[Any],
         Body(
+            description="An arbitrary JSON structure that can be further processed by MEx",
             examples=[
                 {"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}},
                 [{"foo": "bar"}, {"bar": [1, 2, 3]}],
@@ -35,7 +59,7 @@ async def post_data(
     ],
     x_systems: Annotated[list[XSystem], Depends(get_current_authorized_x_systems)],
 ) -> Response:
-    """Upload arbitrary json data.
+    """Upload arbitrary JSON data to MEx.
 
     Args:
         x_system: name of the x-system that the data comes from
@@ -55,19 +79,19 @@ async def post_data(
             detail="API Key not authorized to drop data for this x_system.",
         )
     settings = DropSettings.get()
-    out_file = Path(settings.drop_directory, x_system, entity_type + ".json")
+    out_file = pathlib.Path(settings.drop_directory, x_system, entity_type + ".json")
     return Response(
         status_code=202, background=BackgroundTask(json_sink, data, out_file)
     )
 
 
-@router.get("/{x_system}/{entity_type}")
-def upload_form(
+@router.get("/{x_system}/{entity_type}", include_in_schema=False)
+def show_form(
     request: Request,
     x_system: XSystem,
     entity_type: EntityType,
 ) -> Response:
-    """Render an HTML upload form.
+    """Render an HTML upload form for easier data dropping.
 
     Args:
         request: the incoming request
