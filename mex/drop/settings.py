@@ -1,8 +1,8 @@
-from pydantic import Field
+from pydantic import Field, validator
 
 from mex.common.settings import BaseSettings
 from mex.common.types import WorkPath
-from mex.drop.types import UserDatabase
+from mex.drop.types import APIKey, UserDatabase, XSystem
 
 
 class DropSettings(BaseSettings):
@@ -33,3 +33,15 @@ class DropSettings(BaseSettings):
         description="Database of users.",
         env="MEX_DROP_USER_DATABASE",
     )
+
+    @validator("drop_user_database", pre=True)
+    def validate_user_database(cls, value: dict[str, list[str]]) -> UserDatabase:
+        """Ensure keys are APIKeys and values are XSystems."""
+        return UserDatabase(
+            {
+                key
+                if isinstance(key, APIKey)
+                else APIKey(key): [XSystem(x) for x in x_systems]
+                for key, x_systems in value.items()
+            }
+        )
