@@ -6,10 +6,6 @@ from pydantic import ConstrainedStr, SecretStr
 class APIKey(SecretStr):
     """An API Key used for authenticating and authorizing a client."""
 
-    def __hash__(self) -> int:
-        """Return the same hash value as its underlying string."""
-        return self.get_secret_value().__hash__()
-
 
 class XSystem(ConstrainedStr):
     """The identifier of the x-system the dropped data belongs to.
