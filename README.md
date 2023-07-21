@@ -2,6 +2,40 @@
 
 Data upload API for the MEx project.
 
+## project
+
+With the Metadata Exchange (MEx) project, the [RKI](https://www.rki.de) is developing a
+transparency platform for finding metadata on the institute's research activities and
+data.
+
+MEx makes metadata findable, accessible, and shareable on a daily basis,
+as well as available for further research. MEx enables users to get an overview of what
+research data is available, understand its context, and know what needs to be considered
+for subsequent use.
+
+The platform is currently in internal use but will also be made publicly available
+and thus be available to external researchers as well as the interested (professional)
+public.
+
+For further details, please consult the
+[project page](https://www.rki.de/DE/Content/Forsch/MEx/MEx_node.html).
+
+## package
+
+The `mex-drop` package provides an API for uploading data to the MEx project.
+Request payloads need to be JSON-formatted but can have arbitrary structures.
+Accepted data will be ingested and processed asynchronously.
+
+## commands
+
+- run `poetry run {command} --help` to print instructions
+- run `poetry run {command} --debug` for interactive debugging
+
+### mex drop
+
+- `drop` starts the drop server
+- `token` generate a cryptographically sound token
+
 ## development
 
 ### installation
@@ -14,7 +48,7 @@ Data upload API for the MEx project.
   - use env `pyenv local mex`
   - run `make install`
 - on windows, see https://python-poetry.org/docs/managing-environments
-  - install `python3.11` in your the preferred way
+  - install `python3.11` in your preferred way
   - go to repo root
   - run `.\mex.bat install`
 
@@ -42,8 +76,3 @@ Data upload API for the MEx project.
 - commit udpate `git commit --message "..." pyproject.toml`
 - create a tag `git tag ...`
 - push `git push --follow-tags`
-
-## commands
-
-- run `poetry run {command} --help` to print instructions
-- run `poetry run {command} --debug` for interactive debugging
