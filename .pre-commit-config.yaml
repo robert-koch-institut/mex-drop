@@ -26,6 +26,7 @@ repos:
       - id: pretty-format-json
         args: [--autofix]
       - id: end-of-file-fixer
+      - id: debug-statements
   - repo: https://github.com/PyCQA/pydocstyle
     rev: 6.3.0
     hooks:
@@ -45,7 +46,7 @@ repos:
         files: ^mex/
         additional_dependencies:
           - "fastapi>=0.100,<1"
-          - "mex-common@git+https://github.com/robert-koch-institut/mex-common.git@0.10.0"
+          - "mex-common@git+https://github.com/robert-koch-institut/mex-common.git@0.10.1"
           - "pydantic[dotenv,email]>=1.10.9,<2"
           - "pytest>=7.4.0,<8"
-          - "uvicorn>=0.23.1,<1"
+          - "uvicorn>=0.23.2,<1"
