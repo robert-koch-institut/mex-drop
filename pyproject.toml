@@ -11,7 +11,7 @@ packages = [{include = "mex"}]
 python = "^3.11"
 jinja2 = "^3.1.2"
 fastapi = "^0.100.1"
-mex-common = { git = "https://github.com/robert-koch-institut/mex-common.git", rev = "0.10.1" }
+mex-common = { git = "https://github.com/robert-koch-institut/mex-common.git", rev = "0.11.0" }
 uvicorn = {extras = ["standard"], version = "^0.23.2"}
 
 [tool.poetry.group.dev.dependencies]
