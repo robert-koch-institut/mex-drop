@@ -26,7 +26,7 @@ linter:
 pytest:
 	# run the pytest test suite
 	@ echo running tests; \
-	poetry run pytest; \
+	poetry run pytest -m "not integration"; \
 
 build:
 	# build the python package
