@@ -2,6 +2,10 @@
 
 Data upload API for the MEx project.
 
+[![testing](https://github.com/robert-koch-institut/mex-drop/actions/workflows/testing.yml/badge.svg)](https://github.com/robert-koch-institut/mex-drop/actions/workflows/testing.yml)
+[![linting](https://github.com/robert-koch-institut/mex-drop/actions/workflows/linting.yml/badge.svg)](https://github.com/robert-koch-institut/mex-drop/actions/workflows/linting.yml)
+[![cve-scan](https://github.com/robert-koch-institut/mex-drop/actions/workflows/cve-scan.yml/badge.svg)](https://github.com/robert-koch-institut/mex-drop/actions/workflows/cve-scan.yml)
+
 ## project
 
 With the Metadata Exchange (MEx) project, the [RKI](https://www.rki.de) is developing a
@@ -73,6 +77,6 @@ Accepted data will be ingested and processed asynchronously.
 ### creating release
 
 - update version, eg `poetry version minor`
-- commit udpate `git commit --message "..." pyproject.toml`
+- commit update `git commit --message "..." pyproject.toml`
 - create a tag `git tag ...`
 - push `git push --follow-tags`
