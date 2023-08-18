@@ -1,6 +1,8 @@
-.PHONY: all test setup hooks install pytest linter build docs
+.PHONY: all test setup hooks install linter pytest build docker start
 all: install test
 test: linter pytest
+
+LATEST = $(shell git describe --tags $(shell git rev-list --tags --max-count=1))
 
 setup:
 	# install meta requirements system-wide
@@ -32,3 +34,18 @@ build:
 	# build the python package
 	@ echo building wheel; \
 	poetry build --no-interaction --format wheel; \
+
+docker:
+	# build the docker image
+	@ echo building docker image mex-drop:${LATEST}; \
+	docker build \
+		--build-arg="GIT_REV=${LATEST}" \
+		--tag rki/mex-drop:${LATEST} \
+		--tag rki/mex-drop:latest .; \
+
+start: docker
+	# start the docker image
+	@ echo running docker image mex-drop:${LATEST}; \
+	docker run \
+		--publish 8081:8081 \
+		rki/mex-drop:${LATEST}; \
