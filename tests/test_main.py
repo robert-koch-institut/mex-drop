@@ -67,3 +67,9 @@ def test_show_form(client: TestClient) -> None:
 
     assert response.status_code == 200, response.text
     assert "<title>mex-drop</title>" in response.text
+
+
+def test_health_check(client: TestClient) -> None:
+    response = client.get("/_system/check")
+    assert response.status_code == 200, response.text
+    assert response.json() == {"status": "ok"}

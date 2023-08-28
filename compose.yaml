@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  mex-drop:
+    build:
+      context: .
+    ports:
+      - 8081:8081
+    environment:
+      - MEX_DROP_DIRECTORY=data
+      - MEX_DROP_HOST=0.0.0.0
+      - MEX_DROP_PORT=8081
+      - MEX_DROP_USER_DATABASE={"mex":["mex"]}
+    expose:
+      - 8081
+    healthcheck:
+      test: [ "CMD", "curl", "http://0.0.0.0:8081/_system/check" ]
+      interval: 60s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - data:/app/data
+volumes:
+  data:
