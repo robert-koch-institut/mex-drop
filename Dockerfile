@@ -1,18 +1,36 @@
-FROM python:3.11
+# syntax=docker/dockerfile:1
 
-ARG GIT_REV=main
+FROM python:3.11 as base
 
-LABEL version=${GIT_REV}
-LABEL maintainer="RKI MEx Team <mex@rki.de>"
-LABEL description="Docker image for mex-drop"
+LABEL org.opencontainers.image.authors="RKI MEx Team <mex@rki.de>"
+LABEL org.opencontainers.image.description="Data ingestion service for the MEx project."
+LABEL org.opencontainers.image.licenses="MIT"
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONOPTIMIZE=1
+
+ENV PIP_PROGRESS_BAR=off
+ENV PIP_PREFER_BINARY=on
+ENV PIP_DISABLE_PIP_VERSION_CHECK=on
 
 ENV MEX_DROP_HOST=0.0.0.0
 
-RUN pip install \
-    --disable-pip-version-check \
-    --no-cache-dir \
-    --prefer-binary \
-    --progress-bar=off \
-    git+https://github.com/robert-koch-institut/mex-drop.git@${GIT_REV}
+WORKDIR /app
+
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid "10001" \
+    mex
+
+COPY . .
+
+RUN --mount=type=cache,target=/root/.cache/pip pip install .
+
+USER mex
+
+EXPOSE 8081
 
 ENTRYPOINT [ "drop" ]

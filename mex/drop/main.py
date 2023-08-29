@@ -13,6 +13,7 @@ from fastapi import (
     Response,
 )
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 from starlette import status
 from starlette.background import BackgroundTask
 
@@ -114,6 +115,18 @@ app = FastAPI(
     description="Upload your data for the MEx service.",
 )
 app.include_router(router)
+
+
+class SystemStatus(BaseModel):
+    """Response model for system status check."""
+
+    status: str
+
+
+@app.get("/_system/check", tags=["system"])
+def check_system_status() -> SystemStatus:
+    """Check that the drop server is healthy and responsive."""
+    return SystemStatus(status="ok")
 
 
 @entrypoint(DropSettings)

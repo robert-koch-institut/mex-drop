@@ -35,18 +35,18 @@ repos:
         additional_dependencies: [".[toml]"]
         exclude: "test_"
   - repo: https://github.com/python-poetry/poetry
-    rev: 1.5.0
+    rev: 1.5.1
     hooks:
       - id: poetry-check
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.4.1
+    rev: v1.5.1
     hooks:
       - id: mypy
         name: mypy
         files: ^mex/
         additional_dependencies:
-          - "fastapi>=0.101.0,<1"
-          - "mex-common@git+https://github.com/robert-koch-institut/mex-common.git@0.12.1"
+          - "fastapi>=0.101.1,<1"
+          - "mex-common@git+https://github.com/robert-koch-institut/mex-common.git@0.12.4"
           - "pydantic[dotenv,email]>=1.10.9,<2"
           - "pytest>=7.4.0,<8"
           - "uvicorn>=0.23.2,<1"

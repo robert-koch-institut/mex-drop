@@ -80,3 +80,9 @@ Accepted data will be ingested and processed asynchronously.
 - commit update `git commit --message "..." pyproject.toml`
 - create a tag `git tag ...`
 - push `git push --follow-tags`
+
+### container workflow
+
+- build container with `make container`
+- run directly using docker `make run`
+- start with docker-compose `make start`

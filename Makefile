@@ -1,4 +1,4 @@
-.PHONY: all test setup hooks install linter pytest build docker start
+.PHONY: all test setup hooks install linter pytest wheel container run start
 all: install test
 test: linter pytest
 
@@ -30,22 +30,30 @@ pytest:
 	@ echo running tests; \
 	poetry run pytest -m "not integration"; \
 
-build:
+wheel:
 	# build the python package
 	@ echo building wheel; \
 	poetry build --no-interaction --format wheel; \
 
-docker:
+container:
 	# build the docker image
 	@ echo building docker image mex-drop:${LATEST}; \
+	export DOCKER_BUILDKIT=1; \
 	docker build \
-		--build-arg="GIT_REV=${LATEST}" \
 		--tag rki/mex-drop:${LATEST} \
 		--tag rki/mex-drop:latest .; \
 
-start: docker
-	# start the docker image
-	@ echo running docker image mex-drop:${LATEST}; \
+run: container
+	# run the service as a docker container
+	@ echo running docker container mex-drop:${LATEST}; \
 	docker run \
+		--env MEX_DROP_HOST=0.0.0.0 \
 		--publish 8081:8081 \
 		rki/mex-drop:${LATEST}; \
+
+start: container
+	# start the service using docker-compose
+	@ echo running docker-compose with mex-drop:${LATEST}; \
+	export DOCKER_BUILDKIT=1; \
+	export COMPOSE_DOCKER_CLI_BUILD=1; \
+	docker-compose up; \

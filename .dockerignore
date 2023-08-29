@@ -110,3 +110,25 @@ dmypy.json
 
 # Default exports
 data/
+
+# Docker specifics
+**/.dockerignore
+**/.git
+**/.github
+**/.gitignore
+**/compose*
+**/docker-compose*
+**/Dockerfile*
+
+# Setup files
+.bandit
+.isort.cfg
+.mypy.ini
+.pre-commit-config.yaml
+.pydocstyle
+Makefile
+mex.bat
+poetry.lock
+poetry.toml
+pytest.ini
+requirements.txt

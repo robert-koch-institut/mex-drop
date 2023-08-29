@@ -1,18 +1,18 @@
 [tool.poetry]
 name = "mex-drop"
-version = "0.1.0"
-description = "Data upload API for the MEx project."
+version = "0.1.1"
+description = "Data ingestion service for the MEx project."
 authors = ["RKI MEx Team <mex@rki.de>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "mex"}]
+packages = [{ include = "mex" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 jinja2 = "^3.1.2"
-fastapi = "^0.101.0"
-mex-common = { git = "https://github.com/robert-koch-institut/mex-common.git", rev = "0.12.1" }
-uvicorn = {extras = ["standard"], version = "^0.23.2"}
+fastapi = "^0.101.1"
+mex-common = { git = "https://github.com/robert-koch-institut/mex-common.git", rev = "0.12.4" }
+uvicorn = { extras = ["standard"], version = "^0.23.2" }
 
 [tool.poetry.group.dev.dependencies]
 autoflake = "^2.2.0"
@@ -20,8 +20,9 @@ black = "^23.7.0"
 httpx = "^0.24.1"
 ipdb = "^0.13.13"
 isort = "^5.12.0"
-mypy = "^1.5.0"
+mypy = "^1.5.1"
 mypy-extensions = "^1.0.0"
+pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
 
 [tool.poetry.scripts]
@@ -29,7 +30,7 @@ drop = "mex.drop.main:main"
 token = "mex.drop.security:generate_token"
 
 [tool.ipdb]
-context=5
+context = 5
 
 [build-system]
 requires = ["poetry-core>=1.6.1"]
