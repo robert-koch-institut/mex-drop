@@ -28,13 +28,13 @@ class DropSettings(BaseSettings):
         validation_alias="MEX_DROP_ROOT_PATH",
     )
     drop_directory: WorkPath = Field(
-        "data",
+        WorkPath("data"),
         description="Root directory that the drop server should save files in, "
         "absolute or relative to `work_dir`.",
         validation_alias="MEX_DROP_DIRECTORY",
     )
     drop_user_database: UserDatabase = Field(
-        {},
+        UserDatabase({}),
         description="Database of users.",
         validation_alias="MEX_DROP_USER_DATABASE",
     )
