@@ -64,4 +64,4 @@ def get_current_authorized_x_systems(
 
 def generate_token() -> None:
     """Generate and print a safe token."""
-    print(secrets.token_urlsafe())
+    print(secrets.token_urlsafe())  # noqa: T201
