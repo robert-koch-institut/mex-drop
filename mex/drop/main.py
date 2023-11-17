@@ -22,7 +22,7 @@ from mex.drop.logging import UVICORN_LOGGING_CONFIG
 from mex.drop.security import get_current_authorized_x_systems
 from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
-from mex.drop.types import EntityType, XSystem
+from mex.drop.types import PATH_REGEX, EntityType, XSystem
 
 templates = Jinja2Templates(directory=pathlib.Path(__file__).parent / "templates")
 router = APIRouter(
@@ -39,14 +39,19 @@ router = APIRouter(
 async def drop_data(
     x_system: Annotated[
         XSystem,
-        Path(default=..., description="Name of the system that the data comes from"),
+        Path(
+            default=...,
+            pattern=PATH_REGEX,
+            description="Name of the system that the data comes from",
+        ),
     ],
     entity_type: Annotated[
         EntityType,
         Path(
             default=...,
+            pattern=PATH_REGEX,
             description=(
-                "Name of the data file that is uploaded, " "if unsure use 'default'",
+                "Name of the data file that is uploaded, " "if unsure use 'default'"
             ),
         ),
     ],
