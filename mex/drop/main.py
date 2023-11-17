@@ -50,13 +50,17 @@ async def drop_data(
         Path(
             default=...,
             pattern=PATH_REGEX,
-            description="Name of the data file that is uploaded, if unsure use 'default'",
+            description=(
+                "Name of the data file that is uploaded, " "if unsure use 'default'"
+            ),
         ),
     ],
     data: Annotated[
         dict[str, Any] | list[Any],
         Body(
-            description="An arbitrary JSON structure that can be further processed by MEx",
+            description=(
+                "An arbitrary JSON structure, " "that can be further processed by MEx"
+            ),
             examples=[
                 {"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}},
                 [{"foo": "bar"}, {"bar": [1, 2, 3]}],
