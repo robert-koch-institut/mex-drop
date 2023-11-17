@@ -46,7 +46,7 @@ repos:
         files: ^mex/
         additional_dependencies:
           - "fastapi>=0.101.1,<1"
-          - "mex-common@git+https://github.com/robert-koch-institut/mex-common.git@feature/mx-1380-update-pydantic-to-v2"
+          - "mex-common@git+https://github.com/robert-koch-institut/mex-common.git@0.15.0"
           - "pydantic>=2.1.1,<3"
           - "pydantic-settings>=2.0.2,<3"
           - "pytest>=7.4.2,<8"
