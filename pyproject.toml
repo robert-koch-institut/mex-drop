@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mex-drop"
-version = "0.1.3"
+version = "0.2.0"
 description = "Data ingestion service for the MEx project."
 authors = ["RKI MEx Team <mex@rki.de>"]
 readme = "README.md"
