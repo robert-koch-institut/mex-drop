@@ -24,10 +24,12 @@ repos:
         name: poetry
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.6.1
-    hooks:
+    hooks:  # configured according to mypy maintainer: https://github.com/python/mypy/issues/13916
       - id: mypy
         name: mypy
         files: ^mex/
+        pass_filenames: false
+        args: [mex]
         additional_dependencies:
           - "fastapi>=0.104.0,<1"
           - "mex-common@git+https://github.com/robert-koch-institut/mex-common.git@0.15.0"
