@@ -32,6 +32,17 @@ token = "mex.drop.security:generate_token"
 [tool.ipdb]
 context = 5
 
+[tool.mypy]
+python_version = "3.11"
+show_error_codes = true
+strict = true
+plugins = [
+  "pydantic.mypy"
+]
+
+[tool.pydantic-mypy]
+warn_untyped_fields = true
+
 [tool.ruff]
 fix = true
 ignore = [
