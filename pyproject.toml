@@ -32,6 +32,28 @@ token = "mex.drop.security:generate_token"
 [tool.ipdb]
 context = 5
 
+[tool.mypy]
+python_version = "3.11"
+show_error_codes = true
+strict = true
+plugins = [
+  "pydantic.mypy"
+]
+
+[tool.pydantic-mypy]
+warn_untyped_fields = true
+[tool.pytest.ini_options]
+addopts = [
+    "--verbose",
+    "--cov",
+    "--no-cov-on-fail",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-fail-under=100",
+    "--cov-branch",
+    "--pdbcls=IPython.terminal.debugger:TerminalPdb"
+]
+markers = "integration: mark a test as integration test allowing it to load real settings"
+
 [tool.ruff]
 fix = true
 ignore = [
