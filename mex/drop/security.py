@@ -1,4 +1,3 @@
-import secrets
 from typing import Annotated
 
 from fastapi import Depends, HTTPException
@@ -60,8 +59,3 @@ def get_current_authorized_x_systems(
         )
 
     return x_systems
-
-
-def generate_token() -> None:
-    """Generate and print a safe token."""
-    print(secrets.token_urlsafe())  # noqa: T201
