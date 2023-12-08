@@ -1,6 +1,8 @@
-import re
+from typing import Annotated
 
-from pydantic import ConstrainedStr, SecretStr
+from pydantic import SecretStr, constr
+
+ConstrainedStr = object
 
 
 class APIKey(SecretStr):
@@ -11,23 +13,12 @@ class APIKey(SecretStr):
         return f"APIKey('{self}')"
 
 
-class XSystem(ConstrainedStr):
-    """The identifier of the x-system the dropped data belongs to.
+PATH_REGEX = r"^[a-zA-Z0-9_-]{1,128}$"
 
-    Allowed characters: a-z, A-Z, 0-9, -, _
-    """
+XSystem = Annotated[str, constr(pattern=PATH_REGEX)]
 
-    regex = re.compile(r"^[a-zA-Z0-9_-]{1,128}$")
+EntityType = Annotated[str, constr(pattern=PATH_REGEX)]
 
 
-class EntityType(ConstrainedStr):
-    """The type of the entities provided in the dropped data.
-
-    Allowed characters: a-z, A-Z, 0-9, -, _
-    """
-
-    regex = re.compile(r"^[a-zA-Z0-9_-]{1,128}$")
-
-
-class UserDatabase(dict[APIKey, list[XSystem]]):
+class UserDatabase(dict[APIKey, list[str]]):
     """A lookup of which x-systems each APIKey is allowed to access."""

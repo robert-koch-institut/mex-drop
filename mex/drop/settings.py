@@ -1,4 +1,4 @@
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from mex.common.settings import BaseSettings
 from mex.common.types import WorkPath
@@ -13,33 +13,34 @@ class DropSettings(BaseSettings):
         min_length=1,
         max_length=250,
         description="Host that the drop server will run on.",
-        env="MEX_DROP_HOST",
+        validation_alias="MEX_DROP_HOST",
     )
     drop_port: int = Field(
         8081,
         gt=0,
         lt=65536,
         description="Port that the drop server should listen on.",
-        env="MEX_DROP_PORT",
+        validation_alias="MEX_DROP_PORT",
     )
     drop_root_path: str = Field(
         "",
         description="Root path that the drop server should run under.",
-        env="MEX_DROP_ROOT_PATH",
+        validation_alias="MEX_DROP_ROOT_PATH",
     )
     drop_directory: WorkPath = Field(
-        "data",
+        WorkPath("data"),
         description="Root directory that the drop server should save files in, "
         "absolute or relative to `work_dir`.",
-        env="MEX_DROP_DIRECTORY",
+        validation_alias="MEX_DROP_DIRECTORY",
     )
     drop_user_database: UserDatabase = Field(
-        {},
+        UserDatabase({}),
         description="Database of users.",
-        env="MEX_DROP_USER_DATABASE",
+        validation_alias="MEX_DROP_USER_DATABASE",
     )
 
-    @validator("drop_user_database", pre=True)
+    @field_validator("drop_user_database", mode="before")
+    @classmethod
     def validate_user_database(cls, value: dict[str, list[str]]) -> UserDatabase:
         """Ensure keys are APIKeys and values are XSystems."""
         return UserDatabase(

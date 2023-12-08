@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mex-drop"
-version = "0.1.4"
+version = "0.2.1"
 description = "Data ingestion service for the MEx project."
 authors = ["RKI MEx Team <mex@rki.de>"]
 readme = "README.md"
@@ -30,6 +30,28 @@ drop = "mex.drop.main:main"
 
 [tool.ipdb]
 context = 5
+
+[tool.mypy]
+python_version = "3.11"
+show_error_codes = true
+strict = true
+plugins = [
+  "pydantic.mypy"
+]
+
+[tool.pydantic-mypy]
+warn_untyped_fields = true
+[tool.pytest.ini_options]
+addopts = [
+    "--verbose",
+    "--cov",
+    "--no-cov-on-fail",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-fail-under=100",
+    "--cov-branch",
+    "--pdbcls=IPython.terminal.debugger:TerminalPdb"
+]
+markers = "integration: mark a test as integration test"
 
 [tool.ruff]
 fix = true
@@ -82,5 +104,5 @@ known-first-party = ["mex", "tests"]
 convention = "google"
 
 [build-system]
-requires = ["poetry-core>=1.7.0"]
+requires = ["poetry-core>=1.8.1"]
 build-backend = "poetry.core.masonry.api"
