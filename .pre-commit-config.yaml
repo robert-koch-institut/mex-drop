@@ -3,7 +3,7 @@ default_language_version:
   python: python3.11
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.7
+    rev: v0.1.8
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -22,18 +22,12 @@ repos:
     hooks:
       - id: poetry-check
         name: poetry
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.7.1
-    hooks:  # configured according to mypy maintainer: https://github.com/python/mypy/issues/13916
-      - id: mypy
-        name: mypy
-        files: ^mex/
-        pass_filenames: false
-        args: [mex]
-        additional_dependencies:
-          - "fastapi>=0.105.0,<1"
-          - "mex-common@git+https://github.com/robert-koch-institut/mex-common.git@0.16.1"
-          - "pydantic>=2.5.2,<3"
-          - "pydantic-settings>=2.1.0,<3"
-          - "pytest>=7.4.3,<8"
-          - "uvicorn>=0.24.0.post1,<1"
+  - repo: local
+    hooks:
+    - id: mypy
+      name: mypy
+      entry: poetry run dmypy run --timeout 7200 -- mex
+      files: ^mex/
+      language: system
+      pass_filenames: false
+      types: [python]
