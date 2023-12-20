@@ -75,7 +75,6 @@ Accepted data will be ingested and processed asynchronously.
 
 - update global dependencies in `requirements.txt` manually
 - update git hooks with `pre-commit autoupdate`
-- update git hook additional dependencies manually
 - show outdated dependencies with `poetry show --outdated`
 - update dependencies in poetry using `poetry update --lock`
 - update github actions manually in `.github/workflows/default.yml`

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mex-drop"
-version = "0.2.1"
+version = "0.2.2"
 description = "Data ingestion service for the MEx project."
 authors = ["RKI MEx Team <mex@rki.de>"]
 readme = "README.md"
@@ -12,7 +12,7 @@ packages = [{ include = "mex" }]
 python = "^3.11"
 fastapi = "^0.105.0"
 jinja2 = "^3.1.2"
-mex-common = { git = "https://github.com/robert-koch-institut/mex-common.git", rev = "0.16.1" }
+mex-common = { git = "https://github.com/robert-koch-institut/mex-common.git", rev = "0.16.2" }
 uvicorn = { extras = ["standard"], version = "^0.24.0.post1" }
 
 [tool.poetry.group.dev.dependencies]
@@ -23,7 +23,7 @@ mypy = "^1.7.1"
 mypy-extensions = "^1.0.0"
 pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
-ruff = "^0.1.7"
+ruff = "^0.1.8"
 
 [tool.poetry.scripts]
 drop = "mex.drop.main:main"
