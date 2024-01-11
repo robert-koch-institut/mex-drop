@@ -97,7 +97,7 @@ components of the MEx project are open-sourced under the same license as well.
 - run `poetry run {command} --help` to print instructions
 - run `poetry run {command} --debug` for interactive debugging
 
-### mex drop
+### drop
 
-- `drop` starts the drop server
+- `drop` starts the drop service
 - `token` generate a cryptographically sound token

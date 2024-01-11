@@ -1,4 +1,4 @@
-.PHONY: all test setup hooks install linter pytest docs wheel container run start
+.PHONY: all test setup hooks install linter pytest wheel container run start docs
 all: install test
 test: linter pytest
 
@@ -26,8 +26,8 @@ linter:
 	pre-commit run --all-files; \
 
 pytest:
-	# run the pytest test suite
-	@ echo running tests; \
+	# run the pytest test suite with all unit tests
+	@ echo running unit tests; \
 	poetry run pytest -m "not integration"; \
 
 wheel:
