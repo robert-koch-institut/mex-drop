@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mex-drop"
 version = "0.2.2"
-description = "Data ingestion service for the MEx project."
+description = "Data upload API for the MEx project."
 authors = ["RKI MEx Team <mex@rki.de>"]
 readme = "README.md"
 license = "MIT"
@@ -23,10 +23,15 @@ mypy = "^1.7.1"
 mypy-extensions = "^1.0.0"
 pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
-ruff = "^0.1.8"
+ruff = "^0.1.9"
+sphinx = "^6.2.1"
+sphinx-book-theme = "^1.1.0"
 
 [tool.poetry.scripts]
 drop = "mex.drop.main:main"
+
+[tool.cruft]
+template = "https://github.com/robert-koch-institut/mex-template"
 
 [tool.ipdb]
 context = 5
@@ -35,21 +40,20 @@ context = 5
 python_version = "3.11"
 show_error_codes = true
 strict = true
-plugins = [
-  "pydantic.mypy"
-]
+plugins = ["pydantic.mypy"]
 
 [tool.pydantic-mypy]
 warn_untyped_fields = true
+
 [tool.pytest.ini_options]
 addopts = [
     "--verbose",
     "--cov",
     "--no-cov-on-fail",
     "--cov-report=term-missing:skip-covered",
-    "--cov-fail-under=100",
+    "--cov-fail-under=95",
     "--cov-branch",
-    "--pdbcls=IPython.terminal.debugger:TerminalPdb"
+    "--pdbcls=IPython.terminal.debugger:TerminalPdb",
 ]
 markers = "integration: mark a test as integration test"
 

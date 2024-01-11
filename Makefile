@@ -1,4 +1,4 @@
-.PHONY: all test setup hooks install linter pytest wheel container run start
+.PHONY: all test setup hooks install linter pytest docs wheel container run start
 all: install test
 test: linter pytest
 
@@ -57,3 +57,9 @@ start: container
 	export DOCKER_BUILDKIT=1; \
 	export COMPOSE_DOCKER_CLI_BUILD=1; \
 	docker-compose up; \
+
+docs:
+	# use sphinx to auto-generate html docs from code
+	@ echo generating api docs; \
+	poetry run sphinx-apidoc -f -o docs/source mex; \
+	poetry run sphinx-build -b dirhtml docs docs/dist; \
