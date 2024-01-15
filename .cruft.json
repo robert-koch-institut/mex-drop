@@ -1,6 +1,6 @@
 {
   "checkout": null,
-  "commit": "025bf2e04ecad80d7f80dc29534e85ba38dd0ab3",
+  "commit": "f3b40af92c9d0538a1117f7efadf6cbd9e2b6b15",
   "context": {
     "cookiecutter": {
       "project_name": "drop",
