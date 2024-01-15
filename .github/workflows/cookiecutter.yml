@@ -1,7 +1,8 @@
-name: Linting
+name: Cookiecutter
 
 on:
   push:
+    branches: ["main"]
   workflow_dispatch:
 
 env:
@@ -47,5 +48,5 @@ jobs:
       - name: Install requirements
         run: make install
 
-      - name: Run linters
-        run: make linter
+      - name: Check template
+        run: poetry run cruft check
