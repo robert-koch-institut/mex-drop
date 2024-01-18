@@ -1,4 +1,4 @@
-# Byte-compiled files
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -34,7 +34,7 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# Testing / coverage reports
 htmlcov/
 .tox/
 .nox/
@@ -59,6 +59,7 @@ pytestdebug.log
 
 # Sphinx documentation
 docs/_build/
+docs/source/
 
 # PyBuilder
 .pybuilder/
@@ -74,7 +75,7 @@ ipython_config.py
 # pyenv
 .python-version
 
-# PEP 582; used by e.g. pyflow
+# PEP 582
 __pypackages__/
 
 # Celery stuff
@@ -95,6 +96,9 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# ruff
+.ruff_cache
 
 # PyCharm
 .idea/

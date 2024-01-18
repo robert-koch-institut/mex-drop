@@ -4,6 +4,7 @@ set target=%1
 
 if "%target%"=="install" goto install
 if "%target%"=="test" goto test
+if "%target%"=="docs" goto docs
 echo invalid argument %target%
 exit /b 1
 
@@ -20,7 +21,7 @@ if "%CI%"=="" (
 )
 
 @REM run the poetry installation with embedded virtual environment
-echo installing packages
+echo installing package
 poetry install --no-interaction --sync
 exit /b %errorlevel%
 
@@ -31,8 +32,16 @@ echo linting all files
 pre-commit run --all-files
 if %errorlevel% neq 0 exit /b %errorlevel%
 
-@REM run the pytest test suite with unit and optional integration tests
-@REM whether integration tests are run as well is determined by pytest fixture
-echo running test suite
+@REM run the pytest test suite with unit and integration tests
+echo running all tests
 poetry run pytest
+exit /b %errorlevel%
+
+
+:docs
+@REM use sphinx to auto-generate html docs from code
+echo generating api docs
+poetry run sphinx-apidoc -f -o docs\source mex
+if %errorlevel% neq 0 exit /b %errorlevel%
+poetry run sphinx-build -aE -b dirhtml docs docs\dist
 exit /b %errorlevel%

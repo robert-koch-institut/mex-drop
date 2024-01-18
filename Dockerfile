@@ -3,7 +3,7 @@
 FROM python:3.11 as base
 
 LABEL org.opencontainers.image.authors="RKI MEx Team <mex@rki.de>"
-LABEL org.opencontainers.image.description="Data ingestion service for the MEx project."
+LABEL org.opencontainers.image.description="Data upload API for the MEx project."
 LABEL org.opencontainers.image.licenses="MIT"
 
 ENV PYTHONUNBUFFERED=1
