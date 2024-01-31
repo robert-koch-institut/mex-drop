@@ -112,8 +112,9 @@ def show_form(
         An HTML response
     """
     return templates.TemplateResponse(
+        request,
         "upload.html",
-        {"request": request, "x_system": x_system, "entity_type": entity_type},
+        {"x_system": x_system, "entity_type": entity_type},
     )
 
 
