@@ -69,6 +69,20 @@ def test_show_form(client: TestClient) -> None:
     assert "<title>mex-drop</title>" in response.text
 
 
+def test_list_files(client: TestClient, tmp_path: Path) -> None:
+    settings = DropSettings.get()
+    settings.drop_directory = tmp_path
+    api_key = "api-test-key"
+    x_system = "test_system"
+    x_system_dir = tmp_path / x_system
+    expected_file = x_system_dir / "foo.json"
+    x_system_dir.mkdir(parents=True)
+    expected_file.touch()
+    response = client.get(f"/v0/files/list/{x_system}", headers={"X-API-Key": api_key})
+    assert response.status_code == 200, response
+    assert response.json() == ["foo.json"]
+
+
 def test_health_check(client: TestClient) -> None:
     response = client.get("/_system/check")
     assert response.status_code == 200, response.text

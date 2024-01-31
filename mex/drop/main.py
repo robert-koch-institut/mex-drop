@@ -67,7 +67,9 @@ async def drop_data(
             ],
         ),
     ],
-    x_systems: Annotated[list[XSystem], Depends(get_current_authorized_x_systems)],
+    authorized_x_systems: Annotated[
+        list[XSystem], Depends(get_current_authorized_x_systems)
+    ],
 ) -> Response:
     """Upload arbitrary JSON data to MEx.
 
@@ -75,7 +77,7 @@ async def drop_data(
         x_system: name of the x-system that the data comes from
         entity_type: name of the data file that is uploaded, if unsure use 'default'
         data: dictionary with string keys or list with and arbitrary values
-        x_systems: list of authorized x-systems
+        authorized_x_systems: list of authorized x-systems
 
     Settings:
         drop_directory: where accepted data is stored
@@ -83,7 +85,7 @@ async def drop_data(
     Returns:
         A JSON response
     """
-    if x_system not in x_systems:
+    if x_system not in authorized_x_systems:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="API Key not authorized to drop data for this x_system.",
@@ -116,6 +118,50 @@ def show_form(
         "upload.html",
         {"x_system": x_system, "entity_type": entity_type},
     )
+
+
+@router.get(
+    "/files/list/{x_system}",
+    description="List files for an x-system.",
+    tags=["API"],
+)
+def list_files(
+    x_system: Annotated[
+        XSystem,
+        Path(
+            default=...,
+            pattern=PATH_REGEX,
+            description="Name of the system that the data comes from",
+        ),
+    ],
+    authorized_x_systems: Annotated[
+        list[XSystem], Depends(get_current_authorized_x_systems)
+    ],
+) -> list[str]:
+    """List available files for an x-system.
+
+    Args:
+        x_system: name of the x-system that the data comes from
+        authorized_x_systems: list of authorized x-systems
+
+    Settings:
+        drop_directory: where data is stored
+
+    Returns:
+        A JSON response
+    """
+    if x_system not in authorized_x_systems:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="API Key not authorized to drop data for this x_system.",
+        )
+    settings = DropSettings.get()
+    x_system_data_dir = pathlib.Path(settings.drop_directory, x_system)
+    return [
+        f.relative_to(x_system_data_dir).as_posix()
+        for f in x_system_data_dir.glob("*")
+        if f.is_file()
+    ]
 
 
 app = FastAPI(
