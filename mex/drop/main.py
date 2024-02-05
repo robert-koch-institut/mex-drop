@@ -231,7 +231,7 @@ app = FastAPI(
     title="mex-drop",
     version="v0",
     contact={"name": "MEx Team", "email": "mex@rki.de"},
-    description="Upload your data for the MEx service.",
+    description="Upload and download data for the MEx service.",
 )
 app.include_router(router)
 
