@@ -18,7 +18,7 @@ from starlette.background import BackgroundTask
 
 from mex.common.cli import entrypoint
 from mex.drop.logging import UVICORN_LOGGING_CONFIG
-from mex.drop.security import get_current_authorized_x_systems
+from mex.drop.security import get_current_authorized_x_systems, is_authorized
 from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
 from mex.drop.types import PATH_REGEX, EntityType, XSystem
@@ -84,7 +84,7 @@ async def drop_data(
     Returns:
         A JSON response
     """
-    if x_system not in authorized_x_systems:
+    if not is_authorized(x_system, authorized_x_systems):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="API Key not authorized to drop data for this x_system.",
@@ -138,7 +138,7 @@ async def download_data(
     Returns:
         A JSON response
     """
-    if x_system not in authorized_x_systems:
+    if not is_authorized(x_system, authorized_x_systems):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="API Key not authorized to download data for this x_system.",
@@ -170,7 +170,7 @@ def list_x_systems(
     Returns:
         A JSON response
     """
-    if "admin" not in authorized_x_systems:
+    if not is_authorized(XSystem("admin"), authorized_x_systems):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="API Key not authorized to list x_systems.",
@@ -213,7 +213,7 @@ def list_files(
     Returns:
         A JSON response
     """
-    if x_system not in authorized_x_systems:
+    if not is_authorized(x_system, authorized_x_systems):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="API Key not authorized to list files for this x_system.",
