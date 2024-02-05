@@ -9,7 +9,6 @@ from fastapi import (
     FastAPI,
     HTTPException,
     Path,
-    Request,
     Response,
 )
 from fastapi.templating import Jinja2Templates
@@ -97,32 +96,96 @@ async def drop_data(
     )
 
 
-@router.get("/{x_system}/{entity_type}", include_in_schema=False)
-def show_form(
-    request: Request,
-    x_system: XSystem,
-    entity_type: EntityType,
+@router.get(
+    "/{x_system}/{entity_type}",
+    description="Download data from MEx.",
+    tags=["API"],
+    status_code=202,
+)
+async def download_data(
+    x_system: Annotated[
+        XSystem,
+        Path(
+            default=...,
+            pattern=PATH_REGEX,
+            description="Name of the system that the data comes from",
+        ),
+    ],
+    entity_type: Annotated[
+        EntityType,
+        Path(
+            default=...,
+            pattern=PATH_REGEX,
+            description=(
+                "Name of the data file that is uploaded, " "if unsure use 'default'"
+            ),
+        ),
+    ],
+    authorized_x_systems: Annotated[
+        list[XSystem], Depends(get_current_authorized_x_systems)
+    ],
 ) -> Response:
-    """Render an HTML upload form for easier data dropping.
+    """Download data from MEx.
 
     Args:
-        request: the incoming request
-        x_system: name of the x-system that the data comes from
-        entity_type: name of the data file that is uploaded, if unsure use 'default'
+        x_system: name of the x-system that is the original data source
+        entity_type: name of the data file to download, without json extension
+        authorized_x_systems: list of authorized x-systems
+
+    Settings:
+        drop_directory: where data is stored
 
     Returns:
-        An HTML response
+        A JSON response
     """
-    return templates.TemplateResponse(
-        request,
-        "upload.html",
-        {"x_system": x_system, "entity_type": entity_type},
-    )
+    if x_system not in authorized_x_systems:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="API Key not authorized to download data for this x_system.",
+        )
+    settings = DropSettings.get()
+    out_file = pathlib.Path(settings.drop_directory, x_system, entity_type + ".json")
+    with out_file.open() as handle:
+        return Response(content=handle.read(), status_code=202)
 
 
 @router.get(
-    "/files/list/{x_system}",
-    description="List files for an x-system.",
+    "/",
+    description="List x-systems with available data.",
+    tags=["API"],
+)
+def list_x_systems(
+    authorized_x_systems: Annotated[
+        list[XSystem], Depends(get_current_authorized_x_systems)
+    ],
+) -> list[str]:
+    """List x-systems with available data.
+
+    Args:
+        authorized_x_systems: list of authorized x-systems
+
+    Settings:
+        drop_directory: where data is stored
+
+    Returns:
+        A JSON response
+    """
+    if "admin" not in authorized_x_systems:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="API Key not authorized to list x_systems.",
+        )
+    settings = DropSettings.get()
+    return [
+        f.relative_to(settings.drop_directory).as_posix()
+        for f in settings.drop_directory._path.glob("*")
+        if f.is_dir()
+    ]
+
+
+@router.get(
+    "/{x_system}",
+    description="List downloadable entities of an x-system.",
     tags=["API"],
 )
 def list_files(
@@ -153,13 +216,13 @@ def list_files(
     if x_system not in authorized_x_systems:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="API Key not authorized to drop data for this x_system.",
+            detail="API Key not authorized to list files for this x_system.",
         )
     settings = DropSettings.get()
     x_system_data_dir = pathlib.Path(settings.drop_directory, x_system)
     return [
-        f.relative_to(x_system_data_dir).as_posix()
-        for f in x_system_data_dir.glob("*")
+        f.relative_to(x_system_data_dir).as_posix().removesuffix(".json")
+        for f in x_system_data_dir.glob("*.json")
         if f.is_file()
     ]
 

@@ -15,6 +15,7 @@ TEST_USER_DATABASE = {
     APIKey("john-doe"): ["test_system", "foo_system"],
     APIKey("api-test-key"): ["test_system", "foo_system"],
     APIKey("alice"): ["foo_system"],
+    APIKey("i-do-what-i-want"): ["admin"],
 }
 
 
