@@ -33,13 +33,13 @@ class DropSettings(BaseSettings):
         "absolute or relative to `work_dir`.",
         validation_alias="MEX_DROP_DIRECTORY",
     )
-    drop_user_database: UserDatabase = Field(
+    drop_api_key_database: UserDatabase = Field(
         UserDatabase({}),
-        description="Database of users.",
-        validation_alias="MEX_DROP_USER_DATABASE",
+        description="Database of API keys.",
+        validation_alias="MEX_DROP_API_KEY_DATABASE",
     )
 
-    @field_validator("drop_user_database", mode="before")
+    @field_validator("drop_api_key_database", mode="before")
     @classmethod
     def validate_user_database(cls, value: dict[str, list[str]]) -> UserDatabase:
         """Ensure keys are APIKeys and values are XSystems."""

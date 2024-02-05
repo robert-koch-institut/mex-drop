@@ -49,7 +49,7 @@ def get_current_authorized_x_systems(
         )
 
     settings = DropSettings.get()
-    user_database = settings.drop_user_database
+    user_database = settings.drop_api_key_database
     x_systems = get_authorized_x_systems(user_database, APIKey(api_key))
 
     if not x_systems:
