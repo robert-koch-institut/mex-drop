@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CHANGELOG file
 - cruft template link
 - open-code workflow
+- endpoint for listing available x-systems (requires authentication for x-system `admin`)
+- endpoint for listing downloadable files for an x-system
+- endpoint for downloading data
 
 ### Changes
 
@@ -23,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 
 ### Removed
+
+- **BREAKING** remove the upload html form at `/v0/{x_system}/{entity_type}`, because the endpoint conflicted with the most obvious route for downloading files (GET /v0/x-system/entity)
 
 ### Fixed
 
