@@ -100,4 +100,3 @@ components of the MEx project are open-sourced under the same license as well.
 ### drop
 
 - `drop` starts the drop service
-- `token` generate a cryptographically sound token
