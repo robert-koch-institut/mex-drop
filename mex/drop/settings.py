@@ -45,9 +45,9 @@ class DropSettings(BaseSettings):
         """Ensure keys are APIKeys and values are XSystems."""
         return UserDatabase(
             {
-                key
-                if isinstance(key, APIKey)
-                else APIKey(key): [XSystem(x) for x in x_systems]
+                key if isinstance(key, APIKey) else APIKey(key): [
+                    XSystem(x) for x in x_systems
+                ]
                 for key, x_systems in value.items()
             }
         )
