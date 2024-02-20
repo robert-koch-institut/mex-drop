@@ -82,12 +82,17 @@ def test_drop_data(
 
 
 def test_download_data(client: TestClient, dropped_data: dict[str, Any]) -> None:
+    client.headers.update({"X-API-Key": dropped_data["api_key"]})
     response = client.get(
         f"/v0/{dropped_data['x_system']}/{dropped_data['entity_type']}",
-        headers={"X-API-Key": dropped_data["api_key"]},
     )
     assert response.status_code == 202, response
     assert response.json() == dropped_data["content"]
+
+    response = client.get(
+        f"/v0/{dropped_data['x_system']}/entity_that_does_not_exist",
+    )
+    assert response.status_code == 404, response
 
 
 def test_list_x_systems(client: TestClient, dropped_data: dict[str, Any]) -> None:

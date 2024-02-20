@@ -145,6 +145,11 @@ async def download_data(
         )
     settings = DropSettings.get()
     out_file = pathlib.Path(settings.drop_directory, x_system, entity_type + ".json")
+    if not out_file.is_file():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="The requested data was not found on this server.",
+        )
     with out_file.open() as handle:
         return Response(content=handle.read(), status_code=202)
 
