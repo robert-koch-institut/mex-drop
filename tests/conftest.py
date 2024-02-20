@@ -13,7 +13,11 @@ pytest_plugins = ("mex.common.testing.plugin",)
 TEST_USER_DATABASE = {
     APIKey("api-key-one"): ["test_system"],
     APIKey("john-doe"): ["test_system", "foo_system"],
-    APIKey("api-test-key"): ["test_system", "foo_system"],
+    APIKey("api-test-key"): [
+        "test_system",
+        "foo_system",
+        "x_system_that_does_not_exist",
+    ],
     APIKey("alice"): ["foo_system"],
     APIKey("i-do-what-i-want"): ["admin"],
 }

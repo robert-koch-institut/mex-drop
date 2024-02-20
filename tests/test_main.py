@@ -102,12 +102,17 @@ def test_list_x_systems(client: TestClient, dropped_data: dict[str, Any]) -> Non
 
 
 def test_list_files(client: TestClient, dropped_data: dict[str, Any]) -> None:
+    client.headers.update({"X-API-Key": dropped_data["api_key"]})
     response = client.get(
         f"/v0/{dropped_data['x_system']}",
-        headers={"X-API-Key": dropped_data["api_key"]},
     )
     assert response.status_code == 200, response.text
     assert response.json() == [f"{dropped_data['entity_type']}"]
+
+    response = client.get(
+        "/v0/x_system_that_does_not_exist",
+    )
+    assert response.status_code == 404, response.text
 
 
 def test_health_check(client: TestClient) -> None:

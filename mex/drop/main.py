@@ -225,6 +225,11 @@ def list_files(
         )
     settings = DropSettings.get()
     x_system_data_dir = pathlib.Path(settings.drop_directory, x_system)
+    if not x_system_data_dir.is_dir():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="The requested x-system was not found on this server.",
+        )
     return [
         f.relative_to(x_system_data_dir).as_posix().removesuffix(".json")
         for f in x_system_data_dir.glob("*.json")
