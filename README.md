@@ -36,8 +36,8 @@ data Findable, Accessible, Interoperable and Reusable.
 
 ## package
 
-The `mex-drop` package provides an API for uploading data to and downloading data from 
-the MEx project. Request payloads need to be JSON-formatted but can have arbitrary 
+The `mex-drop` package provides an API for uploading data to and downloading data from
+the MEx project. Request payloads need to be JSON-formatted but can have arbitrary
 structures. Accepted data will be ingested and processed asynchronously.
 
 ## license
