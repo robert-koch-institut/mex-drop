@@ -9,7 +9,6 @@ from fastapi import (
     FastAPI,
     HTTPException,
     Path,
-    Request,
     Response,
 )
 from fastapi.templating import Jinja2Templates
@@ -19,7 +18,7 @@ from starlette.background import BackgroundTask
 
 from mex.common.cli import entrypoint
 from mex.drop.logging import UVICORN_LOGGING_CONFIG
-from mex.drop.security import get_current_authorized_x_systems
+from mex.drop.security import get_current_authorized_x_systems, is_authorized
 from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
 from mex.drop.types import PATH_REGEX, EntityType, XSystem
@@ -67,7 +66,9 @@ async def drop_data(
             ],
         ),
     ],
-    x_systems: Annotated[list[XSystem], Depends(get_current_authorized_x_systems)],
+    authorized_x_systems: Annotated[
+        list[XSystem], Depends(get_current_authorized_x_systems)
+    ],
 ) -> Response:
     """Upload arbitrary JSON data to MEx.
 
@@ -75,7 +76,7 @@ async def drop_data(
         x_system: name of the x-system that the data comes from
         entity_type: name of the data file that is uploaded, if unsure use 'default'
         data: dictionary with string keys or list with and arbitrary values
-        x_systems: list of authorized x-systems
+        authorized_x_systems: list of authorized x-systems
 
     Settings:
         drop_directory: where accepted data is stored
@@ -83,7 +84,7 @@ async def drop_data(
     Returns:
         A JSON response
     """
-    if x_system not in x_systems:
+    if not is_authorized(x_system, authorized_x_systems):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="API Key not authorized to drop data for this x_system.",
@@ -95,33 +96,153 @@ async def drop_data(
     )
 
 
-@router.get("/{x_system}/{entity_type}", include_in_schema=False)
-def show_form(
-    request: Request,
-    x_system: XSystem,
-    entity_type: EntityType,
+@router.get(
+    "/{x_system}/{entity_type}",
+    description="Download data from MEx.",
+    tags=["API"],
+)
+async def download_data(
+    x_system: Annotated[
+        XSystem,
+        Path(
+            default=...,
+            pattern=PATH_REGEX,
+            description="Name of the system that the data comes from",
+        ),
+    ],
+    entity_type: Annotated[
+        EntityType,
+        Path(
+            default=...,
+            pattern=PATH_REGEX,
+            description=("Name of the file that is uploaded, if unsure use 'default'"),
+        ),
+    ],
+    authorized_x_systems: Annotated[
+        list[XSystem], Depends(get_current_authorized_x_systems)
+    ],
 ) -> Response:
-    """Render an HTML upload form for easier data dropping.
+    """Download data from MEx.
 
     Args:
-        request: the incoming request
-        x_system: name of the x-system that the data comes from
-        entity_type: name of the data file that is uploaded, if unsure use 'default'
+        x_system: name of the x-system that is the original data source
+        entity_type: name of the data file to download, without json extension
+        authorized_x_systems: list of authorized x-systems
+
+    Settings:
+        drop_directory: where data is stored
 
     Returns:
-        An HTML response
+        A JSON response
     """
-    return templates.TemplateResponse(
-        "upload.html",
-        {"request": request, "x_system": x_system, "entity_type": entity_type},
-    )
+    if not is_authorized(x_system, authorized_x_systems):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="API Key not authorized to download data for this x_system.",
+        )
+    settings = DropSettings.get()
+    out_file = pathlib.Path(settings.drop_directory, x_system, entity_type + ".json")
+    if not out_file.is_file():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="The requested data was not found on this server.",
+        )
+    with out_file.open() as handle:
+        return Response(content=handle.read())
+
+
+@router.get(
+    "/",
+    description="List x-systems with available data.",
+    tags=["API"],
+)
+def list_x_systems(
+    authorized_x_systems: Annotated[
+        list[XSystem], Depends(get_current_authorized_x_systems)
+    ],
+) -> dict[str, list[str]]:
+    """List x-systems with available data.
+
+    Args:
+        authorized_x_systems: list of authorized x-systems
+
+    Settings:
+        drop_directory: where data is stored
+
+    Returns:
+        A JSON response
+    """
+    if not is_authorized(XSystem("admin"), authorized_x_systems):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="API Key not authorized to list x_systems.",
+        )
+    settings = DropSettings.get()
+    return {
+        "x-systems": [
+            f.relative_to(settings.drop_directory).as_posix()
+            for f in pathlib.Path(settings.drop_directory).glob("*")
+            if f.is_dir()
+        ]
+    }
+
+
+@router.get(
+    "/{x_system}",
+    description="List downloadable entities of an x-system.",
+    tags=["API"],
+)
+def list_entity_types(
+    x_system: Annotated[
+        XSystem,
+        Path(
+            default=...,
+            pattern=PATH_REGEX,
+            description="Name of the system that the data comes from",
+        ),
+    ],
+    authorized_x_systems: Annotated[
+        list[XSystem], Depends(get_current_authorized_x_systems)
+    ],
+) -> dict[str, list[str]]:
+    """List available files for an x-system.
+
+    Args:
+        x_system: name of the x-system that the data comes from
+        authorized_x_systems: list of authorized x-systems
+
+    Settings:
+        drop_directory: where data is stored
+
+    Returns:
+        A JSON response
+    """
+    if not is_authorized(x_system, authorized_x_systems):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="API Key not authorized to list files for this x_system.",
+        )
+    settings = DropSettings.get()
+    x_system_data_dir = pathlib.Path(settings.drop_directory, x_system)
+    if not x_system_data_dir.is_dir():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="The requested x-system was not found on this server.",
+        )
+    return {
+        "entity-types": [
+            f.relative_to(x_system_data_dir).as_posix().removesuffix(".json")
+            for f in x_system_data_dir.glob("*.json")
+            if f.is_file()
+        ]
+    }
 
 
 app = FastAPI(
     title="mex-drop",
     version="v0",
     contact={"name": "MEx Team", "email": "mex@rki.de"},
-    description="Upload your data for the MEx service.",
+    description="Upload and download data for the MEx service.",
 )
 app.include_router(router)
 

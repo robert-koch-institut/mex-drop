@@ -49,7 +49,7 @@ def get_current_authorized_x_systems(
         )
 
     settings = DropSettings.get()
-    user_database = settings.drop_user_database
+    user_database = settings.drop_api_key_database
     x_systems = get_authorized_x_systems(user_database, APIKey(api_key))
 
     if not x_systems:
@@ -59,3 +59,18 @@ def get_current_authorized_x_systems(
         )
 
     return x_systems
+
+
+def is_authorized(x_system: XSystem, authorized_x_systems: list[XSystem]) -> bool:
+    """Check if the provided x-system is in the authorized x-systems.
+
+    Args:
+        x_system: x-system to check
+        authorized_x_systems: list of authorized x-systems
+
+    Returns:
+        True if x_system or `admin` is in the authorized_x_systems else False
+    """
+    if {"admin", x_system} & set(authorized_x_systems):
+        return True
+    return False

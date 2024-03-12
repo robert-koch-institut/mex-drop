@@ -1,6 +1,6 @@
 # MEx drop
 
-Data upload API for the MEx project.
+Data upload and download API for the MEx project.
 
 [![testing](https://github.com/robert-koch-institut/mex-drop/actions/workflows/testing.yml/badge.svg)](https://github.com/robert-koch-institut/mex-drop/actions/workflows/testing.yml)
 [![linting](https://github.com/robert-koch-institut/mex-drop/actions/workflows/linting.yml/badge.svg)](https://github.com/robert-koch-institut/mex-drop/actions/workflows/linting.yml)
@@ -36,9 +36,9 @@ data Findable, Accessible, Interoperable and Reusable.
 
 ## package
 
-The `mex-drop` package provides an API for uploading data to the MEx project. Request
-payloads need to be JSON-formatted but can have arbitrary structures. Accepted data will
-be ingested and processed asynchronously.
+The `mex-drop` package provides an API for uploading data to and downloading data from
+the MEx project. Request payloads need to be JSON-formatted but can have arbitrary
+structures. Accepted data will be ingested and processed asynchronously.
 
 ## license
 
@@ -100,4 +100,3 @@ components of the MEx project are open-sourced under the same license as well.
 ### drop
 
 - `drop` starts the drop service
-- `token` generate a cryptographically sound token
