@@ -192,7 +192,7 @@ def list_x_systems(
     description="List downloadable entities of an x-system.",
     tags=["API"],
 )
-def list_files(
+def list_entity_types(
     x_system: Annotated[
         XSystem,
         Path(

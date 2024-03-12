@@ -101,7 +101,7 @@ def test_list_x_systems(client: TestClient, dropped_data: dict[str, Any]) -> Non
     assert response.json() == {"x-systems": [f"{dropped_data['x_system']}"]}
 
 
-def test_list_files(client: TestClient, dropped_data: dict[str, Any]) -> None:
+def test_list_entity_types(client: TestClient, dropped_data: dict[str, Any]) -> None:
     client.headers.update({"X-API-Key": dropped_data["api_key"]})
     response = client.get(
         f"/v0/{dropped_data['x_system']}",
