@@ -180,7 +180,7 @@ def list_x_systems(
     settings = DropSettings.get()
     return [
         f.relative_to(settings.drop_directory).as_posix()
-        for f in settings.drop_directory._path.glob("*")
+        for f in pathlib.Path(settings.drop_directory).glob("*")
         if f.is_dir()
     ]
 
