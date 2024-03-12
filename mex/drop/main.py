@@ -100,7 +100,6 @@ async def drop_data(
     "/{x_system}/{entity_type}",
     description="Download data from MEx.",
     tags=["API"],
-    status_code=202,
 )
 async def download_data(
     x_system: Annotated[
@@ -116,9 +115,7 @@ async def download_data(
         Path(
             default=...,
             pattern=PATH_REGEX,
-            description=(
-                "Name of the file that is uploaded, if unsure use 'default'"
-            ),
+            description=("Name of the file that is uploaded, if unsure use 'default'"),
         ),
     ],
     authorized_x_systems: Annotated[
@@ -151,7 +148,7 @@ async def download_data(
             detail="The requested data was not found on this server.",
         )
     with out_file.open() as handle:
-        return Response(content=handle.read(), status_code=202)
+        return Response(content=handle.read())
 
 
 @router.get(

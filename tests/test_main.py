@@ -86,7 +86,7 @@ def test_download_data(client: TestClient, dropped_data: dict[str, Any]) -> None
     response = client.get(
         f"/v0/{dropped_data['x_system']}/{dropped_data['entity_type']}",
     )
-    assert response.status_code == 202, response
+    assert response.status_code == 200, response
     assert response.json() == dropped_data["content"]
 
     response = client.get(
