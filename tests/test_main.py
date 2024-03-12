@@ -98,7 +98,7 @@ def test_download_data(client: TestClient, dropped_data: dict[str, Any]) -> None
 def test_list_x_systems(client: TestClient, dropped_data: dict[str, Any]) -> None:
     response = client.get("/v0/", headers={"X-API-Key": "i-do-what-i-want"})
     assert response.status_code == 200, response.text
-    assert response.json() == [f"{dropped_data['x_system']}"]
+    assert response.json() == {"x-systems": [f"{dropped_data['x_system']}"]}
 
 
 def test_list_files(client: TestClient, dropped_data: dict[str, Any]) -> None:
@@ -107,7 +107,7 @@ def test_list_files(client: TestClient, dropped_data: dict[str, Any]) -> None:
         f"/v0/{dropped_data['x_system']}",
     )
     assert response.status_code == 200, response.text
-    assert response.json() == [f"{dropped_data['entity_type']}"]
+    assert response.json() == {"entity-types": [f"{dropped_data['entity_type']}"]}
 
     response = client.get(
         "/v0/x_system_that_does_not_exist",

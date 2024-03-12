@@ -160,7 +160,7 @@ def list_x_systems(
     authorized_x_systems: Annotated[
         list[XSystem], Depends(get_current_authorized_x_systems)
     ],
-) -> list[str]:
+) -> dict[str, list[str]]:
     """List x-systems with available data.
 
     Args:
@@ -178,11 +178,13 @@ def list_x_systems(
             detail="API Key not authorized to list x_systems.",
         )
     settings = DropSettings.get()
-    return [
-        f.relative_to(settings.drop_directory).as_posix()
-        for f in pathlib.Path(settings.drop_directory).glob("*")
-        if f.is_dir()
-    ]
+    return {
+        "x-systems": [
+            f.relative_to(settings.drop_directory).as_posix()
+            for f in pathlib.Path(settings.drop_directory).glob("*")
+            if f.is_dir()
+        ]
+    }
 
 
 @router.get(
@@ -202,7 +204,7 @@ def list_files(
     authorized_x_systems: Annotated[
         list[XSystem], Depends(get_current_authorized_x_systems)
     ],
-) -> list[str]:
+) -> dict[str, list[str]]:
     """List available files for an x-system.
 
     Args:
@@ -227,11 +229,13 @@ def list_files(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="The requested x-system was not found on this server.",
         )
-    return [
-        f.relative_to(x_system_data_dir).as_posix().removesuffix(".json")
-        for f in x_system_data_dir.glob("*.json")
-        if f.is_file()
-    ]
+    return {
+        "entity-types": [
+            f.relative_to(x_system_data_dir).as_posix().removesuffix(".json")
+            for f in x_system_data_dir.glob("*.json")
+            if f.is_file()
+        ]
+    }
 
 
 app = FastAPI(
