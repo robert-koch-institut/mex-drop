@@ -117,7 +117,7 @@ async def download_data(
             default=...,
             pattern=PATH_REGEX,
             description=(
-                "Name of the data file that is uploaded, " "if unsure use 'default'"
+                "Name of the file that is uploaded, if unsure use 'default'"
             ),
         ),
     ],
