@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - endpoint for listing available x-systems (requires authentication for x-system `admin`)
 - endpoint for listing downloadable files for an x-system
 - endpoint for downloading data
+- switch from poetry to pdm
 
 ### Changes
 
@@ -30,7 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- **BREAKING** remove the upload html form at `/v0/{x_system}/{entity_type}`, because the endpoint conflicted with the most obvious route for downloading files (GET /v0/x-system/entity)
+- **BREAKING** remove the upload html form at `/v0/{x_system}/{entity_type}`,
+  because the endpoint conflicted with the most obvious route for downloading files
 
 ### Fixed
 
