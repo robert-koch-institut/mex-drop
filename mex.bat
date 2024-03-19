@@ -22,7 +22,7 @@ if "%CI%"=="" (
 
 @REM install packages from lock file in local virtual environment
 echo installing package
-poetry install --no-interaction --sync
+pdm sync --clean --group dev
 exit /b %errorlevel%
 
 
@@ -34,14 +34,14 @@ if %errorlevel% neq 0 exit /b %errorlevel%
 
 @REM run the pytest test suite with unit and integration tests
 echo running all tests
-poetry run pytest
+pdm run pytest
 exit /b %errorlevel%
 
 
 :docs
 @REM use sphinx to auto-generate html docs from code
 echo generating api docs
-poetry run sphinx-apidoc -f -o docs\source mex
+pdm run sphinx-apidoc -f -o docs\source mex
 if %errorlevel% neq 0 exit /b %errorlevel%
-poetry run sphinx-build -aE -b dirhtml docs docs\dist
+pdm run sphinx-build -aE -b dirhtml docs docs\dist
 exit /b %errorlevel%

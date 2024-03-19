@@ -42,6 +42,14 @@ show_error_codes = true
 strict = true
 plugins = ["pydantic.mypy"]
 
+[tool.pdm]
+distribution = true
+
+[tool.pdm.scripts]
+autoupdate = { cmd = "pdm update --group :all --update-eager --save-minimum" }
+lint = { cmd = "pre-commit run --all-files" }
+test = { cmd = "pdm run pytest --numprocesses=auto --dist=worksteal" }
+
 [tool.pydantic-mypy]
 warn_untyped_fields = true
 
