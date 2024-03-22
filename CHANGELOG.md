@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changes
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.3.0] - 2024-03-22
+
+### Added
+
 - pull request template
 - sphinx documentation
 - pre-commit yaml check
@@ -27,13 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - updated dependencies
 - **BREAKING** rename setting `MEX_DROP_USER_DATABASE` to `MEX_DROP_API_KEY_DATABASE`
 
-### Deprecated
-
 ### Removed
 
 - **BREAKING** remove the upload html form at `/v0/{x_system}/{entity_type}`,
   because the endpoint conflicted with the most obvious route for downloading files
-
-### Fixed
-
-### Security
