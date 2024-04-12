@@ -47,6 +47,12 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: MEX_DROP_API_KEY_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mex-drop-api-key-database
+                  key: MEX_DROP_API_KEY_DATABASE
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
