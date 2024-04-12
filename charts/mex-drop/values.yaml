@@ -29,7 +29,7 @@ ingress:
   enabled: true
   className: ""
   annotations:
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: public
     kubernetes.io/tls-acme: "true"
   hosts:
     - host: mex-drop.k8s.local
