@@ -118,4 +118,8 @@ dmypy.json
 *.db
 
 # Default exports
+*.ndjson
 data/
+identity.csv
+schema.json
+work/
