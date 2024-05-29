@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:9223945e30919121ee7ca9c83687abd908bd25ecc0c6f29c45936dd97cb8fe01"
+content_hash = "sha256:be3311eb8201eb727c84cf8610eb506ec77a37b8aaca809bfd4b4601acfb47eb"
 
 [[package]]
 name = "alabaster"
@@ -628,24 +628,36 @@ files = [
 
 [[package]]
 name = "mex-common"
-version = "0.19.3"
-requires_python = "<4.0,>=3.11"
+version = "0.25.1"
+requires_python = "<3.13,>=3.11"
 git = "https://github.com/robert-koch-institut/mex-common.git"
-ref = "0.19.3"
-revision = "7a8ede7f28398393ca0c078cb6245b0f4a984545"
+ref = "0.25.1"
+revision = "fc7ce4ba2a9f77c55392f6af4a9b4708490d0d7c"
 summary = "Common library for MEx python projects."
 groups = ["default"]
 dependencies = [
-    "backoff<3.0.0,>=2.2.1",
-    "click<9.0.0,>=8.1.7",
-    "langdetect<2.0.0,>=1.0.9",
-    "ldap3<3.0.0,>=2.9.1",
-    "numpy<2.0.0,>=1.26.2",
-    "pandas<3.0.0,>=2.1.4",
-    "pydantic-settings<3.0.0,>=2.1.0",
-    "pydantic<3.0.0,>=2.6.0",
-    "requests<3.0.0,>=2.31.0",
+    "backoff==2.2.1",
+    "click==8.1.7",
+    "langdetect==1.0.9",
+    "ldap3==2.9.1",
+    "mex-model @ git+https://github.com/robert-koch-institut/mex-model.git@2.3.0",
+    "numpy==1.26.4",
+    "pandas==2.2.2",
+    "pyarrow==16.0.0",
+    "pydantic-settings==2.2.1",
+    "pydantic==2.7.1",
+    "requests==2.31.0",
 ]
+
+[[package]]
+name = "mex-model"
+version = "2.3.0"
+requires_python = "<4.0,>=3.11"
+git = "https://github.com/robert-koch-institut/mex-model.git"
+ref = "2.3.0"
+revision = "d4aba623fc54f9b0f1b412408a21e62b6913f875"
+summary = "Conceptual and machine-readable versions of the MEx metadata model."
+groups = ["default"]
 
 [[package]]
 name = "mypy"
@@ -876,6 +888,33 @@ marker = "python_version >= \"3.11\""
 files = [
     {file = "pure_eval-0.2.2-py3-none-any.whl", hash = "sha256:01eaab343580944bc56080ebe0a674b39ec44a945e6d09ba7db3cb8cec289350"},
     {file = "pure_eval-0.2.2.tar.gz", hash = "sha256:2b45320af6dfaa1750f543d714b6d1c520a1688dec6fd24d339063ce0aaa9ac3"},
+]
+
+[[package]]
+name = "pyarrow"
+version = "16.0.0"
+requires_python = ">=3.8"
+summary = "Python library for Apache Arrow"
+groups = ["default"]
+dependencies = [
+    "numpy>=1.16.6",
+]
+files = [
+    {file = "pyarrow-16.0.0-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:d22d0941e6c7bafddf5f4c0662e46f2075850f1c044bf1a03150dd9e189427ce"},
+    {file = "pyarrow-16.0.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:266ddb7e823f03733c15adc8b5078db2df6980f9aa93d6bb57ece615df4e0ba7"},
+    {file = "pyarrow-16.0.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5cc23090224b6594f5a92d26ad47465af47c1d9c079dd4a0061ae39551889efe"},
+    {file = "pyarrow-16.0.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:56850a0afe9ef37249d5387355449c0f94d12ff7994af88f16803a26d38f2016"},
+    {file = "pyarrow-16.0.0-cp311-cp311-manylinux_2_28_aarch64.whl", hash = "sha256:705db70d3e2293c2f6f8e84874b5b775f690465798f66e94bb2c07bab0a6bb55"},
+    {file = "pyarrow-16.0.0-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:5448564754c154997bc09e95a44b81b9e31ae918a86c0fcb35c4aa4922756f55"},
+    {file = "pyarrow-16.0.0-cp311-cp311-win_amd64.whl", hash = "sha256:729f7b262aa620c9df8b9967db96c1575e4cfc8c25d078a06968e527b8d6ec05"},
+    {file = "pyarrow-16.0.0-cp312-cp312-macosx_10_15_x86_64.whl", hash = "sha256:fb8065dbc0d051bf2ae2453af0484d99a43135cadabacf0af588a3be81fbbb9b"},
+    {file = "pyarrow-16.0.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:20ce707d9aa390593ea93218b19d0eadab56390311cb87aad32c9a869b0e958c"},
+    {file = "pyarrow-16.0.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5823275c8addbbb50cd4e6a6839952682a33255b447277e37a6f518d6972f4e1"},
+    {file = "pyarrow-16.0.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1ab8b9050752b16a8b53fcd9853bf07d8daf19093533e990085168f40c64d978"},
+    {file = "pyarrow-16.0.0-cp312-cp312-manylinux_2_28_aarch64.whl", hash = "sha256:42e56557bc7c5c10d3e42c3b32f6cff649a29d637e8f4e8b311d334cc4326730"},
+    {file = "pyarrow-16.0.0-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:2a7abdee4a4a7cfa239e2e8d721224c4b34ffe69a0ca7981354fe03c1328789b"},
+    {file = "pyarrow-16.0.0-cp312-cp312-win_amd64.whl", hash = "sha256:ef2f309b68396bcc5a354106741d333494d6a0d3e1951271849787109f0229a6"},
+    {file = "pyarrow-16.0.0.tar.gz", hash = "sha256:59bb1f1edbbf4114c72415f039f1359f1a57d166a331c3229788ccbfbb31689a"},
 ]
 
 [[package]]
