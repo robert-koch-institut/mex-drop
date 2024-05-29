@@ -11,4 +11,4 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Build, tag and push docker image to ghcr
-        uses: GlueOps/github-actions-build-push-containers@v0.4
+        uses: GlueOps/github-actions-build-push-containers@v0.4.2
