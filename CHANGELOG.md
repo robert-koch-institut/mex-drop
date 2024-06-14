@@ -11,8 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- update mex-common, mex-template and pinned dependencies
-
 ### Deprecated
 
 ### Removed
@@ -20,6 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [0.4.0] - 2024-06-14
+
+### Changes
+
+- update mex-common, mex-template and pinned dependencies
 
 ## [0.3.0] - 2024-03-22
 
