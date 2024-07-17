@@ -11,17 +11,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- update mex-common to 0.30.0
-
 ### Deprecated
 
 ### Removed
 
-- helm chart: container registry authentication
-
 ### Fixed
 
 ### Security
+
+## [0.4.1] - 2024-07-17
+
+### Changes
+
+- update mex-common to 0.30.0
+
+### Removed
+
+- helm chart: container registry authentication
 
 ## [0.4.0] - 2024-06-14
 
