@@ -7,14 +7,16 @@ from fastapi import (
     Body,
     Depends,
     FastAPI,
+    File,
     HTTPException,
     Path,
     Response,
+    UploadFile,
 )
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from starlette import status
-from starlette.background import BackgroundTask
+from starlette.background import BackgroundTask, BackgroundTasks
 
 from mex.common.cli import entrypoint
 from mex.drop.logging import UVICORN_LOGGING_CONFIG
@@ -94,6 +96,74 @@ async def drop_data(
     return Response(
         status_code=202, background=BackgroundTask(json_sink, data, out_file)
     )
+
+
+@router.post(
+    "/{x_system}",
+    description="Upload multipart file to MEx.",
+    tags=["API"],
+    status_code=202,
+)
+async def drop_data_mulitpoint(
+    x_system: Annotated[
+        XSystem,
+        Path(
+            default=...,
+            pattern=PATH_REGEX,
+            description="Name of the system that the data comes from",
+        ),
+    ],
+    files: Annotated[
+        list[UploadFile],  # or list[dict[str, Any]] | list[list[Any]],
+        File(
+            description=("Multipart file list, " "that can be further processed by MEx")
+        ),
+    ],
+    authorized_x_systems: Annotated[
+        list[XSystem], Depends(get_current_authorized_x_systems)
+    ],
+    background_tasks: BackgroundTasks,
+) -> Response:
+    """Upload multipoint data to MEx.
+
+    Args:
+        x_system: name of the x-system that the data comes from
+        entity_type: name of the data file that is uploaded, if unsure use 'default'
+        files: list of files to be uploaded to MEx
+        authorized_x_systems: list of authorized x-systems
+        background_tasks: collection of background tasks
+
+    Settings:
+        drop_directory: where accepted data is stored
+
+    Returns:
+        A JSON response
+    """
+    if not is_authorized(x_system, authorized_x_systems):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="API Key not authorized to drop data for this x_system.",
+        )
+    settings = DropSettings.get()
+    for file in files:
+        content = await file.read()
+        entity_type = str(file.filename)
+        out_file = pathlib.Path(settings.drop_directory, x_system, entity_type)
+        out_file.parent.mkdir(parents=True, exist_ok=True)
+        background_tasks.add_task(write_to_file, content, out_file)
+    return Response(status_code=202)
+
+
+async def write_to_file(content: bytes, out_file: pathlib.Path) -> None:
+    """Write content to file."""
+    try:
+        with open(out_file, "wb") as f:
+            f.write(content)
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to write to file {out_file}: {exc!s}",
+        ) from exc
 
 
 @router.get(
