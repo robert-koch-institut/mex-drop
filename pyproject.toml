@@ -22,7 +22,7 @@ optional-dependencies.dev = [
     "pytest-xdist==3.6.1",
     "pytest==8.2.2",
     "ruff==0.5.1",
-    "sphinx==7.3.7",
+    "sphinx==7.4.5",
 ]
 
 [project.scripts]
