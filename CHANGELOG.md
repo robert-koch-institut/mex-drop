@@ -21,6 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.5.0]
+
+### Added
+
+- multi-part file upload support at `/v0/{x_system}`
+
 ## [0.4.0] - 2024-06-14
 
 ### Changes
