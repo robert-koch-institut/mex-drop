@@ -19,6 +19,7 @@ from starlette import status
 from starlette.background import BackgroundTask, BackgroundTasks
 
 from mex.common.cli import entrypoint
+from mex.common.exceptions import MExError
 from mex.drop.logging import UVICORN_LOGGING_CONFIG
 from mex.drop.security import get_current_authorized_x_systems, is_authorized
 from mex.drop.settings import DropSettings
@@ -114,7 +115,7 @@ async def drop_data_mulitpoint(
         ),
     ],
     files: Annotated[
-        list[UploadFile],  # or list[dict[str, Any]] | list[list[Any]],
+        list[UploadFile],
         File(
             description=("Multipart file list, " "that can be further processed by MEx")
         ),
@@ -160,9 +161,8 @@ async def write_to_file(content: bytes, out_file: pathlib.Path) -> None:
         with open(out_file, "wb") as f:
             f.write(content)
     except Exception as exc:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to write to file {out_file}: {exc!s}",
+        raise MExError(
+            f"Failed to write to file {out_file}: {exc!s}",
         ) from exc
 
 
