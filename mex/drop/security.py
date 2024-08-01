@@ -26,7 +26,7 @@ def get_authorized_x_systems(
 
 
 def get_current_authorized_x_systems(
-    api_key: Annotated[str | None, Depends(X_API_KEY)]
+    api_key: Annotated[str | None, Depends(X_API_KEY)],
 ) -> list[XSystem]:
     """Get the current authorized x-systems.
 
