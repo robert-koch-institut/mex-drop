@@ -85,7 +85,12 @@ def test_drop_data(
 @pytest.mark.parametrize(
     "api_key, x_system, expected_response_code, files",
     [
-        ("api-test-key", "test_system", 202, {"file1.txt": "file1 content", "file2.csv": "1,2,3"}),
+        (
+            "api-test-key",
+            "test_system",
+            202,
+            {"file1.txt": "file1 content", "file2.csv": "1,2,3"},
+        ),
         ("api-test-key", "foo_system", 422, {}),
         ("api-test-key", "invalid x_system", 422, {"file1.txt": "file1 content"}),
         (None, "test_system", 401, {"file1.txt": "file1 content"}),
