@@ -10,6 +10,7 @@ from fastapi import (
     File,
     HTTPException,
     Path,
+    Request,
     Response,
     UploadFile,
 )
@@ -30,6 +31,16 @@ templates = Jinja2Templates(directory=pathlib.Path(__file__).parent / "templates
 router = APIRouter(
     prefix="/v0",
 )
+
+ALLOWED_FORMATS = {"json", "xml", "xls", "xlsx", "csv", "tsv"}
+ALLOWED_CONTENT_TYPES = {
+    "application/json": "json",
+    "application/xml": "xml",
+    "application/vnd.ms-excel": "xls",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
+    "text/csv": "csv",
+    "text/tab-separated-values": "tsv",
+}
 
 
 @router.post(
@@ -72,6 +83,7 @@ async def drop_data(
     authorized_x_systems: Annotated[
         list[XSystem], Depends(get_current_authorized_x_systems)
     ],
+    request: Request,
 ) -> Response:
     """Upload arbitrary JSON data to MEx.
 
@@ -80,6 +92,7 @@ async def drop_data(
         entity_type: name of the data file that is uploaded, if unsure use 'default'
         data: dictionary with string keys or list with and arbitrary values
         authorized_x_systems: list of authorized x-systems
+        request: HTTP Request class
 
     Settings:
         drop_directory: where accepted data is stored
@@ -92,8 +105,18 @@ async def drop_data(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="API Key not authorized to drop data for this x_system.",
         )
+    content_type = request.headers.get("Content-Type")
+    if content_type not in ALLOWED_CONTENT_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Unsupported Content-Type. "
+            f"Allowed types: {', '.join(ALLOWED_CONTENT_TYPES.keys())}",
+        )
+    file_ext = ALLOWED_CONTENT_TYPES[content_type]
     settings = DropSettings.get()
-    out_file = pathlib.Path(settings.drop_directory, x_system, entity_type + ".json")
+    out_file = pathlib.Path(
+        settings.drop_directory, x_system, entity_type + f"{entity_type}.{file_ext}"
+    )
     return Response(
         status_code=202, background=BackgroundTask(json_sink, data, out_file)
     )
@@ -149,6 +172,7 @@ async def drop_data_mulitpoint(
     for file in files:
         content = await file.read()
         entity_type = str(file.filename)
+        await validate_file_extension(entity_type)
         out_file = pathlib.Path(settings.drop_directory, x_system, entity_type)
         background_tasks.add_task(write_to_file, content, out_file)
     return Response(status_code=202)
@@ -164,6 +188,15 @@ async def write_to_file(content: bytes, out_file: pathlib.Path) -> None:
         raise MExError(
             f"Failed to write to file {out_file}: {exc!s}",
         ) from exc
+
+
+async def validate_file_extension(filename: str) -> None:
+    """Validate uploaded file format."""
+    if "." in filename:
+        extension = filename.rsplit(".", 1)[1].lower()
+        if extension in ALLOWED_FORMATS:
+            return
+    raise MExError(f"Unsupported file extension: {filename}")
 
 
 @router.get(
