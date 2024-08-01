@@ -150,13 +150,13 @@ async def drop_data_mulitpoint(
         content = await file.read()
         entity_type = str(file.filename)
         out_file = pathlib.Path(settings.drop_directory, x_system, entity_type)
-        out_file.parent.mkdir(parents=True, exist_ok=True)
         background_tasks.add_task(write_to_file, content, out_file)
     return Response(status_code=202)
 
 
 async def write_to_file(content: bytes, out_file: pathlib.Path) -> None:
     """Write content to file."""
+    out_file.parent.mkdir(parents=True, exist_ok=True)
     try:
         with open(out_file, "wb") as f:
             f.write(content)
