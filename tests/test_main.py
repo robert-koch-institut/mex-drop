@@ -246,6 +246,54 @@ def test_drop_multiple_files(
             assert expected_file1.read_text() == content
 
 
+@pytest.mark.parametrize(
+    "api_key, x_system, expected_response_code, files",
+    [
+        (
+            "api-test-key",
+            "test_system",
+            202,
+            {"file1.txt": "file1 content", "file2.csv": "1,2,3"},
+        ),
+        ("api-test-key", "foo_system", 422, {}),
+        ("api-test-key", "invalid x_system", 422, {"file1.txt": "file1 content"}),
+        (None, "test_system", 401, {"file1.txt": "file1 content"}),
+        ("invalid-key", "test_system", 401, {"file1.txt": "file1 content"}),
+        ("api-key-one", "foo_system", 403, {"file1.txt": "file1 content"}),
+    ],
+    ids=(
+        "valid",
+        "missing upload",
+        "invalid x_system",
+        "missing header",
+        "invalid api_key",
+        "unauthorized x_system",
+    ),
+)
+def test_drop_multiple_files(
+    client: TestClient,
+    api_key: str | None,
+    x_system: XSystem,
+    expected_response_code: int,
+    files: dict[str, str],
+    settings: DropSettings,
+) -> None:
+    files_data = [
+        ("files", (name, BytesIO(content.encode()), "text/plain"))
+        for name, content in files.items()
+    ]
+    response = client.post(
+        f"/v0/{x_system}",
+        headers={"X-API-Key": api_key} if api_key else {},
+        files=files_data,
+    )
+    assert response.status_code == expected_response_code, response.text
+    if 200 <= response.status_code < 300 and files:
+        for filename, content in files.items():
+            expected_file1 = Path(settings.drop_directory, x_system, filename)
+            assert expected_file1.read_text() == content
+
+
 def test_download_data(client: TestClient, dropped_data: dict[str, Any]) -> None:
     client.headers.update({"X-API-Key": dropped_data["api_key"]})
     response = client.get(

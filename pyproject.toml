@@ -1,6 +1,6 @@
 [project]
 name = "mex-drop"
-version = "0.4.1"
+version = "0.5.0"
 description = "Data upload and download API for the MEx project."
 authors = [{ name = "MEx Team", email = "mex@rki.de" }]
 readme = { file = "README.md", content-type = "text/markdown" }
@@ -10,8 +10,8 @@ requires-python = "<3.13,>=3.11"
 dependencies = [
     "fastapi==0.111.1",
     "jinja2==3.1.4",
-    "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.30.0",
-    "uvicorn[standard]==0.30.3",
+    "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.33.0",
+    "uvicorn[standard]==0.30.4",
 ]
 optional-dependencies.dev = [
     "ipdb==0.13.13",
@@ -19,9 +19,9 @@ optional-dependencies.dev = [
     "pytest-cov==5.0.0",
     "pytest-random-order==1.1.1",
     "pytest-xdist==3.6.1",
-    "pytest==8.3.1",
-    "ruff==0.5.4",
-    "sphinx==7.4.7",
+    "pytest==8.3.2",
+    "ruff==0.5.5",
+    "sphinx==8.0.2",
 ]
 
 [project.scripts]
