@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- multipart file upload support
+- support for more structured file formats
 
 ### Changes
 

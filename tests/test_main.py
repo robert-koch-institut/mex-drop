@@ -12,6 +12,15 @@ import mex
 from mex.drop.settings import DropSettings
 from mex.drop.types import EntityType, XSystem
 
+ALLOWED_CONTENT_TYPES = {
+    "application/json": ".json",
+    "application/xml": ".xml",
+    "application/vnd.ms-excel": ".xls",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
+    "text/csv": ".csv",
+    "text/tab-separated-values": ".tsv",
+}
+
 
 @pytest.fixture
 def dropped_data(tmp_path: Path) -> dict[str, Any]:
@@ -33,19 +42,113 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
 
 
 @pytest.mark.parametrize(
-    "api_key, x_system, entity_type, expected_response_code",
+    "api_key, x_system, entity_type, expected_response_code, content_type, expected_content",
     [
-        ("api-test-key", "test_system", "valid_entity_type", 202),
-        ("api-test-key", "foo_system", "valid_entity_type", 202),
-        ("api-test-key", "test_system", "invalid entity type", 422),
-        ("api-test-key", "invalid x_system", "valid_entity_type", 422),
-        (None, "test_system", "valid_entity_type", 401),
-        ("invalid-key", "test_system", "valid_entity_type", 401),
-        ("api-key-one", "foo_system", "valid_entity_type", 403),
+        (
+            "api-test-key",
+            "test_system",
+            "valid_entity_type",
+            202,
+            "application/json",
+            {
+                "asd": "def",
+                "foo": 1,
+                "bar": 1.2,
+                "list": [1, 2, 3],
+                "dict": {"a": "b"},
+            },
+        ),
+        (
+            "api-test-key",
+            "foo_system",
+            "valid_entity_type",
+            200,
+            "text/csv",
+            "asd,foo,bar,list,dict.a\ndef,1,1.2,\"[1, 2, 3]\",\"{'a': 'b'}\"\n",
+        ),
+        (
+            "api-test-key",
+            "test_system",
+            "valid_entity_type",
+            400,
+            "application/pdf",
+            "foo",
+        ),
+        (
+            "api-test-key",
+            "test_system",
+            "invalid entity type",
+            422,
+            "application/json",
+            {
+                "asd": "def",
+                "foo": 1,
+                "bar": 1.2,
+                "list": [1, 2, 3],
+                "dict": {"a": "b"},
+            },
+        ),
+        (
+            "api-test-key",
+            "invalid x_system",
+            "valid_entity_type",
+            422,
+            "application/json",
+            {
+                "asd": "def",
+                "foo": 1,
+                "bar": 1.2,
+                "list": [1, 2, 3],
+                "dict": {"a": "b"},
+            },
+        ),
+        (
+            None,
+            "test_system",
+            "valid_entity_type",
+            401,
+            "application/json",
+            {
+                "asd": "def",
+                "foo": 1,
+                "bar": 1.2,
+                "list": [1, 2, 3],
+                "dict": {"a": "b"},
+            },
+        ),
+        (
+            "invalid-key",
+            "test_system",
+            "valid_entity_type",
+            401,
+            "application/json",
+            {
+                "asd": "def",
+                "foo": 1,
+                "bar": 1.2,
+                "list": [1, 2, 3],
+                "dict": {"a": "b"},
+            },
+        ),
+        (
+            "api-key-one",
+            "foo_system",
+            "valid_entity_type",
+            403,
+            "application/json",
+            {
+                "asd": "def",
+                "foo": 1,
+                "bar": 1.2,
+                "list": [1, 2, 3],
+                "dict": {"a": "b"},
+            },
+        ),
     ],
     ids=(
         "valid",
-        "valid2",
+        "valid csv",
+        "invalid content type",
         "invalid entity type",
         "invalid x_system",
         "missing header",
@@ -59,27 +162,38 @@ def test_drop_data(
     x_system: XSystem,
     entity_type: EntityType,
     expected_response_code: int,
+    content_type: str,
+    expected_content: Any,
     monkeypatch: MonkeyPatch,
     settings: DropSettings,
 ) -> None:
     mocked_sink = AsyncMock(return_value=None)
     monkeypatch.setattr(mex.drop.main, "json_sink", mocked_sink)
-    expected_content = {
-        "asd": "def",
-        "foo": 1,
-        "bar": 1.2,
-        "list": [1, 2, 3],
-        "dict": {"a": "b"},
-    }
-    expected_file = Path(settings.drop_directory, x_system, entity_type + ".json")
-    response = client.post(
-        f"/v0/{x_system}/{entity_type}",
-        headers={"X-API-Key": api_key} if api_key else {},
-        json=expected_content,
-    )
+
+    if content_type == "application/json":
+        response = client.post(
+            f"/v0/{x_system}/{entity_type}",
+            headers={"X-API-Key": api_key} if api_key else {},
+            json=expected_content,
+        )
+    else:
+        response = client.post(
+            f"/v0/{x_system}/{entity_type}",
+            headers={"X-API-Key": api_key, "Content-Type": content_type}
+            if api_key
+            else {},
+            data=expected_content,
+        )
     assert response.status_code == expected_response_code, response.text
+    if content_type in ALLOWED_CONTENT_TYPES:
+        expected_file = Path(
+            settings.drop_directory, x_system, entity_type
+        ).with_suffix(ALLOWED_CONTENT_TYPES[content_type])
     if 200 <= response.status_code < 300:
-        assert mocked_sink.call_args == call(expected_content, expected_file)
+        if content_type == "application/json":
+            assert mocked_sink.call_args == call(expected_content, expected_file)
+        else:
+            pass
 
 
 @pytest.mark.parametrize(
@@ -89,8 +203,9 @@ def test_drop_data(
             "api-test-key",
             "test_system",
             202,
-            {"file1.txt": "file1 content", "file2.csv": "1,2,3"},
+            {"file1.json": "file1 content", "file2.csv": "1,2,3"},
         ),
+        ("api-test-key", "test_system", 403, {"file1.txt": "file1 content"}),
         ("api-test-key", "foo_system", 422, {}),
         ("api-test-key", "invalid x_system", 422, {"file1.txt": "file1 content"}),
         (None, "test_system", 401, {"file1.txt": "file1 content"}),
@@ -99,6 +214,7 @@ def test_drop_data(
     ],
     ids=(
         "valid",
+        "invalid file format",
         "missing upload",
         "invalid x_system",
         "missing header",
