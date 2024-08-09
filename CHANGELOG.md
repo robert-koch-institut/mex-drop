@@ -19,6 +19,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.5.0] - 2024-08-07
+
+### Added
+
+- multipart file upload support
+
+### Changes
+
+- update mex-common to 0.33.0
+
+## [0.4.1] - 2024-07-17
+
+### Changes
+
+- update mex-common to 0.30.0
+
+### Removed
+
+- helm chart: container registry authentication
+
+## [0.4.0] - 2024-06-14
+
+### Changes
+
+- update mex-common, mex-template and pinned dependencies
+
 ## [0.3.0] - 2024-03-22
 
 ### Added

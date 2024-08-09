@@ -3,20 +3,17 @@ default_language_version:
   python: python3.11
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.4
+    rev: v0.5.4
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
-  - repo: https://github.com/psf/black
-    rev: 24.3.0
-    hooks:
-      - id: black
+      - id: ruff-format
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       - id: pretty-format-json
         name: json
-        args: [--autofix]
+        args: [--autofix, --indent=4, --no-ensure-ascii]
         exclude: .cruft.json
       - id: check-yaml
         name: yaml
@@ -28,7 +25,7 @@ repos:
       - id: fix-byte-order-marker
         name: byte-order
   - repo: https://github.com/pdm-project/pdm
-    rev: 2.12.4
+    rev: 2.17.1
     hooks:
       - id: pdm-lock-check
         name: pdm
@@ -36,7 +33,7 @@ repos:
     hooks:
     - id: mypy
       name: mypy
-      entry: pdm run dmypy run --timeout 7200 -- mex
+      entry: pdm mypy-daemon
       files: ^mex/
       language: system
       pass_filenames: false

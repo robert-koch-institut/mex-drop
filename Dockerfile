@@ -2,9 +2,11 @@
 
 FROM python:3.11 as base
 
-LABEL org.opencontainers.image.authors="RKI MEx Team <mex@rki.de>"
+LABEL org.opencontainers.image.authors="mex@rki.de"
 LABEL org.opencontainers.image.description="Data upload and download API for the MEx project."
 LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.url="https://github.com/robert-koch-institut/mex-drop"
+LABEL org.opencontainers.image.vendor="robert-koch-institut"
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONOPTIMIZE=1
