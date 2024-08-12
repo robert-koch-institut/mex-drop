@@ -76,6 +76,7 @@ components of the MEx project are open-sourced under the same license as well.
 - run all linters with `pdm lint`
 - run only unit tests with `pdm unit`
 - run unit and integration tests with `pdm test`
+  - for integration tests you need to start `mex-drop` locally beforehand
 
 ### updating dependencies
 
