@@ -57,4 +57,20 @@ jobs:
         run: make install
 
       - name: Run test suite
-        run: make pytest
+        env:
+          MEX_DROP_API_KEY_DATABASE: ${{ secrets.MEX_DROP_API_KEY_DATABASE }}
+        run: |
+          pdm run editor run &
+          sleep 30 &&
+          curl --connect-timeout 1 --max-time 20 --retry 10 --retry-delay 1 http://localhost:8000/_system/check &&
+          curl --connect-timeout 1 --max-time 20 --retry 10 --retry-delay 1 http://localhost:8080/v0/_system/check &&
+          make pytest
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-screenshots-${{ github.run_id }}
+          path: tests_*.jpeg
+          if-no-files-found: error
+          retention-days: 10
