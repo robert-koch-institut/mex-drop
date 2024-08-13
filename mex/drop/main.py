@@ -1,6 +1,8 @@
+import io
 import pathlib
 from typing import Annotated, Any
 
+import pandas as pd
 import uvicorn
 from fastapi import (
     APIRouter,
@@ -45,7 +47,7 @@ ALLOWED_CONTENT_TYPES = {
 
 @router.post(
     "/{x_system}/{entity_type}",
-    description="Upload arbitrary JSON data to MEx.",
+    description="Upload arbitrary structured data to MEx.",
     tags=["API"],
     status_code=202,
 )
@@ -69,15 +71,18 @@ async def drop_data(
         ),
     ],
     data: Annotated[
-        dict[str, Any] | list[Any],
+        dict[str, Any] | list[Any] | str | bytes,
         Body(
             description=(
-                "An arbitrary JSON structure, " "that can be further processed by MEx"
+                "An arbitrary data structure, " "that can be further processed by MEx"
             ),
             examples=[
                 {"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}},
-                [{"foo": "bar"}, {"bar": [1, 2, 3]}],
+                "foo,bar\n1,2",
+                '{"foo": "bar"}',
+                "<root><foo>bar</foo></root>",
             ],
+            media_type="text/csv",
         ),
     ],
     authorized_x_systems: Annotated[
@@ -85,7 +90,7 @@ async def drop_data(
     ],
     request: Request,
 ) -> Response:
-    """Upload arbitrary JSON data to MEx.
+    """Upload arbitrary structured data to MEx.
 
     Args:
         x_system: name of the x-system that the data comes from
@@ -93,6 +98,7 @@ async def drop_data(
         data: dictionary with string keys or list with and arbitrary values
         authorized_x_systems: list of authorized x-systems
         request: HTTP Request class
+        content: content of uploaded file
 
     Settings:
         drop_directory: where accepted data is stored
@@ -115,10 +121,16 @@ async def drop_data(
     file_ext = ALLOWED_CONTENT_TYPES[content_type]
     settings = DropSettings.get()
     out_file = pathlib.Path(
-        settings.drop_directory, x_system, entity_type + f"{entity_type}.{file_ext}"
+        settings.drop_directory, x_system + f"/{entity_type}.{file_ext}"
     )
+    if content_type == "application/json":
+        json_data = await request.json()
+        return Response(
+            status_code=202, background=BackgroundTask(json_sink, json_data, out_file)
+        )
+    raw_data = await request.body()
     return Response(
-        status_code=202, background=BackgroundTask(json_sink, data, out_file)
+        status_code=200, background=BackgroundTask(write_to_file, raw_data, out_file)
     )
 
 
@@ -170,18 +182,40 @@ async def drop_data_mulitpoint(
         )
     settings = DropSettings.get()
     for file in files:
-        content = await file.read()
         entity_type = str(file.filename)
         await validate_file_extension(entity_type)
+    for file in files:
+        content = await file.read()
+        entity_type = str(file.filename)
         out_file = pathlib.Path(settings.drop_directory, x_system, entity_type)
         background_tasks.add_task(write_to_file, content, out_file)
     return Response(status_code=202)
 
 
-async def write_to_file(content: bytes, out_file: pathlib.Path) -> None:
-    """Write content to file."""
+async def write_to_file(
+    content: bytes, out_file: pathlib.Path, content_type: str = ""
+) -> None:
+    """Write content to file. Parse content according to file type."""
     out_file.parent.mkdir(parents=True, exist_ok=True)
     try:
+        if content_type == "text/csv" or content_type == "text/tab-separated-values":
+            decoded_data = content.decode("utf-8")
+            with open(out_file, "w", newline="") as f:
+                f.write(decoded_data)
+        elif content_type == "application/xml":
+            decoded_data = content.decode("utf-8")
+            with open(out_file, "w") as f:
+                f.write(decoded_data)
+        elif (
+            content_type == "application/vnd.ms-excel"
+            or content_type
+            == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ):
+            file_stream = io.BytesIO(content)
+            df = pd.read_excel(file_stream, sheet_name=None)
+            with pd.ExcelWriter(out_file, engine="openpyxl") as writer:
+                for sheet_name, sheet_data in df.items():
+                    sheet_data.to_excel(writer, sheet_name=sheet_name, index=False)
         with open(out_file, "wb") as f:
             f.write(content)
     except Exception as exc:
@@ -196,7 +230,10 @@ async def validate_file_extension(filename: str) -> None:
         extension = filename.rsplit(".", 1)[1].lower()
         if extension in ALLOWED_FORMATS:
             return
-    raise MExError(f"Unsupported file extension: {filename}")
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail=f"Unsupported file extension: {filename}",
+    )
 
 
 @router.get(
