@@ -191,7 +191,7 @@ async def drop_data_mulitpoint(
 
 
 async def write_to_file(
-    content: bytes, out_file: pathlib.Path, content_type: str = ""
+    content: bytes, out_file: pathlib.Path, content_type: str | None = None
 ) -> None:
     """Write content to file. Parse content according to file type."""
     out_file.parent.mkdir(parents=True, exist_ok=True)

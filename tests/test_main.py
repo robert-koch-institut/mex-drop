@@ -1,4 +1,5 @@
 import json
+import os
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -72,20 +73,7 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
             "valid_entity_type",
             200,
             "application/xml",
-            """<?xml version="1.0" encoding="UTF-8"?>
-            <root>
-                <asd>def</asd>
-                <foo>1</foo>
-                <bar>1.2</bar>
-                <list>
-                    <item>1</item>
-                    <item>2</item>
-                    <item>3</item>
-                </list>
-                <dict>
-                    <a>b</a>
-                </dict>
-            </root>""",
+            open(os.path.join("tests", "test_files", "test.xml")).read(),
         ),
         (
             "api-test-key",
