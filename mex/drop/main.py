@@ -81,7 +81,6 @@ async def drop_data(
                 '{"foo": "bar"}',
                 "<root><foo>bar</foo></root>",
             ],
-            media_type="text/csv",
         ),
     ],
     authorized_x_systems: Annotated[
@@ -215,8 +214,9 @@ async def write_to_file(
             with pd.ExcelWriter(out_file, engine="openpyxl") as writer:
                 for sheet_name, sheet_data in df.items():
                     sheet_data.to_excel(writer, sheet_name=sheet_name, index=False)
-        with open(out_file, "wb") as f:
-            f.write(content)
+        else:
+            with open(out_file, "wb") as f:
+                f.write(content)
     except Exception as exc:
         raise MExError(
             f"Failed to write to file {out_file}: {exc!s}",
