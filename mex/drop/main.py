@@ -128,7 +128,8 @@ async def drop_data(
         )
     raw_data = await request.body()
     return Response(
-        status_code=200, background=BackgroundTask(write_to_file, raw_data, out_file)
+        status_code=200,
+        background=BackgroundTask(write_to_file, raw_data, out_file, content_type),
     )
 
 
