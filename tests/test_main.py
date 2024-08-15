@@ -70,6 +70,35 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
             "api-test-key",
             "test_system",
             "valid_entity_type",
+            200,
+            "application/xml",
+            """<?xml version="1.0" encoding="UTF-8"?>
+            <root>
+                <asd>def</asd>
+                <foo>1</foo>
+                <bar>1.2</bar>
+                <list>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </list>
+                <dict>
+                    <a>b</a>
+                </dict>
+            </root>""",
+        ),
+        (
+            "api-test-key",
+            "test_system",
+            "valid_entity_type",
+            200,
+            "application/vnd.ms-excel",
+            b"binary content representing an XLS file",
+        ),
+        (
+            "api-test-key",
+            "test_system",
+            "valid_entity_type",
             400,
             "application/pdf",
             "foo",
@@ -148,6 +177,8 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
     ids=(
         "valid",
         "valid csv",
+        "valid xml",
+        "valid xls",
         "invalid content type",
         "invalid entity type",
         "invalid x_system",
@@ -203,17 +234,52 @@ def test_drop_data(
             "api-test-key",
             "test_system",
             202,
-            {"file1.json": "file1 content", "file2.csv": "1,2,3"},
+            {
+                "file1.json": ["file1 content", "application/json"],
+                "file2.csv": ["1,2,3", "text/csv"],
+            },
         ),
-        ("api-test-key", "test_system", 403, {"file1.txt": "file1 content"}),
+        (
+            "api-test-key",
+            "test_system",
+            202,
+            {"file1.xls": ["file1 content", "application/vnd.ms-excel"]},
+        ),
+        (
+            "api-test-key",
+            "test_system",
+            403,
+            {"file1.html": ["file1 content", "text/html"]},
+        ),
         ("api-test-key", "foo_system", 422, {}),
-        ("api-test-key", "invalid x_system", 422, {"file1.txt": "file1 content"}),
-        (None, "test_system", 401, {"file1.txt": "file1 content"}),
-        ("invalid-key", "test_system", 401, {"file1.txt": "file1 content"}),
-        ("api-key-one", "foo_system", 403, {"file1.txt": "file1 content"}),
+        (
+            "api-test-key",
+            "invalid x_system",
+            422,
+            {"file1.json": ["file1 content", "application/json"]},
+        ),
+        (
+            None,
+            "test_system",
+            401,
+            {"file1.json": ["file1 content", "application/json"]},
+        ),
+        (
+            "invalid-key",
+            "test_system",
+            401,
+            {"file1.json": ["file1 content", "application/json"]},
+        ),
+        (
+            "api-key-one",
+            "foo_system",
+            403,
+            {"file1.json": ["file1 content", "application/json"]},
+        ),
     ],
     ids=(
         "valid",
+        "valid xls",
         "invalid file format",
         "missing upload",
         "invalid x_system",
@@ -231,8 +297,8 @@ def test_drop_multiple_files(
     settings: DropSettings,
 ) -> None:
     files_data = [
-        ("files", (name, BytesIO(content.encode()), "text/plain"))
-        for name, content in files.items()
+        ("files", (name, BytesIO(content.encode()), content_type))
+        for name, (content, content_type) in files.items()
     ]
     response = client.post(
         f"/v0/{x_system}",
@@ -241,7 +307,7 @@ def test_drop_multiple_files(
     )
     assert response.status_code == expected_response_code, response.text
     if 200 <= response.status_code < 300 and files:
-        for filename, content in files.items():
+        for filename, (content, _content_type) in files.items():
             expected_file1 = Path(settings.drop_directory, x_system, filename)
             assert expected_file1.read_text() == content
 

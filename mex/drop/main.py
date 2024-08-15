@@ -34,7 +34,6 @@ router = APIRouter(
     prefix="/v0",
 )
 
-ALLOWED_FORMATS = {"json", "xml", "xls", "xlsx", "csv", "tsv"}
 ALLOWED_CONTENT_TYPES = {
     "application/json": "json",
     "application/xml": "xml",
@@ -183,7 +182,7 @@ async def drop_data_mulitpoint(
     settings = DropSettings.get()
     for file in files:
         entity_type = str(file.filename)
-        await validate_file_extension(entity_type)
+        await validate_file_extension(file.content_type)
     for file in files:
         content = await file.read()
         entity_type = str(file.filename)
@@ -224,15 +223,13 @@ async def write_to_file(
         ) from exc
 
 
-async def validate_file_extension(filename: str) -> None:
+async def validate_file_extension(content_type: str | None) -> None:
     """Validate uploaded file format."""
-    if "." in filename:
-        extension = filename.rsplit(".", 1)[1].lower()
-        if extension in ALLOWED_FORMATS:
-            return
+    if content_type in ALLOWED_CONTENT_TYPES:
+        return
     raise HTTPException(
         status_code=status.HTTP_403_FORBIDDEN,
-        detail=f"Unsupported file extension: {filename}",
+        detail=f"Unsupported file extension: {type}",
     )
 
 
