@@ -22,7 +22,6 @@ jobs:
   containerize:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: release
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -53,4 +52,4 @@ jobs:
       - name: Build, tag and push docker image to ghcr
         uses: GlueOps/github-actions-build-push-containers@v0.4.5
         with:
-          tags: "${{ github.sha }},${{ needs.release.outputs.tag }},latest"
+          tags: "test"
