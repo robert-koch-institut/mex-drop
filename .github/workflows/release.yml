@@ -1,18 +1,8 @@
 name: Release
 
-run-name: bump ${{ inputs.version }} version by @${{ github.actor }}
-
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        type: choice
-        description: 'part of the project version to update'
-        options:
-        - major
-        - minor
-        - patch
-        required: true
+  push:
+
 
 env:
   PIP_NO_OPTION: on
@@ -21,82 +11,19 @@ env:
 
 permissions:
   contents: write
-  packages: write
+  packages: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    outputs:
-      tag: ${{ steps.release.outputs.tag }}
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      - name: Cache requirements
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-requirements
-        with:
-          path: ~/.cache/pip
-          key: ${{ env.cache-name }}-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ env.cache-name }}-
-
-      - name: Setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.11
-
-      - name: Install requirements
-        run: make setup
-
-      - name: Configure git
-        env:
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-          SIGNING_PUB: ${{ secrets.SIGNING_PUB }}
-        run: |
-          eval "$(ssh-agent -s)"
-          install --directory ~/.ssh --mode 700
-          base64 -d <<< '${{ secrets.SIGNING_KEY }}' > ~/.ssh/mex
-          base64 -d <<< '${{ secrets.SIGNING_PUB }}' > ~/.ssh/mex.pub
-          chmod 600 ~/.ssh/*
-          ssh-add ~/.ssh/mex
-          git config --local user.email ${{ vars.MEX_BOT_EMAIL }}
-          git config --local user.name ${{ vars.MEX_BOT_USER }}
-          git config --local gpg.format ssh
-          git config --local user.signingkey ~/.ssh/mex.pub
-          git config --local commit.gpgsign true
-
-      - name: Release new version
-        id: release
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
-        run: |
-          pdm release ${{ inputs.version }}
-          echo "tag=$(git describe --abbrev=0 --tags)" >> "$GITHUB_OUTPUT"
 
   containerize:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: release
     steps:
-      - name: Build, tag and push docker image to ghcr
-        uses: GlueOps/github-actions-build-push-containers@v0.4.5
-        with:
-          tags: "${{ github.sha }},${{ needs.release.outputs.tag }},latest"
-
-  distribute:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: release
-    steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
@@ -120,13 +47,10 @@ jobs:
       - name: Install requirements
         run: make setup
 
-      - name: Build wheel and sdist distros and create a github release
-        env:
-          GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
-          PDM_CHECK_UPDATE: False
-        run: |
-          gh release create ${{ needs.release.outputs.tag }} --generate-notes --latest --verify-tag
-          pdm build --dest dist
-          for filename in dist/*; do
-            gh release upload ${{ needs.release.outputs.tag }} ${filename};
-          done
+      - name: Generate locked requirements.txt
+        run: pdm export --self --output locked-requirements.txt --no-hashes --without dev
+
+      - name: Build, tag and push docker image to ghcr
+        uses: GlueOps/github-actions-build-push-containers@v0.4.5
+        with:
+          tags: "${{ github.sha }},${{ needs.release.outputs.tag }},latest"

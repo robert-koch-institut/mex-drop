@@ -28,6 +28,7 @@ sdist/
 share/python-wheels/
 var/
 wheels/
+locked-requirements.txt
 
 # PyInstaller
 *.manifest

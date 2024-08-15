@@ -29,7 +29,7 @@ RUN adduser \
 
 COPY . .
 
-RUN --mount=type=cache,target=/root/.cache/pip pip install .
+RUN --mount=type=cache,target=/root/.cache/pip pip install -r locked-requirements.txt
 
 USER mex
 
