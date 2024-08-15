@@ -47,7 +47,9 @@ jobs:
         run: make setup
 
       - name: Generate locked requirements.txt
-        run: pdm export --self --output locked-requirements.txt --no-hashes --without dev
+        run: |
+          pdm export --self --output locked-requirements.txt --no-hashes --without dev
+          cat locked-requirements.txt
 
       - name: Build, tag and push docker image to ghcr
         uses: GlueOps/github-actions-build-push-containers@v0.4.5
