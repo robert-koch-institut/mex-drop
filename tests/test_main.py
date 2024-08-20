@@ -203,7 +203,14 @@ def test_drop_data(
         if content_type == "application/json":
             assert mocked_sink.call_args == call(expected_content, expected_file)
         else:
-            pass
+            with open(expected_file, "rb") as f:
+                saved_content = f.read()
+
+            if (
+                content_type == "text/csv"
+                or content_type == "text/tab-separated-values"
+            ):
+                assert saved_content.decode("utf-8") == expected_content
 
 
 @pytest.mark.parametrize(

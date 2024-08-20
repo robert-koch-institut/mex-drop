@@ -1,129 +1,109 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-
 # C extensions
-*.so
-
+# Celery stuff
+# Default exports
 # Distribution / packaging
-.eggs/
-.installed.cfg
-.pdm-build
-.pdm-python
-.Python
-.web/
+# Environments
+# IPython
+# Installer logs
+# Jupyter Notebook
+# PEP 582
+# PyBuilder
+# PyCharm
+# PyInstaller
+# SQLite databases
+# Scrapy stuff
+# Sphinx documentation
+# Testing / coverage reports
+# Translations
+# VisualStudioCode
+# cruft
+# mypy
+# pyenv
+# ruff
+*$py.class
+*.code-workspace
+*.cover
+*.db
 *.egg
 *.egg-info/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-lib/
-lib64/
-MANIFEST
-parts/
-sdist/
-share/python-wheels/
-var/
-wheels/
-
-# PyInstaller
+*.env
+*.jpeg
 *.manifest
+*.mo
+*.ndjson
+*.pot
+*.py,cover
+*.py[cod]
+*.rej
+*.so
 *.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Testing / coverage reports
-htmlcov/
-.tox/
-.nox/
+.Python
+.cache
 .coverage
 .coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.jpeg
-*.py,cover
-.hypothesis/
-.pytest_cache/
-cover/
-pytestdebug.log
-
-# Translations
-*.mo
-*.pot
-
-# Scrapy stuff
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-docs/source/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# PEP 582
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# Environments
-*.env
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# ruff
-.ruff_cache
-
-# cruft
 .cruft-pr-body
-*.rej
-
-# PyCharm
+.dmypy.json
+.eggs/
+.env
+.history/
+.hypothesis/
 .idea/
 .idea_modules/
-
-# VisualStudioCode
+.installed.cfg
+.ipynb_checkpoints
+.mypy_cache/
+.nox/
+.pdm-build
+.pdm-python
+.pybuilder/
+.pytest_cache/
+.python-version
+.ruff_cache
+.scrapy
+.tox/
+.venv
 .vscode/*
-.history/
-*.code-workspace
-
-# SQLite databases
-*.db
-
-# Default exports
-*.ndjson
+.web
+.web/
+ENV/
+MANIFEST
+__pycache__/
+__pypackages__/
+assets/external/
+build/
+celerybeat-schedule
+celerybeat.pid
+cover/
+coverage.xml
 data/
+develop-eggs/
+dist/
+dmypy.json
+docs/_build/
+docs/source/
+downloads/
+eggs/
+env.bak/
+env/
+htmlcov/
 identity.csv
+ipython_config.py
+lib/
+lib64/
+nosetests.xml
+parts/
+pip-delete-this-directory.txt
+pip-log.txt
+profile_default/
+pytestdebug.log
 schema.json
+sdist/
+share/python-wheels/
+target/
 tmp*/
+var/
+venv.bak/
+venv/
+wheels/
 work/
