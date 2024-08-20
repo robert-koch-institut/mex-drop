@@ -1,6 +1,6 @@
 # MEx drop
 
-Data upload and download API for the MEx project.
+Data upload and download service for the MEx project.
 
 [![cookiecutter](https://github.com/robert-koch-institut/mex-drop/actions/workflows/cookiecutter.yml/badge.svg)](https://github.com/robert-koch-institut/mex-template)
 [![cve-scan](https://github.com/robert-koch-institut/mex-drop/actions/workflows/cve-scan.yml/badge.svg)](https://github.com/robert-koch-institut/mex-drop/actions/workflows/cve-scan.yml)
@@ -76,6 +76,7 @@ components of the MEx project are open-sourced under the same license as well.
 - run all linters with `pdm lint`
 - run only unit tests with `pdm unit`
 - run unit and integration tests with `pdm test`
+  - for integration tests you need to start `mex-drop` locally beforehand
 
 ### updating dependencies
 
@@ -103,4 +104,4 @@ components of the MEx project are open-sourced under the same license as well.
 
 ### drop
 
-- `drop` starts the drop service
+- `pdm run drop run` starts the drop service
