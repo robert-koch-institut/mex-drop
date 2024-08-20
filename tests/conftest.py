@@ -3,9 +3,9 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from mex.drop.main import app
 from mex.drop.settings import DropSettings
 from mex.drop.types import APIKey
+from mex.mex import app
 
 pytest_plugins = ("mex.common.testing.plugin",)
 
@@ -35,4 +35,4 @@ def settings(tmp_path: Path) -> DropSettings:
 @pytest.fixture
 def client() -> TestClient:
     """Return a fastAPI test client initialized with our app."""
-    return TestClient(app)
+    return TestClient(app.api)
