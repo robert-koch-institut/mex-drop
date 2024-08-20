@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:5b2f1ad2f707d1ab81a0365fc30957adc036b46f35d88b6f00d7affeca2e6d9c"
+content_hash = "sha256:d5531a2536aed0a3af0fd46e3aaefcb61068df482e7e09cc2e008c5689bfde56"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -250,7 +250,7 @@ version = "0.4.6"
 requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 summary = "Cross-platform colored terminal text."
 groups = ["default", "dev"]
-marker = "sys_platform == \"win32\" or platform_system == \"Windows\" or os_name == \"nt\""
+marker = "os_name == \"nt\" or platform_system == \"Windows\" or sys_platform == \"win32\""
 files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
@@ -1475,7 +1475,7 @@ files = [
 
 [[package]]
 name = "reflex"
-version = "0.5.8"
+version = "0.5.9"
 requires_python = "<4.0,>=3.8"
 summary = "Web apps in pure Python."
 groups = ["default"]
@@ -1514,8 +1514,8 @@ dependencies = [
     "wrapt<2.0,>=1.14.0; python_version >= \"3.11\"",
 ]
 files = [
-    {file = "reflex-0.5.8-py3-none-any.whl", hash = "sha256:b1607c2341c56f634ef930a9df7696b970895f681cd56c713769e04826ffef4f"},
-    {file = "reflex-0.5.8.tar.gz", hash = "sha256:1f0f8ebc9f1cf74a6d02356640dceaef5e0c9e9f87e5b212345d7bbd8bce7064"},
+    {file = "reflex-0.5.9-py3-none-any.whl", hash = "sha256:8cd8cc5db7b4c99d2c857fbff9307708de8836a3c4511183e329042b25e7f9e4"},
+    {file = "reflex-0.5.9.tar.gz", hash = "sha256:10efe41a8cf8792d1fa666ff2ef149982b69c1241c8fa340036e5ac6bab1a9df"},
 ]
 
 [[package]]
