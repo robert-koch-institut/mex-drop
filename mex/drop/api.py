@@ -14,7 +14,6 @@ from fastapi import (
     Response,
     UploadFile,
 )
-from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from starlette import status
 from starlette.background import BackgroundTask, BackgroundTasks
@@ -25,10 +24,7 @@ from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
 from mex.drop.types import PATH_REGEX, EntityType, XSystem
 
-templates = Jinja2Templates(directory=pathlib.Path(__file__).parent / "templates")
-router = APIRouter(
-    prefix="/v0",
-)
+router = APIRouter(prefix="/v0", tags=["api"])
 
 ALLOWED_CONTENT_TYPES = {
     "application/json": "json",
@@ -61,7 +57,7 @@ async def drop_data(
             default=...,
             pattern=PATH_REGEX,
             description=(
-                "Name of the data file that is uploaded, " "if unsure use 'default'"
+                "Name of the data file that is uploaded, if unsure use 'default'"
             ),
         ),
     ],
@@ -69,7 +65,7 @@ async def drop_data(
         dict[str, Any] | list[Any] | str | bytes,
         Body(
             description=(
-                "An arbitrary data structure, " "that can be further processed by MEx"
+                "An arbitrary data structure, that can be further processed by MEx"
             ),
             examples=[
                 {"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}},
@@ -135,7 +131,7 @@ async def drop_data(
     tags=["API"],
     status_code=202,
 )
-async def drop_data_mulitpoint(
+async def drop_data_multipart(
     x_system: Annotated[
         XSystem,
         Path(
@@ -146,16 +142,14 @@ async def drop_data_mulitpoint(
     ],
     files: Annotated[
         list[UploadFile],
-        File(
-            description=("Multipart file list, " "that can be further processed by MEx")
-        ),
+        File(description=("Multipart file list, that can be further processed by MEx")),
     ],
     authorized_x_systems: Annotated[
         list[XSystem], Depends(get_current_authorized_x_systems)
     ],
     background_tasks: BackgroundTasks,
 ) -> Response:
-    """Upload multipoint data to MEx.
+    """Upload multipart data to MEx.
 
     Args:
         x_system: name of the x-system that the data comes from

@@ -318,6 +318,11 @@ def test_list_x_systems(client: TestClient, dropped_data: dict[str, Any]) -> Non
     assert response.json() == {"x-systems": [f"{dropped_data['x_system']}"]}
 
 
+def test_list_x_systems_forbidden(client: TestClient) -> None:
+    response = client.get("/v0/", headers={"X-API-Key": "alice"})
+    assert response.status_code == 403
+
+
 def test_list_entity_types(client: TestClient, dropped_data: dict[str, Any]) -> None:
     client.headers.update({"X-API-Key": dropped_data["api_key"]})
     response = client.get(
