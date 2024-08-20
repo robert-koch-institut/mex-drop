@@ -9,11 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- created placeholder for the mex-drop UI with reflex stack
+- configured firefox integration tests with playwright
+
 ### Changes
+
+- updated project files to work with the reflex tech stack
+- **BREAKING** move endpoint implementations from `main` to `api`
 
 ### Deprecated
 
 ### Removed
+
+- removed uvicorn entrypoint and logging config
 
 ### Fixed
 
