@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 from unittest.mock import AsyncMock, call
 
+import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
@@ -74,6 +75,14 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
             200,
             "application/xml",
             open(os.path.join("tests", "test_files", "test.xml")).read(),
+        ),
+        (
+            "api-test-key",
+            "test_system",
+            "valid_entity_type",
+            200,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            open(os.path.join("tests", "test_files", "test.xlsx"), "rb").read(),
         ),
         (
             "api-test-key",
@@ -158,6 +167,7 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
         "valid",
         "valid csv",
         "valid xml",
+        "valid xlsx",
         "invalid content type",
         "invalid entity type",
         "invalid x_system",
@@ -192,7 +202,7 @@ def test_drop_data(
             headers=(
                 {"X-API-Key": api_key, "Content-Type": content_type} if api_key else {}
             ),
-            data=expected_content,
+            content=expected_content,
         )
     assert response.status_code == expected_response_code, response.text
     if content_type in ALLOWED_CONTENT_TYPES:
@@ -211,6 +221,18 @@ def test_drop_data(
                 or content_type == "text/tab-separated-values"
             ):
                 assert saved_content.decode("utf-8") == expected_content
+            elif (
+                content_type
+                == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                or content_type == "application/vnd.ms-excel"
+            ):
+                original_df = pd.read_excel(BytesIO(expected_content), sheet_name=None)
+                saved_df = pd.read_excel(BytesIO(saved_content), sheet_name=None)
+
+                assert original_df.keys() == saved_df.keys()
+
+                for sheet in original_df.keys():
+                    pd.testing.assert_frame_equal(original_df[sheet], saved_df[sheet])
 
 
 @pytest.mark.parametrize(
