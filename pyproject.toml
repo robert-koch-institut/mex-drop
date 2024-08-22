@@ -13,6 +13,7 @@ dependencies = [
     "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.35.0",
     "openpyxl>=3.0.10,<4",
     "reflex>=0.5.9,<1",
+    "playwright>=1.46.0",
 ]
 optional-dependencies.dev = [
     "ipdb>=0.13.13,<1",
