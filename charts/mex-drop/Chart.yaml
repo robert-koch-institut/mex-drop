@@ -1,5 +1,0 @@
-apiVersion: v2
-name: mex-drop
-description: Helm chart for mex-drop
-type: application
-version: 0.1.0

@@ -85,12 +85,48 @@ jobs:
   containerize:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: release
     steps:
-      - name: Build, tag and push docker image to ghcr
-        uses: GlueOps/github-actions-build-push-containers@v0.4.5
+      - name: Checkout repo
+        uses: actions/checkout@v4
         with:
-          tags: "${{ github.sha }},${{ needs.release.outputs.tag }},latest"
+          fetch-depth: 1
+
+      - name: Cache requirements
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-requirements
+        with:
+          path: ~/.cache/pip
+          key: ${{ env.cache-name }}-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ env.cache-name }}-
+
+      - name: Setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install requirements
+        run: make setup
+
+      - name: Generate locked requirements.txt
+        run: |
+          pdm export --self --output locked-requirements.txt --no-hashes --without dev
+
+      - name: 'Login to GitHub Container Registry'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: 'Build Inventory Image'
+        run: |
+          docker build .
+          --tag ghcr.io/robert-koch-institut/mex-drop:latest
+          --tag ghcr.io/robert-koch-institut/mex-drop:${{ github.sha }}
+          --tag ghcr.io/robert-koch-institut/mex-drop:${{ needs.release.outputs.tag }}
+          docker push ghcr.io/robert-koch-institut/mex-drop:latest
 
   distribute:
     runs-on: ubuntu-latest
