@@ -189,9 +189,9 @@ def test_drop_data(
     else:
         response = client.post(
             f"/v0/{x_system}/{entity_type}",
-            headers={"X-API-Key": api_key, "Content-Type": content_type}
-            if api_key
-            else {},
+            headers=(
+                {"X-API-Key": api_key, "Content-Type": content_type} if api_key else {}
+            ),
             data=expected_content,
         )
     assert response.status_code == expected_response_code, response.text
@@ -318,6 +318,11 @@ def test_list_x_systems(client: TestClient, dropped_data: dict[str, Any]) -> Non
     assert response.json() == {"x-systems": [f"{dropped_data['x_system']}"]}
 
 
+def test_list_x_systems_forbidden(client: TestClient) -> None:
+    response = client.get("/v0/", headers={"X-API-Key": "alice"})
+    assert response.status_code == 403
+
+
 def test_list_entity_types(client: TestClient, dropped_data: dict[str, Any]) -> None:
     client.headers.update({"X-API-Key": dropped_data["api_key"]})
     response = client.get(
@@ -330,6 +335,12 @@ def test_list_entity_types(client: TestClient, dropped_data: dict[str, Any]) -> 
         "/v0/x_system_that_does_not_exist",
     )
     assert response.status_code == 404, response.text
+
+
+def test_list_entity_types_forbidden(client: TestClient) -> None:
+    client.headers.update({"X-API-Key": "alice"})
+    response = client.get("/v0/test_system")
+    assert response.status_code == 403, response.text
 
 
 def test_health_check(client: TestClient) -> None:
