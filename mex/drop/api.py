@@ -1,22 +1,20 @@
-import io
 import pathlib
 from typing import Annotated, Any
 
-import pandas as pd
 from fastapi import (
     APIRouter,
     Body,
     Depends,
     File,
+    Header,
     HTTPException,
     Path,
-    Request,
     Response,
     UploadFile,
 )
 from pydantic import BaseModel
 from starlette import status
-from starlette.background import BackgroundTask, BackgroundTasks
+from starlette.background import BackgroundTasks
 
 from mex.common.exceptions import MExError
 from mex.drop.security import get_current_authorized_x_systems, is_authorized
@@ -27,12 +25,12 @@ from mex.drop.types import PATH_REGEX, EntityType, XSystem
 router = APIRouter(prefix="/v0", tags=["api"])
 
 ALLOWED_CONTENT_TYPES = {
-    "application/json": "json",
-    "application/xml": "xml",
-    "application/vnd.ms-excel": "xls",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
-    "text/csv": "csv",
-    "text/tab-separated-values": "tsv",
+    "application/json": ".json",
+    "application/xml": ".xml",
+    "application/vnd.ms-excel": ".xls",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
+    "text/csv": ".csv",
+    "text/tab-separated-values": ".tsv",
 }
 
 
@@ -62,33 +60,40 @@ async def drop_data(
         ),
     ],
     data: Annotated[
-        dict[str, Any] | list[Any] | str | bytes,
+        dict[str, Any] | list[Any] | bytes,
         Body(
             description=(
                 "An arbitrary data structure, that can be further processed by MEx"
             ),
             examples=[
                 {"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}},
+                [{"foo": "bar"}, {"bar": [1, 2, 3]}],
                 "foo,bar\n1,2",
                 '{"foo": "bar"}',
                 "<root><foo>bar</foo></root>",
             ],
         ),
     ],
+    content_type: Annotated[
+        str,
+        Header(
+            description="Content-Type of the uploaded data",
+        ),
+    ],
     authorized_x_systems: Annotated[
         list[XSystem], Depends(get_current_authorized_x_systems)
     ],
-    request: Request,
+    background_tasks: BackgroundTasks,
 ) -> Response:
-    """Upload arbitrary structured data to MEx.
+    """Upload arbitrary data to MEx.
 
     Args:
         x_system: name of the x-system that the data comes from
         entity_type: name of the data file that is uploaded, if unsure use 'default'
-        data: dictionary with string keys or list with and arbitrary values
+        data: data content of request body (dict, list or bytes)
         authorized_x_systems: list of authorized x-systems
-        request: HTTP Request class
-        content: content of uploaded file
+        content_type: Content-Type of the uploaded data
+        background_tasks: BackgroundTasks instance for managing background tasks
 
     Settings:
         drop_directory: where accepted data is stored
@@ -101,7 +106,6 @@ async def drop_data(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="API Key not authorized to drop data for this x_system.",
         )
-    content_type = request.headers.get("Content-Type")
     if content_type not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -110,19 +114,13 @@ async def drop_data(
         )
     file_ext = ALLOWED_CONTENT_TYPES[content_type]
     settings = DropSettings.get()
-    out_file = pathlib.Path(
-        settings.drop_directory, x_system + f"/{entity_type}.{file_ext}"
-    )
-    if content_type == "application/json":
-        json_data = await request.json()
-        return Response(
-            status_code=202, background=BackgroundTask(json_sink, json_data, out_file)
-        )
-    raw_data = await request.body()
-    return Response(
-        status_code=200,
-        background=BackgroundTask(write_to_file, raw_data, out_file, content_type),
-    )
+    out_file = settings.drop_directory / x_system / f"{entity_type}{file_ext}"
+    if content_type == "application/json" and isinstance(data, (dict | list)):
+        background_tasks.add_task(json_sink, data, out_file)
+        return Response(status_code=200)
+    if isinstance(data, bytes):
+        background_tasks.add_task(write_to_file, data, out_file, content_type)
+    return Response(status_code=200)
 
 
 @router.post(
@@ -153,7 +151,6 @@ async def drop_data_multipart(
 
     Args:
         x_system: name of the x-system that the data comes from
-        entity_type: name of the data file that is uploaded, if unsure use 'default'
         files: list of files to be uploaded to MEx
         authorized_x_systems: list of authorized x-systems
         background_tasks: collection of background tasks
@@ -170,15 +167,27 @@ async def drop_data_multipart(
             detail="API Key not authorized to drop data for this x_system.",
         )
     settings = DropSettings.get()
+    check_duplicate_filenames(files)
     for file in files:
         entity_type = str(file.filename)
-        await validate_file_extension(file.content_type)
-    for file in files:
+        await validate_file_extension(file.content_type, entity_type)
         content = await file.read()
-        entity_type = str(file.filename)
         out_file = pathlib.Path(settings.drop_directory, x_system, entity_type)
         background_tasks.add_task(write_to_file, content, out_file)
     return Response(status_code=202)
+
+
+def check_duplicate_filenames(files: list[UploadFile]) -> None:
+    """Check for duplicate filenames."""
+    hash_bucket = set()
+    for file in files:
+        if file.filename in hash_bucket:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Duplicate filename.",
+            )
+        hash_bucket.add(file.filename)
+    return
 
 
 async def write_to_file(
@@ -187,41 +196,27 @@ async def write_to_file(
     """Write content to file. Parse content according to file type."""
     out_file.parent.mkdir(parents=True, exist_ok=True)
     try:
-        if content_type == "text/csv" or content_type == "text/tab-separated-values":
-            decoded_data = content.decode("utf-8")
-            with open(out_file, "w", newline="") as f:
-                f.write(decoded_data)
-        elif content_type == "application/xml":
-            decoded_data = content.decode("utf-8")
-            with open(out_file, "w") as f:
-                f.write(decoded_data)
-        elif (
-            content_type == "application/vnd.ms-excel"
-            or content_type
-            == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ):
-            file_stream = io.BytesIO(content)
-            df = pd.read_excel(file_stream, sheet_name=None)
-            with pd.ExcelWriter(out_file, engine="openpyxl") as writer:
-                for sheet_name, sheet_data in df.items():
-                    sheet_data.to_excel(writer, sheet_name=sheet_name, index=False)
-        else:
-            with open(out_file, "wb") as f:
-                f.write(content)
+        with open(out_file, "wb") as f:
+            f.write(content)
     except Exception as exc:
         raise MExError(
             f"Failed to write to file {out_file}: {exc!s}",
         ) from exc
 
 
-async def validate_file_extension(content_type: str | None) -> None:
+async def validate_file_extension(content_type: str | None, filename: str) -> None:
     """Validate uploaded file format."""
-    if content_type in ALLOWED_CONTENT_TYPES:
-        return
-    raise HTTPException(
-        status_code=status.HTTP_403_FORBIDDEN,
-        detail=f"Unsupported file extension: {type}",
-    )
+    if content_type not in ALLOWED_CONTENT_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Unsupported file extension: {type}",
+        )
+    if ALLOWED_CONTENT_TYPES[content_type] != pathlib.Path(filename).suffix:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Content doesn't match extension: {content_type} != {filename}",
+        )
+    return
 
 
 @router.get(

@@ -1,5 +1,4 @@
 import json
-import os
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -11,17 +10,11 @@ from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
 
 import mex
+from mex.drop.api import ALLOWED_CONTENT_TYPES
 from mex.drop.settings import DropSettings
 from mex.drop.types import EntityType, XSystem
 
-ALLOWED_CONTENT_TYPES = {
-    "application/json": ".json",
-    "application/xml": ".xml",
-    "application/vnd.ms-excel": ".xls",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
-    "text/csv": ".csv",
-    "text/tab-separated-values": ".tsv",
-}
+TESTDATA_DIR = Path(__file__).parent / "test_files"
 
 
 @pytest.fixture
@@ -44,13 +37,20 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
 
 
 @pytest.mark.parametrize(
-    "api_key, x_system, entity_type, expected_response_code, content_type, expected_content",
+    (
+        "api_key",
+        "x_system",
+        "entity_type",
+        "expected_response_code",
+        "content_type",
+        "expected_content",
+    ),
     [
         (
             "api-test-key",
             "test_system",
             "valid_entity_type",
-            202,
+            200,
             "application/json",
             {
                 "asd": "def",
@@ -74,7 +74,7 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
             "valid_entity_type",
             200,
             "application/xml",
-            open(os.path.join("tests", "test_files", "test.xml")).read(),
+            (TESTDATA_DIR / "test.xml").read_text(),
         ),
         (
             "api-test-key",
@@ -82,7 +82,7 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
             "valid_entity_type",
             200,
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            open(os.path.join("tests", "test_files", "test.xlsx"), "rb").read(),
+            (TESTDATA_DIR / "test.xlsx").read_bytes(),
         ),
         (
             "api-test-key",
@@ -190,25 +190,21 @@ def test_drop_data(
     mocked_sink = AsyncMock(return_value=None)
     monkeypatch.setattr(mex.drop.api, "json_sink", mocked_sink)
 
-    if content_type == "application/json":
-        response = client.post(
-            f"/v0/{x_system}/{entity_type}",
-            headers={"X-API-Key": api_key} if api_key else {},
-            json=expected_content,
-        )
-    else:
-        response = client.post(
-            f"/v0/{x_system}/{entity_type}",
-            headers=(
-                {"X-API-Key": api_key, "Content-Type": content_type} if api_key else {}
-            ),
-            content=expected_content,
-        )
+    if api_key:
+        client.headers.update({"X-API-Key": api_key})
+    client.headers.update({"Content-Type": content_type})
+    kwargs = (
+        {"json": expected_content}
+        if content_type == "application/json"
+        else {"content": expected_content}
+    )
+    response = client.post(f"/v0/{x_system}/{entity_type}", **kwargs)
     assert response.status_code == expected_response_code, response.text
+
     if content_type in ALLOWED_CONTENT_TYPES:
-        expected_file = Path(
-            settings.drop_directory, x_system, entity_type
-        ).with_suffix(ALLOWED_CONTENT_TYPES[content_type])
+        base_path = Path(settings.drop_directory, x_system, entity_type)
+        expected_file = base_path.with_suffix(ALLOWED_CONTENT_TYPES[content_type])
+
     if 200 <= response.status_code < 300:
         if content_type == "application/json":
             assert mocked_sink.call_args == call(expected_content, expected_file)
@@ -236,7 +232,7 @@ def test_drop_data(
 
 
 @pytest.mark.parametrize(
-    "api_key, x_system, expected_response_code, files",
+    ("api_key", "x_system", "expected_response_code", "files"),
     [
         (
             "api-test-key",
@@ -301,7 +297,7 @@ def test_drop_multiple_files(
     api_key: str | None,
     x_system: XSystem,
     expected_response_code: int,
-    files: dict[str, str],
+    files: dict[str, list[str]],
     settings: DropSettings,
 ) -> None:
     files_data = [
@@ -315,7 +311,7 @@ def test_drop_multiple_files(
     )
     assert response.status_code == expected_response_code, response.text
     if 200 <= response.status_code < 300 and files:
-        for filename, (content, _content_type) in files.items():
+        for filename, (content, _) in files.items():
             expected_file1 = Path(settings.drop_directory, x_system, filename)
             assert expected_file1.read_text() == content
 

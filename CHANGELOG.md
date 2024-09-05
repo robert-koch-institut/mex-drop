@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- support for more structured file formats
+- support for structured file formats (xml, tsv, xls and xlsx)
 - created placeholder for the mex-drop UI with reflex stack
 - configured firefox integration tests with playwright
 
