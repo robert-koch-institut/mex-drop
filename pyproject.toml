@@ -8,7 +8,10 @@ license = { file = "LICENSE" }
 urls = { Repository = "https://github.com/robert-koch-institut/mex-drop" }
 requires-python = "<3.12,>=3.11"
 dependencies = [
-    "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.35.0",
+    "fastapi[standard]>=0.110.3,<1",
+    "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.36.0",
+    "pydantic>=2.8.2,<2.9",
+    "starlette>=0.37.2,<1",
     "reflex>=0.5.9,<1",
 ]
 optional-dependencies.dev = [
