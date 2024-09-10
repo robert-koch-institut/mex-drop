@@ -5,7 +5,9 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
+
 content_hash = "sha256:1beebd72910a8d9f44b540f1e761fcf08ce95c140001ab70f17a41c6ea846152"
+
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -419,6 +421,21 @@ files = [
 ]
 
 [[package]]
+name = "fastapi"
+version = "0.110.3"
+extras = ["standard"]
+requires_python = ">=3.8"
+summary = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
+groups = ["default"]
+dependencies = [
+    "fastapi==0.110.3",
+]
+files = [
+    {file = "fastapi-0.110.3-py3-none-any.whl", hash = "sha256:fd7600612f755e4050beb74001310b5a7e1796d149c2ee363124abdfa0289d32"},
+    {file = "fastapi-0.110.3.tar.gz", hash = "sha256:555700b0159379e94fdbfc6bb66a0f1c43f4cf7060f25239af3d84b63a656626"},
+]
+
+[[package]]
 name = "greenlet"
 version = "3.0.3"
 requires_python = ">=3.7"
@@ -823,11 +840,11 @@ files = [
 
 [[package]]
 name = "mex-common"
-version = "0.35.0"
+version = "0.36.0"
 requires_python = "<3.13,>=3.11"
 git = "https://github.com/robert-koch-institut/mex-common.git"
-ref = "0.35.0"
-revision = "f8690059169104413ce5d283d6a2bb9ab53b8eb8"
+ref = "0.36.0"
+revision = "9833fb0c9d5d9a197b316975be29e0f3d264c5c9"
 summary = "Common library for MEx python projects."
 groups = ["default"]
 dependencies = [
