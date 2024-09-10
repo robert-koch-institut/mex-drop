@@ -237,47 +237,47 @@ def test_drop_data(
             "api-test-key",
             "test_system",
             202,
-            {
-                "file1.json": ["file1 content", "application/json"],
-                "file2.csv": ["1,2,3", "text/csv"],
-            },
+            [
+                ("file1.json", "file1 content", "application/json"),
+                ("file2.csv", "1,2,3", "text/csv"),
+            ],
         ),
         (
             "api-test-key",
             "test_system",
             202,
-            {"file1.xls": ["file1 content", "application/vnd.ms-excel"]},
+            [("file1.xls", "file1 content", "application/vnd.ms-excel")],
         ),
         (
             "api-test-key",
             "test_system",
             422,
-            {"file1.html": ["file1 content", "text/html"]},
+            [("file1.html", "file1 content", "text/html")],
         ),
         ("api-test-key", "foo_system", 422, {}),
         (
             "api-test-key",
             "invalid x_system",
             422,
-            {"file1.json": ["file1 content", "application/json"]},
+            [("file1.json", "file1 content", "application/json")],
         ),
         (
             None,
             "test_system",
             401,
-            {"file1.json": ["file1 content", "application/json"]},
+            [("file1.json", "file1 content", "application/json")],
         ),
         (
             "invalid-key",
             "test_system",
             401,
-            {"file1.json": ["file1 content", "application/json"]},
+            [("file1.json", "file1 content", "application/json")],
         ),
         (
             "api-key-one",
             "foo_system",
             403,
-            {"file1.json": ["file1 content", "application/json"]},
+            [("file1.json", "file1 content", "application/json")],
         ),
     ],
     ids=(
@@ -296,12 +296,12 @@ def test_drop_multiple_files(
     api_key: str | None,
     x_system: XSystem,
     expected_response_code: int,
-    files: dict[str, list[str]],
+    files: list[tuple[str, str, str]],
     settings: DropSettings,
 ) -> None:
     files_data = [
         ("files", (name, BytesIO(content.encode()), content_type))
-        for name, (content, content_type) in files.items()
+        for name, content, content_type in files
     ]
     response = client.post(
         f"/v0/{x_system}",
@@ -310,8 +310,8 @@ def test_drop_multiple_files(
     )
     assert response.status_code == expected_response_code, response.text
     if 200 <= response.status_code < 300 and files:
-        for filename, (content, _) in files.items():
-            expected_file1 = Path(settings.drop_directory, x_system, filename)
+        for name, content, _ in files:
+            expected_file1 = Path(settings.drop_directory, x_system, name)
             assert expected_file1.read_text() == content
 
 

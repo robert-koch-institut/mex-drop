@@ -46,7 +46,10 @@ async def validate_file_extension(content_type: str | None, filename: str) -> No
     if content_type not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Unsupported content type: {content_type}",
+            detail=(
+                f"Unsupported content type: {content_type}. "
+                f"Allowed types: {', '.join(ALLOWED_CONTENT_TYPES.values())}"
+            ),
         )
 
     suffix = pathlib.Path(filename).suffix
