@@ -30,6 +30,7 @@ ALLOWED_CONTENT_TYPES = {
     "application/vnd.ms-excel": ".xls",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
     "text/csv": ".csv",
+    "text/xml": ".xml",
     "text/tab-separated-values": ".tsv",
 }
 
@@ -68,16 +69,16 @@ async def drop_data(
             examples=[
                 {"foo": "bar", "list": [1, 2, "foo"], "nested": {"foo": "bar"}},
                 [{"foo": "bar"}, {"bar": [1, 2, 3]}],
-                "foo,bar\n1,2",
-                '{"foo": "bar"}',
-                "<root><foo>bar</foo></root>",
             ],
         ),
     ],
     content_type: Annotated[
         str,
         Header(
-            description="Content-Type of the uploaded data",
+            description=(
+                f"Content-Type of the uploaded data.\n Allowed content types:"
+                f"\n{', '.join(ALLOWED_CONTENT_TYPES.keys())}"
+            ),
         ),
     ],
     authorized_x_systems: Annotated[
@@ -90,7 +91,7 @@ async def drop_data(
     Args:
         x_system: name of the x-system that the data comes from
         entity_type: name of the data file that is uploaded, if unsure use 'default'
-        data: data content of request body (dict, list or bytes)
+        data: data content of request body
         authorized_x_systems: list of authorized x-systems
         content_type: Content-Type of the uploaded data
         background_tasks: BackgroundTasks instance for managing background tasks
@@ -117,7 +118,6 @@ async def drop_data(
     out_file = settings.drop_directory / x_system / f"{entity_type}{file_ext}"
     if content_type == "application/json" and isinstance(data, (dict | list)):
         background_tasks.add_task(json_sink, data, out_file)
-        return Response(status_code=200)
     if isinstance(data, bytes):
         background_tasks.add_task(write_to_file, data, out_file, content_type)
     return Response(status_code=200)
@@ -140,7 +140,12 @@ async def drop_data_multipart(
     ],
     files: Annotated[
         list[UploadFile],
-        File(description=("Multipart file list, that can be further processed by MEx")),
+        File(
+            description=(
+                f"Multipart file list, that can be further processed by MEx.\n "
+                f"Allowed file types: {', '.join(ALLOWED_CONTENT_TYPES.values())}"
+            )
+        ),
     ],
     authorized_x_systems: Annotated[
         list[XSystem], Depends(get_current_authorized_x_systems)
@@ -179,14 +184,11 @@ async def drop_data_multipart(
 
 def check_duplicate_filenames(files: list[UploadFile]) -> None:
     """Check for duplicate filenames."""
-    hash_bucket = set()
-    for file in files:
-        if file.filename in hash_bucket:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Duplicate filename.",
-            )
-        hash_bucket.add(file.filename)
+    if len(files) != len({file.filename for file in files}):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Duplicate filename.",
+        )
     return
 
 
@@ -205,16 +207,28 @@ async def write_to_file(
 
 
 async def validate_file_extension(content_type: str | None, filename: str) -> None:
-    """Validate uploaded file format."""
+    """Validate uploaded file content type and extension."""
     if content_type not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Unsupported file extension: {type}",
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"Unsupported content type: {content_type}",
         )
-    if ALLOWED_CONTENT_TYPES[content_type] != pathlib.Path(filename).suffix:
+
+    suffix = pathlib.Path(filename).suffix
+    if ALLOWED_CONTENT_TYPES[content_type] != suffix and suffix != ".csv":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Content doesn't match extension: {content_type} != {filename}",
+            detail=f"Content type doesn't match extension: "
+            f"{content_type} != {filename}",
+        )
+    if suffix == ".csv" and content_type not in (
+        "application/vnd.ms-excel",
+        "text/csv",
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Content type doesn't match extension: "
+            f"{content_type} != {filename}",
         )
     return
 

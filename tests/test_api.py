@@ -201,11 +201,10 @@ def test_drop_data(
     response = client.post(f"/v0/{x_system}/{entity_type}", **kwargs)
     assert response.status_code == expected_response_code, response.text
 
-    if content_type in ALLOWED_CONTENT_TYPES:
+    if 200 <= response.status_code < 300:
         base_path = Path(settings.drop_directory, x_system, entity_type)
         expected_file = base_path.with_suffix(ALLOWED_CONTENT_TYPES[content_type])
 
-    if 200 <= response.status_code < 300:
         if content_type == "application/json":
             assert mocked_sink.call_args == call(expected_content, expected_file)
         else:
@@ -252,7 +251,7 @@ def test_drop_data(
         (
             "api-test-key",
             "test_system",
-            403,
+            422,
             {"file1.html": ["file1 content", "text/html"]},
         ),
         ("api-test-key", "foo_system", 422, {}),
