@@ -16,23 +16,18 @@ from pydantic import BaseModel
 from starlette import status
 from starlette.background import BackgroundTasks
 
-from mex.common.exceptions import MExError
+from mex.drop.files_io import (
+    ALLOWED_CONTENT_TYPES,
+    check_duplicate_filenames,
+    validate_file_extension,
+    write_to_file,
+)
 from mex.drop.security import get_current_authorized_x_systems, is_authorized
 from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
 from mex.drop.types import PATH_REGEX, EntityType, XSystem
 
 router = APIRouter(prefix="/v0", tags=["api"])
-
-ALLOWED_CONTENT_TYPES = {
-    "application/json": ".json",
-    "application/xml": ".xml",
-    "application/vnd.ms-excel": ".xls",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
-    "text/csv": ".csv",
-    "text/xml": ".xml",
-    "text/tab-separated-values": ".tsv",
-}
 
 
 @router.post(
@@ -119,7 +114,7 @@ async def drop_data(
     if content_type == "application/json" and isinstance(data, (dict | list)):
         background_tasks.add_task(json_sink, data, out_file)
     if isinstance(data, bytes):
-        background_tasks.add_task(write_to_file, data, out_file, content_type)
+        background_tasks.add_task(write_to_file, data, out_file)
     return Response(status_code=200)
 
 
@@ -180,57 +175,6 @@ async def drop_data_multipart(
         out_file = pathlib.Path(settings.drop_directory, x_system, entity_type)
         background_tasks.add_task(write_to_file, content, out_file)
     return Response(status_code=202)
-
-
-def check_duplicate_filenames(files: list[UploadFile]) -> None:
-    """Check for duplicate filenames."""
-    if len(files) != len({file.filename for file in files}):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Duplicate filename.",
-        )
-    return
-
-
-async def write_to_file(
-    content: bytes, out_file: pathlib.Path, content_type: str | None = None
-) -> None:
-    """Write content to file. Parse content according to file type."""
-    out_file.parent.mkdir(parents=True, exist_ok=True)
-    try:
-        with open(out_file, "wb") as f:
-            f.write(content)
-    except Exception as exc:
-        raise MExError(
-            f"Failed to write to file {out_file}: {exc!s}",
-        ) from exc
-
-
-async def validate_file_extension(content_type: str | None, filename: str) -> None:
-    """Validate uploaded file content type and extension."""
-    if content_type not in ALLOWED_CONTENT_TYPES:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Unsupported content type: {content_type}",
-        )
-
-    suffix = pathlib.Path(filename).suffix
-    if ALLOWED_CONTENT_TYPES[content_type] != suffix and suffix != ".csv":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Content type doesn't match extension: "
-            f"{content_type} != {filename}",
-        )
-    if suffix == ".csv" and content_type not in (
-        "application/vnd.ms-excel",
-        "text/csv",
-    ):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Content type doesn't match extension: "
-            f"{content_type} != {filename}",
-        )
-    return
 
 
 @router.get(

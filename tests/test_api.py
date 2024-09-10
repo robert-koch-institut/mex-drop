@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
 
 import mex
-from mex.drop.api import ALLOWED_CONTENT_TYPES
+from mex.drop.files_io import ALLOWED_CONTENT_TYPES
 from mex.drop.settings import DropSettings
 from mex.drop.types import EntityType, XSystem
 
