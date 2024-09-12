@@ -10,6 +10,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - support for structured file formats (xml, tsv, xls and xlsx)
+
+### Changes
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.6.1] - 2024-09-11
+
+### Fixed
+
+- github action for containerization
+
+## [0.6.0] - 2024-09-11
+
+### Added
+
 - created placeholder for the mex-drop UI with reflex stack
 - configured firefox integration tests with playwright
 
@@ -18,16 +39,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - updated project files to work with the reflex tech stack
 - **BREAKING** move endpoint implementations from `main` to `api`
 
-### Deprecated
-
 ### Removed
 
 - removed uvicorn entrypoint and logging config
 - helm chart
-
-### Fixed
-
-### Security
 
 ## [0.5.0] - 2024-08-07
 
