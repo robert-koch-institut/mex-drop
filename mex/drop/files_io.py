@@ -55,7 +55,7 @@ async def validate_file_extension(content_type: str | None, filename: str) -> No
     suffix = pathlib.Path(filename).suffix
     if ALLOWED_CONTENT_TYPES[content_type] != suffix and suffix != ".csv":
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Content type doesn't match extension: "
             f"{content_type} != {filename}",
         )
@@ -64,7 +64,7 @@ async def validate_file_extension(content_type: str | None, filename: str) -> No
         "text/csv",
     ):
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail=f"Content type doesn't match extension: "
             f"{content_type} != {filename}",
         )

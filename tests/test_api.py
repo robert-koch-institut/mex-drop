@@ -279,6 +279,15 @@ def test_drop_data(
             403,
             [("file1.json", "file1 content", "application/json")],
         ),
+        (
+            "api-test-key",
+            "test_system",
+            400,
+            [
+                ("file1.json", "file1 content", "application/json"),
+                ("file1.json", "file1 different content", "application/json"),
+            ],
+        ),
     ],
     ids=(
         "valid",
@@ -289,6 +298,7 @@ def test_drop_data(
         "missing header",
         "invalid api_key",
         "unauthorized x_system",
+        "duplicate filename",
     ),
 )
 def test_drop_multiple_files(

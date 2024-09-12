@@ -14,7 +14,7 @@ from fastapi import (
 )
 from pydantic import BaseModel
 from starlette import status
-from starlette.background import BackgroundTasks
+from starlette.background import BackgroundTask, BackgroundTasks
 
 from mex.drop.files_io import (
     ALLOWED_CONTENT_TYPES,
@@ -112,10 +112,17 @@ async def drop_data(
     settings = DropSettings.get()
     out_file = settings.drop_directory / x_system / f"{entity_type}{file_ext}"
     if content_type == "application/json" and isinstance(data, (dict | list)):
-        background_tasks.add_task(json_sink, data, out_file)
+        return Response(
+            status_code=200, background=BackgroundTask(json_sink, data, out_file)
+        )
     if isinstance(data, bytes):
-        background_tasks.add_task(write_to_file, data, out_file)
-    return Response(status_code=200)
+        return Response(
+            status_code=200, background=BackgroundTask(write_to_file, data, out_file)
+        )
+    raise HTTPException(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        detail="Unsupported content typeor format.",
+    )
 
 
 @router.post(
