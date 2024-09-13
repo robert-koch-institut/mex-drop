@@ -85,6 +85,7 @@ jobs:
   containerize:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    needs: release
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -123,9 +124,9 @@ jobs:
       - name: 'Build Inventory Image'
         run: |
           docker build . \
-            --tag ghcr.io/robert-koch-institut/mex-drop:latest \
-            --tag ghcr.io/robert-koch-institut/mex-drop:${{ github.sha }} \
-            --tag ghcr.io/robert-koch-institut/mex-drop:${{ needs.release.outputs.tag }}
+          --tag ghcr.io/robert-koch-institut/mex-drop:latest \
+          --tag ghcr.io/robert-koch-institut/mex-drop:${{ github.sha }} \
+          --tag ghcr.io/robert-koch-institut/mex-drop:${{ needs.release.outputs.tag }}
           docker push ghcr.io/robert-koch-institut/mex-drop:latest
 
   distribute:
