@@ -127,7 +127,7 @@ jobs:
           --tag ghcr.io/robert-koch-institut/mex-drop:latest \
           --tag ghcr.io/robert-koch-institut/mex-drop:${{ github.sha }} \
           --tag ghcr.io/robert-koch-institut/mex-drop:${{ needs.release.outputs.tag }}
-          docker push --all-tags
+          docker push --all-tags ghcr.io/robert-koch-institut/mex-drop
 
   distribute:
     runs-on: ubuntu-latest
