@@ -1,6 +1,6 @@
 [project]
 name = "mex-drop"
-version = "0.6.2"
+version = "0.6.3"
 description = "Data upload and download service for the MEx project."
 authors = [{ name = "MEx Team", email = "mex@rki.de" }]
 readme = { file = "README.md", content-type = "text/markdown" }
