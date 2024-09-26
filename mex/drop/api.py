@@ -79,7 +79,6 @@ async def drop_data(
     authorized_x_systems: Annotated[
         list[XSystem], Depends(get_current_authorized_x_systems)
     ],
-    background_tasks: BackgroundTasks,
 ) -> Response:
     """Upload arbitrary data to MEx.
 
@@ -89,7 +88,6 @@ async def drop_data(
         data: data content of request body
         authorized_x_systems: list of authorized x-systems
         content_type: Content-Type of the uploaded data
-        background_tasks: BackgroundTasks instance for managing background tasks
 
     Settings:
         drop_directory: where accepted data is stored
@@ -137,7 +135,7 @@ async def drop_data_multipart(
         Path(
             default=...,
             pattern=PATH_REGEX,
-            description="Name of the system that the data comes from",
+            description="Name of the system that the data comes from.",
         ),
     ],
     files: Annotated[
