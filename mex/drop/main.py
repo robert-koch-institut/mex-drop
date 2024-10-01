@@ -132,6 +132,7 @@ def index() -> rx.Component:
                         width="100%",
                         height="100%",
                         padding="15px",
+                        custom_attrs={"data-testid": "index-card"},
                     ),
                     rx.card(
                         rx.vstack(
