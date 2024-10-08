@@ -20,7 +20,6 @@ def test_index(page: Page) -> None:
     expect(heading).to_be_visible()
 
 
-@pytest.fixture
 def app_state():
     return AppState()
 
