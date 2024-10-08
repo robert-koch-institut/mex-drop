@@ -1,6 +1,6 @@
 [project]
 name = "mex-drop"
-version = "0.6.5"
+version = "0.7.0"
 description = "Data upload and download service for the MEx project."
 authors = [{ name = "MEx Team", email = "mex@rki.de" }]
 readme = { file = "README.md", content-type = "text/markdown" }
@@ -9,7 +9,7 @@ urls = { Repository = "https://github.com/robert-koch-institut/mex-drop" }
 requires-python = "<3.12,>=3.11"
 dependencies = [
     "fastapi[standard]>=0.110.3,<1",
-    "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.36.0",
+    "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.37.0",
     "pydantic>=2.8.2,<3",
     "starlette>=0.37.2,<1",
     "reflex>=0.5.9,<1",

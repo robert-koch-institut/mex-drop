@@ -9,8 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- support for structured file formats (xml, tsv, xls and xlsx)
-
 ### Changes
 
 ### Deprecated
@@ -21,15 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-## [0.6.5] - 2024-09-16
+## [0.7.0] - 2024-10-07
 
-## [0.6.4] - 2024-09-16
+### Added
 
-## [0.6.3] - 2024-09-16
-
-## [0.6.2] - 2024-09-13
-
-## [0.6.1] - 2024-09-11
+- support for structured file formats (xml, tsv, xls and xlsx)
 
 ### Fixed
 
