@@ -34,7 +34,7 @@ def test_cancel_upload(app_state: AppState) -> None:
     assert app_state.temp_files[0].title == "file2"
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="function")
 async def test_handle_upload(app_state: AppState) -> None:
     file1 = MagicMock()
     file1.filename = "file1.csv"
@@ -53,7 +53,7 @@ async def test_handle_upload(app_state: AppState) -> None:
     assert app_state.temp_files[1].content == b"content2"
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="function")
 async def test_handle_upload_duplicate(app_state: AppState) -> None:
     file1 = MagicMock()
     file1.filename = "file1.xml"
@@ -66,7 +66,7 @@ async def test_handle_upload_duplicate(app_state: AppState) -> None:
     assert len(app_state.temp_files) == 1
 
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="function")
 async def test_submit_data(app_state: AppState) -> None:
     form_data = {"x_system": "system1", "api_token": "token123"}
     app_state.temp_files = [TempFile(title="file1.xml", content=b"content1")]

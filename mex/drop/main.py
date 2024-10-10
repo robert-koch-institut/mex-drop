@@ -71,7 +71,7 @@ def create_file_row(temp_file: TempFile) -> rx.Component:
             rx.button(
                 rx.icon(tag="trash-2"),
                 color_scheme="red",
-                on_click=lambda: AppState.cancel_upload(temp_file.title),  # type: ignore
+                on_click=lambda: AppState.cancel_upload(temp_file.title),  # type: ignore[arg-type,call-arg]
             ),
             width=100,
         ),
@@ -126,7 +126,7 @@ def index() -> rx.Component:
                                 align="center",
                                 on_drop=AppState.handle_upload(
                                     rx.upload_files(upload_id="upload_one")
-                                ),  # type: ignore
+                                ),  # type: ignore[call-arg]
                             ),
                             spacing="4",
                         ),

@@ -9,15 +9,31 @@ from mex.drop.security import get_current_authorized_x_systems, is_authorized
 from mex.drop.settings import DropSettings
 
 
-class TempFile(rx.Base):  # type: ignore
+class TempFile(rx.Base):
     """Helper class to handle temporarily uplaoded files."""
 
     title: str
     content: bytes
 
 
-class AppState(rx.State):  # type: ignore
-    """The app state."""
+class AppState(rx.State):
+    """The app state.
+
+    Attributes:
+        temp_files: A list of temporarily uploaded files.
+        form_data: A dictionary containing form data (API token and x_system).
+
+    Methods:
+        get_instance() -> Any:
+            Get the singleton instance of the AppState class.
+
+        handle_upload(files: list[rx.UploadFile]) -> EventSpec | None:
+            Handle the upload of file(s) and save them to the temporary file list.
+
+        submit_data(form_data: dict[str, str]) -> EventSpec:
+            Submit temporarily uploaded file(s)
+            and save them in the corresponding directory.
+    """
 
     temp_files: list[TempFile] = []
     form_data: dict[str, str] = {}
@@ -30,10 +46,14 @@ class AppState(rx.State):  # type: ignore
         return cls._instance
 
     async def handle_upload(self, files: list[rx.UploadFile]) -> EventSpec | None:
-        """Handle the upload of file(s) and save to temporary file list.
+        """Handle the upload of file(s) and save them to the temporary file list.
 
         Args:
-            files: The uploaded file(s).
+            files: The list of uploaded files to be processed.
+
+        Returns:
+            EventSpec | None: Returns EventSpec with error toast message if duplicate
+            filename is found. Otherwise, returns None.
         """
         for file in files:
             if any(item.title == str(file.filename) for item in self.temp_files):
@@ -50,7 +70,9 @@ class AppState(rx.State):  # type: ignore
         """Submit temporarily uplaoded file(s) and save in corresponding directory.
 
         Args:
-            form_data (dict[str, str]): api token and x sysem from input field
+            form_data: api token and x sysem from input field
+        Returns:
+            EventSpec: Reflex event, toast info message
         """
         self.form_data = form_data
         x_system = form_data.get("x_system")
@@ -80,6 +102,9 @@ class AppState(rx.State):  # type: ignore
 
         Args:
             filename (str): title of file to be deleted
+
+        Returns:
+            EventSpec: Reflex event, toast info message
         """
         self.temp_files = [file for file in self.temp_files if file.title != filename]
         return rx.toast.info(f"File {filename} removed from upload.")
