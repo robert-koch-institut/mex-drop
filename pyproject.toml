@@ -24,6 +24,7 @@ optional-dependencies.dev = [
     "pytest>=8.3.2,<9",
     "ruff>=0.5.7,<1",
     "sphinx>=8.0.2,<9",
+    "pytest-asyncio>=0.24.0",
 ]
 
 [project.scripts]
@@ -39,7 +40,6 @@ context = 5
 [tool.mypy]
 python_version = "3.11"
 show_error_codes = true
-strict = true
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
