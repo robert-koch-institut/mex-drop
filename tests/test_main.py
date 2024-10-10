@@ -84,9 +84,10 @@ async def test_submit_data(app_state: AppState) -> None:
             return_value=MagicMock(drop_directory="/mock/path"),
         ),
     ):
-        await app_state.submit_data(form_data=form_data)
+        result = await app_state.submit_data(form_data=form_data)
 
         mock_write_to_file.assert_called_once_with(
             b"content1", pathlib.Path("/mock/path/system1/file1.xml")
         )
         assert len(app_state.temp_files) == 0
+        assert result is not None
