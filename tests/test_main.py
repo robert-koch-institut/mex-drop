@@ -20,11 +20,12 @@ def test_index(page: Page) -> None:
     expect(heading).to_be_visible()
 
 
-def app_state():
+@pytest.fixture
+def app_state() -> AppState:
     return AppState()
 
 
-def test_cancel_upload(app_state):
+def test_cancel_upload(app_state: AppState) -> None:
     app_state.temp_files = [MagicMock(title="file1"), MagicMock(title="file2")]
 
     app_state.cancel_upload("file1")
@@ -34,7 +35,7 @@ def test_cancel_upload(app_state):
 
 
 @pytest.mark.asyncio
-async def test_handle_upload(app_state):
+async def test_handle_upload(app_state: AppState) -> None:
     file1 = MagicMock()
     file1.filename = "file1.csv"
     file1.read = AsyncMock(return_value=b"content1")
@@ -53,7 +54,7 @@ async def test_handle_upload(app_state):
 
 
 @pytest.mark.asyncio
-async def test_handle_upload_duplicate(app_state):
+async def test_handle_upload_duplicate(app_state: AppState) -> None:
     file1 = MagicMock()
     file1.filename = "file1.xml"
     file1.read = AsyncMock(return_value=b"content1")
@@ -66,9 +67,9 @@ async def test_handle_upload_duplicate(app_state):
 
 
 @pytest.mark.asyncio
-async def test_submit_data(app_state):
+async def test_submit_data(app_state: AppState) -> None:
     form_data = {"x_system": "system1", "api_token": "token123"}
-    app_state.temp_files = [TempFile(title="file1.txt", content=b"content1")]
+    app_state.temp_files = [TempFile(title="file1.xml", content=b"content1")]
 
     with (
         patch(
@@ -86,6 +87,6 @@ async def test_submit_data(app_state):
         await app_state.submit_data(form_data=form_data)
 
         mock_write_to_file.assert_called_once_with(
-            b"content1", pathlib.Path("/mock/path/system1/file1.txt")
+            b"content1", pathlib.Path("/mock/path/system1/file1.xml")
         )
         assert len(app_state.temp_files) == 0

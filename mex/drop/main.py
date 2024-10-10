@@ -42,8 +42,8 @@ def uploaded_file_display() -> rx.Component:
     return rx.table.root(
         rx.table.header(
             rx.table.row(
-                rx.table.column_header_cell("Uploaded File", width="80%"),
-                rx.table.column_header_cell("Actions", width="20%"),
+                rx.table.column_header_cell("Selected File", width=260),
+                rx.table.column_header_cell("Actions", width=120),
             ),
         ),
         rx.table.body(
@@ -52,7 +52,7 @@ def uploaded_file_display() -> rx.Component:
                 create_file_row,
             ),
         ),
-        width="90%",
+        width="100%",
     )
 
 
@@ -66,14 +66,14 @@ def create_file_row(temp_file: TempFile) -> rx.Component:
         rx.Component: A component with style, event trigger and other props
     """
     return rx.table.row(
-        rx.table.row_header_cell(temp_file.title, width="80%"),
+        rx.table.row_header_cell(temp_file.title, width=280),
         rx.table.cell(
             rx.button(
                 rx.icon(tag="trash-2"),
                 color_scheme="red",
                 on_click=lambda: AppState.cancel_upload(temp_file.title),  # type: ignore
             ),
-            width="20%",
+            width=100,
         ),
     )
 
@@ -92,7 +92,9 @@ def index() -> rx.Component:
                         rx.vstack(
                             mex_drop_logo(),
                             rx.divider(size="4"),
-                            rx.text("Please upload your files here.", size="2"),
+                            rx.text(
+                                "Please select and upload your files here.", size="2"
+                            ),
                             rx.upload(
                                 rx.vstack(
                                     rx.icon(

@@ -54,7 +54,7 @@ class AppState(rx.State):  # type: ignore
         """
         self.form_data = form_data
         x_system = form_data.get("x_system")
-        api_token = form_data.get("api_token")
+        api_token = form_data.get("api_key")
         authorized_x_systems = get_current_authorized_x_systems(api_key=api_token)
 
         if not is_authorized(str(x_system), authorized_x_systems):
