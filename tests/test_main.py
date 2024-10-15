@@ -1,6 +1,7 @@
 import pathlib
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import nest_asyncio
 import pytest
 from playwright.sync_api import Page, expect
 
@@ -32,6 +33,9 @@ def test_cancel_upload(app_state: AppState) -> None:
 
     assert len(app_state.temp_files) == 1
     assert app_state.temp_files[0].title == "file2"
+
+
+nest_asyncio.apply()
 
 
 @pytest.mark.asyncio(loop_scope="function")
