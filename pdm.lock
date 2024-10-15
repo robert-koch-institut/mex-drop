@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:5d80c1fbb3b885cff298c0cde554bb8202f4436520eb495b8fed1e552dee4e93"
+content_hash = "sha256:af01ae36d2a1d08a9a9be46de73f19ab7a8f32bd3de5b7e6e0dab3ef20316cb1"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -983,6 +983,17 @@ files = [
 ]
 
 [[package]]
+name = "nest-asyncio"
+version = "1.6.0"
+requires_python = ">=3.5"
+summary = "Patch asyncio to allow nested event loops"
+groups = ["dev"]
+files = [
+    {file = "nest_asyncio-1.6.0-py3-none-any.whl", hash = "sha256:87af6efd6b5e897c81050477ef65c62e2b2f35d51703cae01aff2905b1852e1c"},
+    {file = "nest_asyncio-1.6.0.tar.gz", hash = "sha256:6f172d5449aca15afd6c646851f4e31e02c598d553a667e38cafa997cfec55fe"},
+]
+
+[[package]]
 name = "nh3"
 version = "0.2.18"
 summary = "Python bindings to the ammonia HTML sanitization library."
@@ -1390,17 +1401,17 @@ files = [
 ]
 
 [[package]]
-name = "pytest-aio"
-version = "1.9.0"
-requires_python = "<4.0,>=3.9"
-summary = "Pytest plugin for testing async python code"
+name = "pytest-asyncio"
+version = "0.24.0"
+requires_python = ">=3.8"
+summary = "Pytest support for asyncio"
 groups = ["dev"]
 dependencies = [
-    "pytest",
+    "pytest<9,>=8.2",
 ]
 files = [
-    {file = "pytest_aio-1.9.0-py3-none-any.whl", hash = "sha256:12a72816224863d402921b325086b398df8a0f4ca767639968a8097d762ac548"},
-    {file = "pytest_aio-1.9.0.tar.gz", hash = "sha256:aa72e6ca4672b7f5a08ce44e7c6254dca988d3d578bf0c9485a47c3bff393ac1"},
+    {file = "pytest_asyncio-0.24.0-py3-none-any.whl", hash = "sha256:a811296ed596b69bf0b6f3dc40f83bcaf341b155a269052d82efa2b25ac7037b"},
+    {file = "pytest_asyncio-0.24.0.tar.gz", hash = "sha256:d081d828e576d85f875399194281e92bf8a68d60d72d1a2faf2feddb6c46b276"},
 ]
 
 [[package]]

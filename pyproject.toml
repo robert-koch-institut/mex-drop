@@ -24,7 +24,8 @@ optional-dependencies.dev = [
     "pytest>=8.3.2,<9",
     "ruff>=0.5.7,<1",
     "sphinx>=8.0.2,<9",
-    "pytest-aio>=1.9.0",
+    "nest-asyncio>=1.6.0",
+    "pytest-asyncio>=0.24.0",
 ]
 
 [project.scripts]
