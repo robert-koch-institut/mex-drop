@@ -14,11 +14,7 @@ ACCEPTED_FILE_FORMATS = {
 
 
 def mex_drop_logo() -> rx.Component:
-    """Return the mex-drop logo with icon and label.
-
-    Returns:
-        rx.Component: A component with style, event trigger and other props
-    """
+    """Return the mex-drop logo with icon and label."""
     return rx.hstack(
         rx.icon(
             "droplets",
