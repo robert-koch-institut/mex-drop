@@ -1,10 +1,9 @@
 import pathlib
-from typing import Any
 
 import reflex as rx
 from reflex.event import EventSpec
 
-from mex.drop.files_io import write_to_file
+from mex.drop.files_io import ALLOWED_CONTENT_TYPES, write_to_file
 from mex.drop.security import get_current_authorized_x_systems, is_authorized
 from mex.drop.settings import DropSettings
 
@@ -22,13 +21,6 @@ class AppState(rx.State):
     temp_files: list[TempFile] = []
     form_data: dict[str, str] = {}
 
-    @classmethod
-    def get_instance(cls) -> Any:
-        """Get the instance of the class."""
-        if cls._instance is None:
-            cls._instance = cls()
-        return cls._instance
-
     async def handle_upload(self, files: list[rx.UploadFile]) -> EventSpec | None:
         """Handle the upload of file(s) and save them to the temporary file list.
 
@@ -40,10 +32,17 @@ class AppState(rx.State):
             filename is found. Otherwise, returns None.
         """
         for file in files:
+            if file.content_type not in ALLOWED_CONTENT_TYPES:
+                return rx.toast.error(
+                    f"File format not supported. Accepted formats:"
+                    f"{', '.join(ALLOWED_CONTENT_TYPES.values())}",
+                    close_button=True,
+                )
             if any(item.title == str(file.filename) for item in self.temp_files):
                 return rx.toast.error(
                     "Duplicate filename. "
-                    "Please make sure to not upload the same file twice."
+                    "Please make sure "
+                    "to not upload the same file twice."
                 )
             content = await file.read()
             self.temp_files.append(TempFile(title=str(file.filename), content=content))
@@ -53,8 +52,7 @@ class AppState(rx.State):
         """Submit temporarily uploaded file(s) and save in corresponding directory.
 
         Args:
-            form_data: api token and x-system from input field
-
+            form_data: api token and x system from input field
         Returns:
             EventSpec: Reflex event, toast info message
         """
