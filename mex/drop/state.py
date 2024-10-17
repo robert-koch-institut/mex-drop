@@ -59,8 +59,7 @@ class AppState(rx.State):
             if any(item.title == str(file.filename) for item in self.temp_files):
                 return rx.toast.error(
                     "Duplicate filename. "
-                    "Please make sure "
-                    "to not upload the same file twice."
+                    "Please make sure to not upload the same file twice."
                 )
             content = await file.read()
             self.temp_files.append(TempFile(title=str(file.filename), content=content))
