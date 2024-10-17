@@ -69,7 +69,8 @@ class AppState(rx.State):
         """Submit temporarily uplaoded file(s) and save in corresponding directory.
 
         Args:
-            form_data: api token and x sysem from input field
+            form_data: api token and x-system from input field
+
         Returns:
             EventSpec: Reflex event, toast info message
         """
