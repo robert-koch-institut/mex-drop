@@ -66,7 +66,7 @@ class AppState(rx.State):
         return None
 
     async def submit_data(self, form_data: dict[str, str]) -> EventSpec:
-        """Submit temporarily uplaoded file(s) and save in corresponding directory.
+        """Submit temporarily uploaded file(s) and save in corresponding directory.
 
         Args:
             form_data: api token and x-system from input field
