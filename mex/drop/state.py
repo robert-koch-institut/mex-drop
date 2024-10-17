@@ -10,7 +10,7 @@ from mex.drop.settings import DropSettings
 
 
 class TempFile(rx.Base):
-    """Helper class to handle temporarily uplaoded files."""
+    """Helper class to handle temporarily uploaded files."""
 
     title: str
     content: bytes
