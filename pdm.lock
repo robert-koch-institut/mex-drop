@@ -5,8 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:af01ae36d2a1d08a9a9be46de73f19ab7a8f32bd3de5b7e6e0dab3ef20316cb1"
-
+content_hash = "sha256:cfdb59ae4905a967c13a596b5ac5c59fba552db6acce49bd87836e3dc8876aaf"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -577,7 +576,6 @@ files = [
 [[package]]
 name = "httptools"
 version = "0.6.4"
-
 requires_python = ">=3.8.0"
 summary = "A collection of framework independent HTTP protocol utils."
 groups = ["default"]
@@ -1039,6 +1037,7 @@ version = "1.6.0"
 requires_python = ">=3.5"
 summary = "Patch asyncio to allow nested event loops"
 groups = ["dev"]
+marker = "python_version == \"3.11\""
 files = [
     {file = "nest_asyncio-1.6.0-py3-none-any.whl", hash = "sha256:87af6efd6b5e897c81050477ef65c62e2b2f35d51703cae01aff2905b1852e1c"},
     {file = "nest_asyncio-1.6.0.tar.gz", hash = "sha256:6f172d5449aca15afd6c646851f4e31e02c598d553a667e38cafa997cfec55fe"},
@@ -1478,6 +1477,7 @@ version = "0.24.0"
 requires_python = ">=3.8"
 summary = "Pytest support for asyncio"
 groups = ["dev"]
+marker = "python_version == \"3.11\""
 dependencies = [
     "pytest<9,>=8.2",
 ]
