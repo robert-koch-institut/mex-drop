@@ -28,10 +28,12 @@ nest_asyncio.apply()
 async def test_handle_upload(app_state: AppState) -> None:
     file1 = MagicMock()
     file1.filename = "file1.csv"
+    file1.content_type = "text/csv"
     file1.read = AsyncMock(return_value=b"content1")
 
     file2 = MagicMock()
     file2.filename = "file2.xml"
+    file2.content_type = "application/xml"
     file2.read = AsyncMock(return_value=b"content2")
 
     await app_state.handle_upload([file1, file2])
@@ -47,6 +49,7 @@ async def test_handle_upload(app_state: AppState) -> None:
 async def test_handle_upload_duplicate(app_state: AppState) -> None:
     file1 = MagicMock()
     file1.filename = "file1.xml"
+    file1.content_type = "application/xml"
     file1.read = AsyncMock(return_value=b"content1")
 
     app_state.temp_files.append(TempFile(title="file1.xml", content=b"content1"))
