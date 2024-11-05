@@ -30,10 +30,15 @@ nest_asyncio.apply()
 
 def get_test_key() -> str:
     settings = DropSettings.get()
-    secret_key = [  # noqa: RUF015
+    secret_key = [
         key for key, x_sys in settings.drop_api_key_database.items() if "test" in x_sys
-    ][0]
-    return secret_key.get_secret_value()
+    ]
+    if not secret_key:
+        raise ValueError(
+            "Test key not found in Database."
+            f"{[item for item in settings.drop_api_key_database.items()]}"
+        )
+    return secret_key[0].get_secret_value()
 
 
 @pytest.mark.asyncio(loop_scope="function")
