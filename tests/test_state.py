@@ -30,9 +30,9 @@ nest_asyncio.apply()
 
 def get_test_key() -> str:
     settings = DropSettings.get()
-    secret_key = next(
+    secret_key = [  # noqa: RUF015
         key for key, x_sys in settings.drop_api_key_database.items() if "test" in x_sys
-    )
+    ][0]
     return secret_key.get_secret_value()
 
 
