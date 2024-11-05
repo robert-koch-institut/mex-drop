@@ -1,7 +1,7 @@
 import reflex as rx
 
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
-from mex.drop.state import AppState, TempFile
+from mex.drop.upload.state import AppState, TempFile
 
 
 def mex_drop_logo() -> rx.Component:
@@ -149,6 +149,7 @@ def create_file_handling_card() -> rx.Component:
     )
 
 
+@rx.page(route="/upload")
 def index() -> rx.Component:
     """Return the index for the drop app."""
     return rx.box(
