@@ -3,8 +3,12 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import nest_asyncio
 import pytest
+from playwright.sync_api import Page, expect
 
+from mex.drop.settings import DropSettings
 from mex.drop.state import AppState, TempFile
+
+TESTDATA_DIR = pathlib.Path(__file__).parent / "test_files"
 
 
 @pytest.fixture
@@ -22,6 +26,14 @@ def test_cancel_upload(app_state: AppState) -> None:
 
 
 nest_asyncio.apply()
+
+
+def get_test_key() -> str:
+    settings = DropSettings.get()
+    secret_key = next(
+        key for key, x_sys in settings.drop_api_key_database.items() if "test" in x_sys
+    )
+    return secret_key.get_secret_value()
 
 
 @pytest.mark.asyncio(loop_scope="function")
@@ -83,3 +95,60 @@ async def test_submit_data(app_state: AppState) -> None:
             b"content1", pathlib.Path("/mock/path/system1/file1.xml")
         )
         assert len(app_state.temp_files) == 0
+
+
+@pytest.mark.integration()
+def test_upload(page: Page) -> None:
+    page.goto("http://localhost:3000")
+
+    with page.expect_file_chooser() as fc_info:
+        page.locator("role=button[name='Select Files']").click()
+    file_chooser = fc_info.value
+    file_chooser.set_files(
+        str(TESTDATA_DIR / "test.csv"),
+    )
+
+    expect(page.get_by_text("test.csv")).to_be_visible()
+    page.screenshot(path="tests_test_main_test_index-after-select.jpeg")
+    page.get_by_placeholder("API key").fill(get_test_key())
+    page.get_by_placeholder("x-system").fill("test")
+    page.screenshot(path="tests_test_main_test_index-after-credentials.jpeg")
+    page.get_by_text("Submit").click()
+
+    page.screenshot(path="tests_test_main_test_index-after-submit.jpeg")
+
+    expect(page.get_by_text("test.csv")).not_to_be_visible()
+
+    settings = DropSettings.get()
+    expected_file = pathlib.Path(settings.drop_directory, "test", "test.csv")
+    assert expected_file.read_text() == (TESTDATA_DIR / "test.csv").read_text()
+
+
+@pytest.mark.integration()
+def test_empty_upload(page: Page) -> None:
+    page.goto("http://localhost:3000")
+
+    page.get_by_placeholder("API key").fill(get_test_key())
+    page.get_by_placeholder("x-system").fill("test")
+    page.get_by_text("Submit").click()
+
+    expect(page.locator("text=No files to upload.")).to_be_visible()
+
+
+@pytest.mark.integration()
+def test_remove_selected_file(page: Page) -> None:
+    page.goto("http://localhost:3000")
+
+    with page.expect_file_chooser() as fc_info:
+        page.locator("role=button[name='Select Files']").click()
+    file_chooser = fc_info.value
+    file_chooser.set_files(
+        str(TESTDATA_DIR / "test.xml"),
+    )
+
+    expect(page.get_by_text("test.xml")).to_be_visible()
+    page.screenshot(path="tests_test_main_test_index-after-select2.jpeg")
+    page.get_by_role("button").and_(page.get_by_title("remove file")).click()
+    page.screenshot(path="tests_test_main_test_index-after-delete.jpeg")
+
+    expect(page.get_by_text("test.xml")).not_to_be_visible()

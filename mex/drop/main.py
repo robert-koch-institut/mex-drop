@@ -5,11 +5,7 @@ from mex.drop.state import AppState, TempFile
 
 
 def mex_drop_logo() -> rx.Component:
-    """Return the mex-drop logo with icon and label.
-
-    Returns:
-        rx.Component: A component with style, event trigger and other props
-    """
+    """Return the mex-drop logo with icon and label."""
     return rx.hstack(
         rx.icon(
             "droplets",
@@ -25,11 +21,7 @@ def mex_drop_logo() -> rx.Component:
 
 
 def uploaded_file_display() -> rx.Component:
-    """Displays list of uploaded files from drop interface.
-
-    Returns:
-        rx.Component: A component with style, event trigger and other props
-    """
+    """Displays list of uploaded files from drop interface."""
     return rx.table.root(
         rx.table.header(
             rx.table.row(
@@ -52,15 +44,13 @@ def create_file_row(temp_file: TempFile) -> rx.Component:
 
     Args:
         temp_file (TempFile): temporarily uploaded file
-
-    Returns:
-        rx.Component: A component with style, event trigger and other props
     """
     return rx.table.row(
         rx.table.row_header_cell(temp_file.title, width=280),
         rx.table.cell(
             rx.button(
                 rx.icon(tag="trash-2"),
+                title="remove file",
                 color_scheme="red",
                 on_click=lambda: AppState.cancel_upload(temp_file.title),  # type: ignore[arg-type,call-arg]
             ),
@@ -94,7 +84,7 @@ def create_drag_and_drop() -> rx.Component:
                     ),
                     rx.button(
                         "Select Files",
-                        color="var(--white-1)",
+                        color="var(--white)",
                         bg="royalblue",
                     ),
                     align="center",
@@ -160,11 +150,7 @@ def create_file_handling_card() -> rx.Component:
 
 
 def index() -> rx.Component:
-    """Return the index for the drop app.
-
-    Returns:
-        rx.Component: A component with style, event trigger and other props
-    """
+    """Return the index for the drop app."""
     return rx.box(
         rx.center(
             rx.container(
