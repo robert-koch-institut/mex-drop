@@ -24,11 +24,20 @@ TEST_USER_DATABASE = {
 
 
 @pytest.fixture(autouse=True)
-def settings(tmp_path: Path) -> DropSettings:
+def isolate_work_dir(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, is_integration_test: bool
+) -> None:
+    """Set the `MEX_WORK_DIR` environment variable to a temp path for all tests."""
+    if not is_integration_test:
+        monkeypatch.setenv("MEX_WORK_DIR", str(tmp_path))
+
+
+@pytest.fixture(autouse=True)
+def settings(is_integration_test: bool) -> DropSettings:
     """Load the settings for this pytest session."""
     settings = DropSettings.get()
-    settings.drop_directory = str(tmp_path)
-    settings.drop_api_key_database = TEST_USER_DATABASE
+    if not is_integration_test:
+        settings.drop_api_key_database = TEST_USER_DATABASE
     return settings
 
 

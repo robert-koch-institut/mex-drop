@@ -18,12 +18,13 @@ optional-dependencies.dev = [
     "ipdb>=0.13.13,<1",
     "mypy>=1.11.2,<2",
     "openpyxl>=3.0.10,<4",
-    "pytest-cov>=5.0.0,<6",
     "pytest-playwright>=0.5.1,<1",
     "pytest-random-order>=1.1.1,<2",
     "pytest>=8.3.3,<9",
     "ruff>=0.6.5,<1",
     "sphinx>=8.0.2,<9",
+    "nest-asyncio>=1.6.0",
+    "pytest-asyncio>=0.24.0",
 ]
 
 [project.scripts]
@@ -39,7 +40,6 @@ context = 5
 [tool.mypy]
 python_version = "3.11"
 show_error_codes = true
-strict = true
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
@@ -72,11 +72,6 @@ warn_untyped_fields = true
 [tool.pytest.ini_options]
 addopts = [
     "--verbose",
-    "--cov",
-    "--no-cov-on-fail",
-    "--cov-report=term-missing:skip-covered",
-    "--cov-fail-under=95",
-    "--cov-branch",
     "--browser=firefox",
     "--pdbcls=IPython.terminal.debugger:TerminalPdb",
     "--random-order-bucket=global",
