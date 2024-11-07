@@ -21,6 +21,7 @@ def login_form() -> rx.Component:
                 rx.input(
                     placeholder="Enter X System name",
                     on_change=LoginState.set_x_system,
+                    required=True,
                     type="text",
                     size="3",
                     width="100%",
@@ -39,6 +40,7 @@ def login_form() -> rx.Component:
                 rx.input(
                     placeholder="Enter API key",
                     on_change=LoginState.set_api_key,
+                    required=True,
                     type="password",
                     size="3",
                     width="100%",
@@ -47,7 +49,7 @@ def login_form() -> rx.Component:
                 spacing="2",
                 width="100%",
             ),
-            rx.button("Log in", on_change=LoginState.login, size="3", width="100%"),
+            rx.button("Log in", on_click=LoginState.login_user, size="3", width="100%"),
             spacing="6",
             width="100%",
         ),
@@ -57,19 +59,23 @@ def login_form() -> rx.Component:
     )
 
 
-def index() -> rx.Component:
+def login() -> rx.Component:
     """Return the index for the login component."""
-    return rx.center(
-        rx.card(
-            rx.vstack(
-                mex_drop_logo(),
-                rx.divider(size="4"),
-                login_form(),
-                spacing="4",
+    return rx.box(
+        rx.center(
+            rx.card(
+                rx.vstack(
+                    mex_drop_logo(),
+                    rx.divider(size="4"),
+                    login_form(),
+                    spacing="4",
+                ),
+                top="20vh",
+                width="400px",
+                variant="classic",
+                custom_attrs={"data-testid": "login-card"},
             ),
-            top="20vh",
-            width="400px",
-            variant="classic",
-            custom_attrs={"data-testid": "login-card"},
         ),
+        background_color="var(--gray-2)",
+        min_height="100vh",
     )

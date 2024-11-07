@@ -2,10 +2,10 @@ import reflex as rx
 from reflex.components.radix import themes
 
 from mex.drop.api import check_system_status, router
-from mex.drop.login.main import index as login_index
+from mex.drop.login.main import login
 from mex.drop.settings import DropSettings
+from mex.drop.state import State
 from mex.drop.upload.main import index
-from mex.drop.upload.state import State
 
 app = rx.App(
     html_lang="en",
@@ -15,14 +15,13 @@ app.add_page(
     index,
     route="/",
     title="MEx Drop",
-    on_load=State.check_login,
+    on_load=State.check_login,  # type: ignore
 )
 app.add_page(
-    login_index,
+    login,
     route="/login",
     title="MEx Drop | Login",
 )
-
 app.api.add_api_route(
     "/_system/check",
     check_system_status,

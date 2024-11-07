@@ -4,7 +4,6 @@ import reflex as rx
 from reflex.event import EventSpec
 
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES, write_to_file
-from mex.drop.security import get_current_authorized_x_systems, is_authorized
 from mex.drop.settings import DropSettings
 from mex.drop.state import State
 
@@ -49,32 +48,24 @@ class AppState(State):
             self.temp_files.append(TempFile(title=str(file.filename), content=content))
         return None
 
-    async def submit_data(self, form_data: dict[str, str]) -> EventSpec:
+    async def submit_data(self) -> EventSpec:
         """Submit temporarily uploaded file(s) and save in corresponding directory.
 
-        Args:
-            form_data: api token and x system from input field
         Returns:
             EventSpec: Reflex event, toast info message
         """
-        self.form_data = form_data
-        x_system = form_data.get("x_system")
-        api_token = form_data.get("api_key")
-        authorized_x_systems = get_current_authorized_x_systems(api_key=api_token)
-
-        if not is_authorized(str(x_system), authorized_x_systems):
-            return rx.toast.error(
-                "API Key not authorized to drop data for this x_system.",
-                close_button=True,
-            )
-
         if not self.temp_files:
             return rx.toast.error("No files to upload.", close_button=True)
+
+        if not self.user:
+            return rx.toast.error("No User logged in.", close_button=True)
 
         settings = DropSettings.get()
         for file in self.temp_files:
             entity_type = str(file.title)
-            out_file = pathlib.Path(settings.drop_directory, str(x_system), entity_type)
+            out_file = pathlib.Path(
+                settings.drop_directory, str(self.user.x_system), entity_type
+            )
             await write_to_file(file.content, out_file)
 
         self.temp_files.clear()

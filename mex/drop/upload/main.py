@@ -1,23 +1,8 @@
 import reflex as rx
 
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
+from mex.drop.navigation import mex_drop_logo, nav_bar
 from mex.drop.upload.state import AppState, TempFile
-
-
-def mex_drop_logo() -> rx.Component:
-    """Return the mex-drop logo with icon and label."""
-    return rx.hstack(
-        rx.icon(
-            "droplets",
-            size=28,
-        ),
-        rx.heading(
-            "MEx Drop",
-            weight="medium",
-            style={"user-select": "none"},
-        ),
-        custom_attrs={"data-testid": "drop-logo"},
-    )
 
 
 def uploaded_file_display() -> rx.Component:
@@ -84,7 +69,6 @@ def create_drag_and_drop() -> rx.Component:
                     ),
                     rx.button(
                         "Select Files",
-                        color="var(--white)",
                         bg="royalblue",
                     ),
                     align="center",
@@ -117,30 +101,15 @@ def create_file_handling_card() -> rx.Component:
                 scrollbars="vertical",
                 height=287,
             ),
-            rx.form.root(
-                rx.hstack(
-                    rx.input(
-                        placeholder="API key",
-                        max_length=50,
-                        id="api_key",
-                        required=True,
-                    ),
-                    rx.input(
-                        placeholder="x-system",
-                        max_length=50,
-                        id="x-system",
-                        required=True,
-                    ),
+            rx.hstack(
+                rx.center(
                     rx.button(
                         "Submit",
-                        type="submit",
-                        width="20%",
-                        color="var(--white)",
+                        on_click=AppState.submit_data,
                         bg="royalblue",
                     ),
                 ),
-                on_submit=AppState.submit_data,
-                reset_on_submit=False,
+                width="100%",
             ),
         ),
         top="20vh",
@@ -153,6 +122,7 @@ def create_file_handling_card() -> rx.Component:
 def index() -> rx.Component:
     """Return the index for the drop app."""
     return rx.box(
+        nav_bar(),
         rx.center(
             rx.container(
                 rx.hstack(

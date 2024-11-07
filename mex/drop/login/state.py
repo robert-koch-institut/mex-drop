@@ -11,13 +11,23 @@ class LoginState(State):
     api_key: str
     x_system: str
 
-    def login(self) -> EventSpec:
+    def set_api_key(self, value: str) -> None:
+        """Set the API key."""
+        self.api_key = value
+        return
+
+    def set_x_system(self, value: str) -> None:
+        """Set the x_system."""
+        self.x_system = value
+        return
+
+    def login_user(self) -> EventSpec:
         """Log in the user."""
-        authorized_x_systems = get_current_authorized_x_systems(api_key=self.api_token)
+        authorized_x_systems = get_current_authorized_x_systems(api_key=self.api_key)
         if not is_authorized(str(self.x_system), authorized_x_systems):
             return rx.toast.error(
                 "API Key not authorized to drop data for this x_system.",
                 close_button=True,
             )
-        self.user = User(api_token=self.api_key, x_system=self.x_system)
+        self.user = User(api_key=self.api_key, x_system=self.x_system)
         return rx.redirect("/")

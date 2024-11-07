@@ -6,7 +6,7 @@ class User(rx.Base):
     """Info on the currently logged-in user."""
 
     x_system: str
-    api_token: str
+    api_key: str
 
 
 class State(rx.State):
