@@ -6,7 +6,7 @@ from mex.drop.types import XSystem
 
 @pytest.mark.parametrize(
     ("x_system", "authorized_x_systems", "expected"),
-    (
+    [
         (
             XSystem("foo"),
             [
@@ -22,7 +22,7 @@ from mex.drop.types import XSystem
             ],
             False,
         ),
-    ),
+    ],
 )
 def test_is_authorized(
     x_system: XSystem, authorized_x_systems: list[XSystem], expected: bool
