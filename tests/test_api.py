@@ -176,7 +176,7 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
         "unauthorized x_system",
     ),
 )
-def test_drop_data(
+def test_drop_data(  # noqa: PLR0913
     client: TestClient,
     api_key: str | None,
     x_system: XSystem,
@@ -211,22 +211,18 @@ def test_drop_data(
             with open(expected_file, "rb") as f:
                 saved_content = f.read()
 
-            if (
-                content_type == "text/csv"
-                or content_type == "text/tab-separated-values"
-            ):
+            if content_type in {"text/csv", "text/tab-separated-values"}:
                 assert saved_content.decode("utf-8") == expected_content
-            elif (
-                content_type
-                == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                or content_type == "application/vnd.ms-excel"
-            ):
+            elif content_type in {
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "application/vnd.ms-excel",
+            }:
                 original_df = pd.read_excel(BytesIO(expected_content), sheet_name=None)
                 saved_df = pd.read_excel(BytesIO(saved_content), sheet_name=None)
 
                 assert original_df.keys() == saved_df.keys()
 
-                for sheet in original_df.keys():
+                for sheet in original_df:
                     pd.testing.assert_frame_equal(original_df[sheet], saved_df[sheet])
 
 
@@ -301,7 +297,7 @@ def test_drop_data(
         "duplicate filename",
     ),
 )
-def test_drop_multiple_files(
+def test_drop_multiple_files(  # noqa: PLR0913
     client: TestClient,
     api_key: str | None,
     x_system: XSystem,

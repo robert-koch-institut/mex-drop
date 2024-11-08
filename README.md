@@ -72,14 +72,14 @@ components of the MEx project are open-sourced under the same license as well.
   - switch version `pyenv global 3.11`
   - run `.\mex.bat install`
 
-### linting and testing
+### Linting and testing
 
 - run all linters with `pdm lint`
 - run only unit tests with `pdm unit`
 - run unit and integration tests with `pdm test`
   - for integration tests you need to start `mex-drop` locally beforehand
 
-### updating dependencies
+### Updating dependencies
 
 - update boilerplate files with `cruft update`
 - update global requirements in `requirements.txt` manually
@@ -103,6 +103,6 @@ components of the MEx project are open-sourced under the same license as well.
 - run `pdm run {command} --help` to print instructions
 - run `pdm run {command} --debug` for interactive debugging
 
-### drop
+### Drop
 
 - `pdm run drop run` starts the drop service
