@@ -2,7 +2,7 @@ import pytest
 from playwright.sync_api import Page, expect
 
 
-@pytest.mark.integration()
+@pytest.mark.integration
 def test_index(page: Page) -> None:
     # load page and check card is visible
     page.goto("http://localhost:3000")

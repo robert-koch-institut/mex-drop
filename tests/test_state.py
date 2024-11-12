@@ -10,6 +10,8 @@ from mex.drop.state import AppState, TempFile
 
 TESTDATA_DIR = pathlib.Path(__file__).parent / "test_files"
 
+nest_asyncio.apply()
+
 
 @pytest.fixture
 def app_state() -> AppState:
@@ -25,19 +27,14 @@ def test_cancel_upload(app_state: AppState) -> None:
     assert app_state.temp_files[0].title == "file2"
 
 
-nest_asyncio.apply()
-
-
 def get_test_key() -> str:
     settings = DropSettings.get()
     secret_key = [
         key for key, x_sys in settings.drop_api_key_database.items() if "test" in x_sys
     ]
     if not secret_key:
-        raise ValueError(
-            "Test key not found in Database."
-            f"{[item for item in settings.drop_api_key_database.items()]}"
-        )
+        msg = f"Test key not found in database: {settings.drop_api_key_database}"
+        raise ValueError(msg)
     return secret_key[0].get_secret_value()
 
 
@@ -102,7 +99,7 @@ async def test_submit_data(app_state: AppState) -> None:
         assert len(app_state.temp_files) == 0
 
 
-@pytest.mark.integration()
+@pytest.mark.integration
 def test_upload(page: Page) -> None:
     page.goto("http://localhost:3000")
 
@@ -129,7 +126,7 @@ def test_upload(page: Page) -> None:
     assert expected_file.read_text() == (TESTDATA_DIR / "test.csv").read_text()
 
 
-@pytest.mark.integration()
+@pytest.mark.integration
 def test_empty_upload(page: Page) -> None:
     page.goto("http://localhost:3000")
 
@@ -140,7 +137,7 @@ def test_empty_upload(page: Page) -> None:
     expect(page.locator("text=No files to upload.")).to_be_visible()
 
 
-@pytest.mark.integration()
+@pytest.mark.integration
 def test_remove_selected_file(page: Page) -> None:
     page.goto("http://localhost:3000")
 

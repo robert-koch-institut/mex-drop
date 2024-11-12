@@ -1,5 +1,6 @@
 import pathlib
 
+from aiofile import async_open
 from fastapi import (
     HTTPException,
     UploadFile,
@@ -26,19 +27,17 @@ def check_duplicate_filenames(files: list[UploadFile]) -> None:
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Duplicate filename.",
         )
-    return
 
 
 async def write_to_file(content: bytes, out_file: pathlib.Path) -> None:
     """Write content to file. Parse content according to file type."""
     out_file.parent.mkdir(parents=True, exist_ok=True)
     try:
-        with open(out_file, "wb") as f:
-            f.write(content)
+        async with async_open(out_file, "wb") as f:
+            await f.write(content)
     except Exception as exc:
-        raise MExError(
-            f"Failed to write to file {out_file}: {exc!s}",
-        ) from exc
+        msg = f"Failed to write to file {out_file}: {exc!s}"
+        raise MExError(msg) from exc
 
 
 async def validate_file_extension(content_type: str | None, filename: str) -> None:
@@ -62,4 +61,3 @@ async def validate_file_extension(content_type: str | None, filename: str) -> No
             detail=f"Content type doesn't match extension: "
             f"{content_type} != {filename}",
         )
-    return

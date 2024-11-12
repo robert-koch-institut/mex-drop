@@ -118,8 +118,7 @@ def create_file_handling_card() -> rx.Component:
     )
 
 
-@rx.page(route="/upload")
-def index() -> rx.Component:
+def upload_index() -> rx.Component:
     """Return the index for the drop app."""
     return rx.box(
         nav_bar(),

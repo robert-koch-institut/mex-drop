@@ -59,7 +59,7 @@ def login_form() -> rx.Component:
     )
 
 
-def login() -> rx.Component:
+def login_index() -> rx.Component:
     """Return the index for the login component."""
     return rx.box(
         rx.center(

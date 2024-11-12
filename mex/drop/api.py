@@ -1,6 +1,7 @@
 import pathlib
 from typing import Annotated, Any
 
+from aiofile import async_open
 from fastapi import (
     APIRouter,
     Body,
@@ -233,8 +234,8 @@ async def download_data(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="The requested data was not found on this server.",
         )
-    with out_file.open() as handle:
-        return Response(content=handle.read())
+    async with async_open(out_file) as f:
+        return Response(content=await f.read())
 
 
 @router.get(

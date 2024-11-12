@@ -71,6 +71,4 @@ def is_authorized(x_system: XSystem, authorized_x_systems: list[XSystem]) -> boo
     Returns:
         True if x_system or `admin` is in the authorized_x_systems else False
     """
-    if {"admin", x_system} & set(authorized_x_systems):
-        return True
-    return False
+    return bool({"admin", x_system} & set(authorized_x_systems))
