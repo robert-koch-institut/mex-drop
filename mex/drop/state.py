@@ -23,4 +23,4 @@ class State(rx.State):
         """Check if the user is logged in."""
         if self.user is None:
             return rx.redirect("/")
-        return rx.redirect("/upload")
+        return None
