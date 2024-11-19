@@ -15,6 +15,7 @@ dependencies = [
     "starlette>=0.37,<1",
     "reflex>=0.5,<0.6.4",
 ]
+
 optional-dependencies.dev = [
     "ipdb>=0.13,<1",
     "mypy>=1,<2",
