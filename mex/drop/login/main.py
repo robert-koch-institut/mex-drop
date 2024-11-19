@@ -20,7 +20,7 @@ def login_form() -> rx.Component:
                 ),
                 rx.input(
                     placeholder="Enter X System name",
-                    on_change=LoginState.set_x_system,
+                    on_change=LoginState.set_x_system,  # type: ignore  # noqa: PGH003
                     required=True,
                     type="text",
                     size="3",
@@ -39,7 +39,7 @@ def login_form() -> rx.Component:
                 ),
                 rx.input(
                     placeholder="Enter API key",
-                    on_change=LoginState.set_api_key,
+                    on_change=LoginState.set_api_key,  # type: ignore  # noqa: PGH003
                     required=True,
                     type="password",
                     size="3",
@@ -49,7 +49,7 @@ def login_form() -> rx.Component:
                 spacing="2",
                 width="100%",
             ),
-            rx.button("Log in", on_click=LoginState.login_user, size="3", width="100%"),
+            rx.button("Log in", on_click=LoginState.login_user, size="3", width="100%"),  # type: ignore  # noqa: PGH003
             spacing="6",
             width="100%",
         ),

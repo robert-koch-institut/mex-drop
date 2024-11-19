@@ -26,25 +26,26 @@ def navbar_link(text: str, url: str) -> rx.Component:
 
 def nav_bar() -> rx.Component:
     """Return the navigation bar with logo, page links and logout button."""
-    return rx.box(
+    return rx.card(
         rx.hstack(
             mex_drop_logo(),
-            rx.divider(orientation="vertical", size="2"),
+            rx.divider(size="2", orientation="vertical"),
             rx.hstack(
                 navbar_link("Upload", "/upload"),
                 navbar_link("File List", "/file-history"),
-                justify="end",
+                justify="start",
                 spacing="5",
             ),
+            rx.spacer(spacing="4"),
             rx.button(
                 "Logout",
-                on_click=State.logout,
+                on_click=State.logout,  # type: ignore  # noqa: PGH003
                 size="3",
                 bg="royalblue",
             ),
             justify="between",
             align_items="center",
         ),
-        padding="2em",
+        size="2",
         width="100%",
     )

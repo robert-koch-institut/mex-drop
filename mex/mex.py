@@ -14,13 +14,13 @@ app = rx.App(
 )
 app.add_page(
     upload_index,
-    route="/",
+    route="/upload",
     title="MEx Drop",
-    on_load=State.check_login,
+    on_load=State.check_login,  # type: ignore  # noqa: PGH003
 )
 app.add_page(
     login_index,
-    route="/login",
+    route="/",
     title="MEx Drop | Login",
 )
 app.add_page(

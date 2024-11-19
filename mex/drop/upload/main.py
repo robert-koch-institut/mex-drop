@@ -81,7 +81,6 @@ def create_drag_and_drop() -> rx.Component:
             ),
             spacing="4",
         ),
-        top="20vh",
         width="100%",
         height="100%",
         padding="15px",
@@ -102,17 +101,15 @@ def create_file_handling_card() -> rx.Component:
                 height=287,
             ),
             rx.hstack(
-                rx.center(
-                    rx.button(
-                        "Submit",
-                        on_click=AppState.submit_data,
-                        bg="royalblue",
-                    ),
+                rx.spacer(spacing="3"),
+                rx.button(
+                    "Submit",
+                    on_click=AppState.submit_data,
+                    bg="royalblue",
                 ),
                 width="100%",
             ),
         ),
-        top="20vh",
         width="100%",
         height="100%",
     )
@@ -127,11 +124,12 @@ def upload_index() -> rx.Component:
                 rx.hstack(
                     create_drag_and_drop(),
                     create_file_handling_card(),
-                    top="50vh",
                     width="100%",
+                    margin="5em",
                 )
             )
         ),
         background_color="var(--gray-2)",
         min_height="100vh",
+        padding="2em",
     )

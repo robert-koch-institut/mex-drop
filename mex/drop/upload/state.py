@@ -19,7 +19,6 @@ class AppState(State):
     """The app state."""
 
     temp_files: list[TempFile] = []
-    form_data: dict[str, str] = {}
 
     async def handle_upload(self, files: list[rx.UploadFile]) -> EventSpec | None:
         """Handle the upload of file(s) and save them to the temporary file list.

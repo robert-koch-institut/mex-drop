@@ -17,10 +17,10 @@ class State(rx.State):
     def logout(self) -> EventSpec:
         """Log out the user."""
         self.reset()
-        return rx.redirect("/login")
+        return rx.redirect("/")
 
     def check_login(self) -> EventSpec | None:
         """Check if the user is logged in."""
         if self.user is None:
-            return rx.redirect("/login")
-        return None
+            return rx.redirect("/")
+        return rx.redirect("/upload")
