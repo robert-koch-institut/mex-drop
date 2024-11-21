@@ -33,7 +33,7 @@ class AppState(State):
         for file in files:
             if file.content_type not in ALLOWED_CONTENT_TYPES:
                 return rx.toast.error(
-                    f"File format not supported. Accepted formats:"
+                    f"File format not supported. Accepted formats: "
                     f"{', '.join(ALLOWED_CONTENT_TYPES.values())}",
                     close_button=True,
                 )
