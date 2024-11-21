@@ -1,7 +1,7 @@
 import reflex as rx
 
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
-from mex.drop.navigation import mex_drop_logo, nav_bar
+from mex.drop.navigation import nav_bar
 from mex.drop.upload.state import AppState, TempFile
 
 
@@ -48,7 +48,7 @@ def create_drag_and_drop() -> rx.Component:
     """Create card for drag and drop area for file selection."""
     return rx.card(
         rx.vstack(
-            mex_drop_logo(),
+            rx.text("File Upload", size="3", weight="bold"),
             rx.divider(size="4"),
             rx.text("Please select and upload your files here.", size="2"),
             rx.upload(
@@ -98,13 +98,13 @@ def create_file_handling_card() -> rx.Component:
                 ),
                 type="always",
                 scrollbars="vertical",
-                height=287,
+                height=285,
             ),
             rx.hstack(
                 rx.spacer(spacing="3"),
                 rx.button(
                     "Submit",
-                    on_click=AppState.submit_data,
+                    on_click=AppState.submit_data,  # type: ignore[call-arg]
                     bg="royalblue",
                 ),
                 width="100%",

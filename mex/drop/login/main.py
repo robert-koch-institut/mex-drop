@@ -1,7 +1,7 @@
 import reflex as rx
 
 from mex.drop.login.state import LoginState
-from mex.drop.upload.main import mex_drop_logo
+from mex.drop.navigation import mex_drop_logo
 
 
 def login_form() -> rx.Component:
