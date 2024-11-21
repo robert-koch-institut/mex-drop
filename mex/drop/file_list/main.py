@@ -25,4 +25,5 @@ def file_history_index() -> rx.Component:
         ),
         background_color="var(--gray-2)",
         min_height="100vh",
+        padding="2em",
     )
