@@ -11,14 +11,6 @@ class LoginState(State):
     api_key: str
     x_system: str
 
-    def set_api_key(self, value: str) -> None:
-        """Set the API key."""
-        self.api_key = value
-
-    def set_x_system(self, value: str) -> None:
-        """Set the x_system."""
-        self.x_system = value
-
     def login_user(self) -> EventSpec:
         """Log in the user."""
         authorized_x_systems = get_current_authorized_x_systems(api_key=self.api_key)
