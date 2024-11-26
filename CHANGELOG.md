@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - mini UI for mex-drop users
+- log in feature for mex-drop UI users
 
 ### Changes
 

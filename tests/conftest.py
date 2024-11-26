@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from pathlib import Path
 
 import pytest
@@ -45,3 +46,20 @@ def settings(is_integration_test: bool) -> DropSettings:
 def client() -> TestClient:
     """Return a fastAPI test client initialized with our app."""
     return TestClient(app.api)
+
+
+@pytest.fixture
+def get_test_key() -> Callable[[str], str]:
+    def _get_test_key(system: str) -> str:
+        settings = DropSettings.get()
+        secret_key = [
+            key
+            for key, x_sys in settings.drop_api_key_database.items()
+            if system in x_sys
+        ]
+        if not secret_key:
+            msg = f"Test key not found in database: {settings.drop_api_key_database}"
+            raise ValueError(msg)
+        return secret_key[0].get_secret_value()
+
+    return _get_test_key

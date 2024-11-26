@@ -1,23 +1,8 @@
 import reflex as rx
 
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
-from mex.drop.state import AppState, TempFile
-
-
-def mex_drop_logo() -> rx.Component:
-    """Return the mex-drop logo with icon and label."""
-    return rx.hstack(
-        rx.icon(
-            "droplets",
-            size=28,
-        ),
-        rx.heading(
-            "MEx Drop",
-            weight="medium",
-            style={"user-select": "none"},
-        ),
-        custom_attrs={"data-testid": "drop-logo"},
-    )
+from mex.drop.navigation import nav_bar
+from mex.drop.upload.state import AppState, TempFile
 
 
 def uploaded_file_display() -> rx.Component:
@@ -63,7 +48,7 @@ def create_drag_and_drop() -> rx.Component:
     """Create card for drag and drop area for file selection."""
     return rx.card(
         rx.vstack(
-            mex_drop_logo(),
+            rx.text("File Upload", size="3", weight="bold"),
             rx.divider(size="4"),
             rx.text("Please select and upload your files here.", size="2"),
             rx.upload(
@@ -84,7 +69,6 @@ def create_drag_and_drop() -> rx.Component:
                     ),
                     rx.button(
                         "Select Files",
-                        color="var(--white)",
                         bg="royalblue",
                     ),
                     align="center",
@@ -97,7 +81,6 @@ def create_drag_and_drop() -> rx.Component:
             ),
             spacing="4",
         ),
-        top="20vh",
         width="100%",
         height="100%",
         padding="15px",
@@ -115,53 +98,38 @@ def create_file_handling_card() -> rx.Component:
                 ),
                 type="always",
                 scrollbars="vertical",
-                height=287,
+                height=285,
             ),
-            rx.form.root(
-                rx.hstack(
-                    rx.input(
-                        placeholder="API key",
-                        max_length=50,
-                        id="api_key",
-                        required=True,
-                    ),
-                    rx.input(
-                        placeholder="x-system",
-                        max_length=50,
-                        id="x-system",
-                        required=True,
-                    ),
-                    rx.button(
-                        "Submit",
-                        type="submit",
-                        width="20%",
-                        color="var(--white)",
-                        bg="royalblue",
-                    ),
+            rx.hstack(
+                rx.spacer(spacing="3"),
+                rx.button(
+                    "Submit",
+                    on_click=AppState.submit_data,  # type: ignore[call-arg]
+                    bg="royalblue",
                 ),
-                on_submit=AppState.submit_data,
-                reset_on_submit=False,
+                width="100%",
             ),
         ),
-        top="20vh",
         width="100%",
         height="100%",
     )
 
 
-def index() -> rx.Component:
+def upload_index() -> rx.Component:
     """Return the index for the drop app."""
     return rx.box(
+        nav_bar(),
         rx.center(
             rx.container(
                 rx.hstack(
                     create_drag_and_drop(),
                     create_file_handling_card(),
-                    top="50vh",
                     width="100%",
+                    margin="5em",
                 )
             )
         ),
         background_color="var(--gray-2)",
         min_height="100vh",
+        padding="2em",
     )
