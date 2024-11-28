@@ -4,6 +4,7 @@ from reflex.event import EventSpec
 
 from mex.drop.api import check_system_status, router
 from mex.drop.file_history.main import file_history_index
+from mex.drop.file_history.state import ListState
 from mex.drop.login.main import login_index
 from mex.drop.settings import DropSettings
 from mex.drop.state import State
@@ -28,6 +29,7 @@ app.add_page(
     file_history_index,
     route="/file-history",
     title="MEx Drop | File History",
+    on_load=ListState.get_uploaded_files,  # type: ignore  # noqa: PGH003
 )
 app.api.add_api_route(
     "/_system/check",

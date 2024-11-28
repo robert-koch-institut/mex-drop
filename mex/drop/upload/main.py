@@ -125,7 +125,7 @@ def upload_index() -> rx.Component:
                     create_drag_and_drop(),
                     create_file_handling_card(),
                     width="100%",
-                    margin="5em",
+                    margin="4em",
                 )
             )
         ),
