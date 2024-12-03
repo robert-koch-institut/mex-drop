@@ -22,6 +22,7 @@ ENV BACKEND_PORT=8021
 ENV API_URL=http://0.0.0.0:8021
 ENV TELEMETRY_ENABLED=False
 ENV REFLEX_ENV_MODE=prod
+ENV REFLEX_DIR=/app/reflex
 
 WORKDIR /app
 
@@ -31,9 +32,10 @@ RUN adduser \
     --shell "/sbin/nologin" \
     --no-create-home \
     --uid "10001" \
-    mex
+    mex && \
+    chown mex .
 
-COPY . .
+COPY --chown=mex . .
 
 RUN --mount=type=cache,target=/root/.cache/pip pip install -r locked-requirements.txt --no-deps
 
