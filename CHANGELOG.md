@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - mini UI for mex-drop users
 - log in feature for mex-drop UI users
+- add entrypoint for starting only the api: `backend-only`
 
 ### Changes
 
