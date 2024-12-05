@@ -9,8 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- mini UI for mex-drop users
-- log in feature for mex-drop UI users
 - add entrypoint for starting only the api: `backend-only`
 
 ### Changes
@@ -21,9 +19,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- fix docker image and run target in Makefile
-
 ### Security
+
+## [0.8.0] - 2024-12-03
+
+### Added
+
+- mini UI for mex-drop users
+- log in feature for mex-drop UI users
+
+### Fixed
+
+- fix docker image and run target in Makefile
 
 ## [0.7.0] - 2024-10-07
 
