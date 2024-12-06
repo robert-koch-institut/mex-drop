@@ -29,7 +29,7 @@ app.add_page(
     file_history_index,
     route="/file-history",
     title="MEx Drop | File History",
-    on_load=ListState.get_uploaded_files,  # type: ignore  # noqa: PGH003
+    on_load=cast(ListState, ListState).get_uploaded_files,
 )
 app.api.add_api_route(
     "/_system/check",
