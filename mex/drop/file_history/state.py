@@ -12,7 +12,7 @@ class ListState(State):
 
     file_list: list[dict] = []
 
-    def get_uploaded_files(self) -> None:
+    def get_uploaded_files(self) -> EventSpec | None:
         """Get the list of files uploaded by the user to X System."""
         State.check_login()  # type: ignore # noqa: PGH003
         if not self.user:
