@@ -63,3 +63,21 @@ def get_test_key() -> Callable[[str], str]:
         return secret_key[0].get_secret_value()
 
     return _get_test_key
+
+
+@pytest.fixture
+def clean_test_directory() -> Callable[[], Path]:
+    def _clean_test_directory() -> Path:
+        """Fixture to clean a directory before a test."""
+        settings = DropSettings.get()
+        test_dir = Path(settings.drop_directory, "test")
+
+        test_dir.mkdir(parents=True, exist_ok=True)
+
+        for item in test_dir.iterdir():
+            if item.is_file():
+                item.unlink()
+
+        return test_dir
+
+    return _clean_test_directory
