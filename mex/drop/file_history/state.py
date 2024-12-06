@@ -14,7 +14,8 @@ class ListState(State):
 
     def get_uploaded_files(self) -> EventSpec | None:
         """Get the list of files uploaded by the user to X System."""
-        State.check_login()  # type: ignore # noqa: PGH003
+        from typing import cast
+        cast(State, State).check_login()
         if not self.user:
             return rx.toast.error("No User logged in.", close_button=True)
         settings = DropSettings.get()
