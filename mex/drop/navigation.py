@@ -32,7 +32,7 @@ def nav_bar() -> rx.Component:
             rx.divider(size="2", orientation="vertical"),
             rx.hstack(
                 navbar_link("Upload", "/upload"),
-                navbar_link("File List", "/file-history"),
+                navbar_link("File History", "/file-history"),
                 justify="start",
                 spacing="5",
             ),
