@@ -97,7 +97,7 @@ def create_file_handling_card() -> rx.Component:
                     uploaded_file_display(),
                 ),
                 type="always",
-                scrollbars="vertical",
+                scrollbars="both",
                 height=285,
             ),
             rx.hstack(

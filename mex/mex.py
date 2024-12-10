@@ -1,3 +1,5 @@
+from typing import cast
+
 import reflex as rx
 from reflex.components.radix import themes
 from reflex.event import EventSpec
@@ -18,7 +20,7 @@ app.add_page(
     upload_index,
     route="/upload",
     title="MEx Drop",
-    on_load=State.check_login,  # type: ignore  # noqa: PGH003
+    on_load=cast(State, State).check_login(),
 )
 app.add_page(
     login_index,
@@ -29,7 +31,7 @@ app.add_page(
     file_history_index,
     route="/file-history",
     title="MEx Drop | File History",
-    on_load=cast(ListState, ListState).get_uploaded_files,
+    on_load=cast(ListState, ListState).get_uploaded_files(),
 )
 app.api.add_api_route(
     "/_system/check",
