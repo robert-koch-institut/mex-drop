@@ -97,7 +97,7 @@ def create_file_handling_card() -> rx.Component:
                     uploaded_file_display(),
                 ),
                 type="always",
-                scrollbars="vertical",
+                scrollbars="both",
                 height=285,
             ),
             rx.hstack(
@@ -125,7 +125,7 @@ def upload_index() -> rx.Component:
                     create_drag_and_drop(),
                     create_file_handling_card(),
                     width="100%",
-                    margin="5em",
+                    margin="4em",
                 )
             )
         ),

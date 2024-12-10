@@ -1,3 +1,5 @@
+from typing import cast
+
 import reflex as rx
 
 from mex.drop.state import State
@@ -32,14 +34,14 @@ def nav_bar() -> rx.Component:
             rx.divider(size="2", orientation="vertical"),
             rx.hstack(
                 navbar_link("Upload", "/upload"),
-                navbar_link("File List", "/file-history"),
+                navbar_link("File History", "/file-history"),
                 justify="start",
                 spacing="5",
             ),
             rx.spacer(spacing="4"),
             rx.button(
                 "Logout",
-                on_click=State.logout,  # type: ignore  # noqa: PGH003
+                on_click=cast(State, State).logout(),
                 size="3",
                 bg="royalblue",
             ),
