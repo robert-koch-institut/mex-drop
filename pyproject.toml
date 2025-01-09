@@ -10,7 +10,7 @@ requires-python = ">=3.11,<3.13"
 dependencies = [
     "aiofile>=3,<4",
     "fastapi[standard]>=0.110,<1",
-    "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.42.0",
+    "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.45.0",
     "pydantic>=2,<3",
     "starlette>=0.37,<1",
     "reflex>=0.5,<0.6.4",
