@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- mex-drop UI shows file list with name and timestamps
 
 ### Changes
 
@@ -19,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [0.9.1] - 2025-01-09
+
+### Added
+- mex-drop UI shows file list with name and timestamps
 
 ## [0.9.0] - 2024-12-05
 
