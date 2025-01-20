@@ -116,6 +116,12 @@ ignore = [
 select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
+"mex/drop/sinks/json.py" = [
+    "A005",     # Allow custom json module to shadow standard-library
+]
+"mex/drop/types.py" = [
+    "A005",     # Allow custom types module to shadow standard-library
+]
 "docs/**" = [
     "INP001",   # Docs folder does not need to be a package
 ]
