@@ -24,7 +24,7 @@ optional-dependencies.dev = [
     "pytest-playwright>=0.5,<1",
     "pytest-random-order>=1,<2",
     "pytest>=8,<9",
-    "ruff>=0.7,<1",
+    "ruff>=0.9,<1",
     "sphinx>=8,<9",
 ]
 
