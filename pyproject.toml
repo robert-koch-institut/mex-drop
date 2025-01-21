@@ -20,7 +20,7 @@ optional-dependencies.dev = [
     "mypy>=1,<2",
     "nest-asyncio>=1,<2",
     "openpyxl>=3,<4",
-    "pytest-asyncio>=0.24,<1",
+    "pytest-asyncio<0.25.1,>=0.24",
     "pytest-playwright>=0.5,<1",
     "pytest-random-order>=1,<2",
     "pytest>=8,<9",
@@ -78,6 +78,7 @@ addopts = [
     "--pdbcls=IPython.terminal.debugger:TerminalPdb",
     "--random-order-bucket=global",
 ]
+asyncio_default_fixture_loop_scope = "fixture"
 markers = "integration: mark a test as integration test"
 
 [tool.ruff]
