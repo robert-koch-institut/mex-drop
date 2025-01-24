@@ -58,7 +58,7 @@ def create_drag_and_drop() -> rx.Component:
                         size=30,
                     ),
                     rx.text(
-                        "Drag and drop " "or click to select files",
+                        "Drag and drop or click to select files",
                         size="1",
                     ),
                     rx.text(

@@ -10,7 +10,7 @@ requires-python = ">=3.11,<3.13"
 dependencies = [
     "aiofile>=3,<4",
     "fastapi[standard]>=0.110,<1",
-    "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.45.0",
+    "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.47.0",
     "pydantic>=2,<3",
     "starlette>=0.37,<1",
     "reflex>=0.5,<0.6.4",
@@ -20,11 +20,10 @@ optional-dependencies.dev = [
     "mypy>=1,<2",
     "nest-asyncio>=1,<2",
     "openpyxl>=3,<4",
-    "pytest-asyncio>=0.24,<1",
     "pytest-playwright>=0.5,<1",
     "pytest-random-order>=1,<2",
     "pytest>=8,<9",
-    "ruff>=0.7,<1",
+    "ruff>=0.9,<1",
     "sphinx>=8,<9",
 ]
 
@@ -116,6 +115,12 @@ ignore = [
 select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
+"mex/drop/sinks/json.py" = [
+    "A005",     # Allow custom json module to shadow standard-library
+]
+"mex/drop/types.py" = [
+    "A005",     # Allow custom types module to shadow standard-library
+]
 "docs/**" = [
     "INP001",   # Docs folder does not need to be a package
 ]
