@@ -11,6 +11,11 @@ nest_asyncio.apply()
 
 
 @pytest.fixture
+def anyio_backend():
+    return "asyncio"
+
+
+@pytest.fixture
 def app_state() -> AppState:
     return AppState()
 
@@ -24,7 +29,7 @@ def test_cancel_upload(app_state: AppState) -> None:
     assert app_state.temp_files[0].title == "file2"
 
 
-@pytest.mark.asyncio(loop_scope="function")
+@pytest.mark.anyio
 async def test_handle_upload(app_state: AppState) -> None:
     file1 = MagicMock()
     file1.filename = "file1.csv"
@@ -45,7 +50,7 @@ async def test_handle_upload(app_state: AppState) -> None:
     assert app_state.temp_files[1].content == b"content2"
 
 
-@pytest.mark.asyncio(loop_scope="function")
+@pytest.mark.anyio
 async def test_handle_upload_duplicate(app_state: AppState) -> None:
     file1 = MagicMock()
     file1.filename = "file1.xml"
@@ -59,7 +64,7 @@ async def test_handle_upload_duplicate(app_state: AppState) -> None:
     assert len(app_state.temp_files) == 1
 
 
-@pytest.mark.asyncio(loop_scope="function")
+@pytest.mark.anyio
 async def test_submit_data(get_test_key) -> None:
     app_state = AppState(
         user=User(x_system="test_system", api_key=get_test_key("test_system"))
