@@ -4,15 +4,13 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from mex.drop.file_history.state import ListState
-from mex.drop.state import User
+from mex.drop.state import State
 
 
 @pytest.fixture
-def setup_list_state(get_test_key) -> ListState:
+def setup_list_state(app_state: State) -> ListState:
     """Fixture to set up ListState with a mock user."""
-    return ListState(
-        user=User(x_system="test_system", api_key=get_test_key("test_system"))
-    )
+    return ListState(parent_state=app_state)
 
 
 @patch("mex.drop.file_history.state.pathlib.Path")

@@ -15,8 +15,8 @@ class TempFile(rx.Base):
     content: bytes
 
 
-class AppState(State):
-    """The app state."""
+class UploadState(State):
+    """The state for the upload page."""
 
     temp_files: list[TempFile] = []
 

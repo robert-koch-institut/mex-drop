@@ -23,10 +23,10 @@ def login_x_system() -> rx.Component:
 def login_api_key() -> rx.Component:
     """Return a form field for the API key."""
     return rx.vstack(
-        rx.text("API key"),
+        rx.text("API Key"),
         rx.input(
             on_change=LoginState.set_api_key,
-            placeholder="API key",
+            placeholder="API Key",
             size="3",
             tab_index=2,
             type="password",
@@ -39,7 +39,7 @@ def login_api_key() -> rx.Component:
 def login_button() -> rx.Component:
     """Return a submit button for the login form."""
     return rx.button(
-        "Log in",
+        "Login",
         on_click=LoginState.login,
         size="3",
         tab_index=3,
@@ -47,6 +47,7 @@ def login_button() -> rx.Component:
             "padding": "0 var(--space-6)",
             "marginTop": "var(--space-4)",
         },
+        custom_attrs={"data-testid": "login-button"},
     )
 
 

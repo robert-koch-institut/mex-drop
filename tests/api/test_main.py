@@ -187,7 +187,7 @@ def test_drop_data(  # noqa: PLR0913
     settings: DropSettings,
 ) -> None:
     mocked_sink = AsyncMock(return_value=None)
-    monkeypatch.setattr(mex.drop.api, "json_sink", mocked_sink)
+    monkeypatch.setattr(mex.drop.api.main, "json_sink", mocked_sink)
 
     if api_key:
         client.headers.update({"X-API-Key": api_key})

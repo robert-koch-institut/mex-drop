@@ -18,7 +18,10 @@ def user_button() -> rx.Component:
 def user_menu() -> rx.Component:
     """Return a user menu with a trigger, the current X-System and a logout button."""
     return rx.menu.root(
-        rx.menu.trigger(user_button()),
+        rx.menu.trigger(
+            user_button(),
+            custom_attrs={"data-testid": "user-menu"},
+        ),
         rx.menu.content(
             rx.menu.item(cast(User, State.user).x_system, disabled=True),
             rx.menu.separator(),
@@ -27,7 +30,6 @@ def user_menu() -> rx.Component:
                 on_select=State.logout,
             ),
         ),
-        custom_attrs={"data-testid": "user-menu"},
     )
 
 

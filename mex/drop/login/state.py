@@ -13,12 +13,13 @@ class LoginState(State):
 
     @rx.event
     def login(self) -> EventSpec:
-        """Log in the user."""
+        """Login the user."""
         authorized_x_systems = get_current_authorized_x_systems(api_key=self.api_key)
         if is_authorized(str(self.x_system), authorized_x_systems):
             self.user = User(
                 api_key=self.api_key,
                 x_system=self.x_system,
             )
+            self.reset()  # reset api_key/x_system
             return rx.redirect("/")
         return rx.window_alert("Invalid credentials.")

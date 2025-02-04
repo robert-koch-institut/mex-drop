@@ -4,7 +4,7 @@ import reflex as rx
 
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
 from mex.drop.layout import page
-from mex.drop.upload.state import AppState, TempFile
+from mex.drop.upload.state import TempFile, UploadState
 
 
 def uploaded_file_display() -> rx.Component:
@@ -24,7 +24,7 @@ def uploaded_file_display() -> rx.Component:
             ),
             rx.table.body(
                 rx.foreach(
-                    AppState.temp_files,
+                    UploadState.temp_files,
                     create_file_row,
                 ),
             ),
@@ -52,7 +52,7 @@ def create_file_row(temp_file: TempFile) -> rx.Component:
                 title="Remove file",
                 color_scheme="tomato",
                 variant="ghost",
-                on_click=lambda: cast(AppState, AppState).cancel_upload(
+                on_click=lambda: cast(UploadState, UploadState).cancel_upload(
                     temp_file.title
                 ),
             ),
@@ -106,7 +106,7 @@ def create_drag_and_drop() -> rx.Component:
                     "padding": "var(--space-4)",
                     "margin": "var(--space-8) auto",
                 },
-                on_drop=cast(AppState, AppState).handle_upload(
+                on_drop=cast(UploadState, UploadState).handle_upload(
                     rx.upload_files(upload_id="file_upload_area")
                 ),
             ),
@@ -128,7 +128,7 @@ def create_file_handling_card() -> rx.Component:
                 rx.spacer(spacing="3"),
                 rx.button(
                     "Submit",
-                    on_click=AppState.submit_data,
+                    on_click=UploadState.submit_data,
                     color_scheme="jade",
                 ),
                 style={"width": "100%"},

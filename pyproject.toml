@@ -55,7 +55,7 @@ distribution = true
 update-all = { cmd = "pdm update --group :all --update-all --save-compatible" }
 lock-all = { cmd = "pdm lock --group :all --python='==3.11.*'" }
 install-lockfile = { cmd = "pdm install --group :all --frozen-lockfile" }
-install-playwright = { cmd = "playwright install firefox" }
+install-playwright = { cmd = "pdm run playwright install firefox" }
 install-all = { composite = ["install-lockfile", "install-playwright"] }
 export-all = { cmd = "pdm export --group :all --no-hashes -f requirements" }
 apidoc = { cmd = "pdm run sphinx-apidoc -f -o docs/source mex" }
