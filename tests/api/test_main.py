@@ -13,8 +13,7 @@ import mex
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
 from mex.drop.settings import DropSettings
 from mex.drop.types import EntityType, XSystem
-
-TESTDATA_DIR = Path(__file__).parent / "test_files"
+from tests.conftest import TESTDATA_DIR
 
 
 @pytest.fixture

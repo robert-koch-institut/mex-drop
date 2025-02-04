@@ -4,8 +4,7 @@ import pytest
 from playwright.sync_api import Page, expect
 
 from mex.drop.settings import DropSettings
-
-TESTDATA_DIR = pathlib.Path(__file__).parent.parent / "test_files"
+from tests.conftest import TESTDATA_DIR
 
 
 def login(page: Page, get_test_key) -> None:

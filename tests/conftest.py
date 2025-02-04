@@ -9,6 +9,7 @@ from mex.drop.types import APIKey
 from mex.mex import app
 
 pytest_plugins = ("mex.common.testing.plugin",)
+TESTDATA_DIR = Path(__file__).parent / "test_files"
 
 
 TEST_USER_DATABASE = {
