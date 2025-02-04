@@ -20,6 +20,7 @@ class AppState(State):
 
     temp_files: list[TempFile] = []
 
+    @rx.event
     async def handle_upload(self, files: list[rx.UploadFile]) -> EventSpec | None:
         """Handle the upload of file(s) and save them to the temporary file list.
 
@@ -47,6 +48,7 @@ class AppState(State):
             self.temp_files.append(TempFile(title=str(file.filename), content=content))
         return None
 
+    @rx.event
     async def submit_data(self) -> EventSpec:
         """Submit temporarily uploaded file(s) and save in corresponding directory.
 
@@ -70,6 +72,7 @@ class AppState(State):
         self.temp_files.clear()
         return rx.toast.success("File upload successful!")
 
+    @rx.event
     def cancel_upload(self, filename: str) -> EventSpec:
         """Delete file from temporary file list.
 

@@ -14,6 +14,7 @@ class ListState(State):
 
     file_list: list[dict] = []
 
+    @rx.event
     def get_uploaded_files(self) -> EventSpec | None:
         """Get the list of files uploaded by the user to X System."""
         cast(State, State).check_login()

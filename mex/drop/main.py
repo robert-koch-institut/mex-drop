@@ -1,8 +1,10 @@
+import typer
 import uvicorn
 from fastapi import (
     FastAPI,
 )
 from pydantic import BaseModel
+from reflex.reflex import run
 from uvicorn.config import LOGGING_CONFIG as DEFAULT_UVICORN_LOGGING_CONFIG
 
 from mex.common.cli import entrypoint
@@ -39,8 +41,8 @@ def check_system_status() -> SystemStatus:
 
 
 @entrypoint(DropSettings)
-def main() -> None:  # pragma: no cover
-    """Start the drop server process."""
+def backend() -> None:  # pragma: no cover
+    """Start the drop fastAPI backend."""
     settings = DropSettings.get()
     uvicorn.run(
         "mex.drop.main:app",
@@ -51,3 +53,8 @@ def main() -> None:  # pragma: no cover
         log_config=UVICORN_LOGGING_CONFIG,
         headers=[("server", "mex-drop")],
     )
+
+
+def main() -> None:  # pragma: no cover
+    """Start the editor service."""
+    typer.run(run)

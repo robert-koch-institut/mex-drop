@@ -14,11 +14,13 @@ class State(rx.State):
 
     user: User | None = None
 
+    @rx.event
     def logout(self) -> EventSpec:
         """Log out the user."""
         self.reset()
         return rx.redirect("/")
 
+    @rx.event
     def check_login(self) -> EventSpec | None:
         """Check if the user is logged in."""
         if self.user is None:

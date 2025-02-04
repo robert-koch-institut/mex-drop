@@ -2,9 +2,9 @@ from typing import cast
 
 import reflex as rx
 from reflex.components.radix import themes
-from reflex.event import EventSpec
 
 from mex.drop.api import check_system_status, router
+from mex.drop.exceptions import custom_backend_handler
 from mex.drop.file_history.main import file_history_index
 from mex.drop.file_history.state import ListState
 from mex.drop.login.main import login_index
@@ -14,7 +14,10 @@ from mex.drop.upload.main import upload_index
 
 app = rx.App(
     html_lang="en",
-    theme=themes.theme(accent_color="blue"),
+    theme=themes.theme(
+        accent_color="blue",
+        has_background=False,
+    ),
 )
 app.add_page(
     upload_index,
@@ -43,20 +46,5 @@ app.api.version = "v0"
 app.api.contact = {"name": "MEx Team", "email": "mex@rki.de"}
 app.api.description = "Upload and download data for the MEx service."
 app.api.include_router(router)
-app.register_lifespan_task(
-    DropSettings.get,
-)
-
-
-def custom_backend_handler(
-    exception: Exception,
-) -> EventSpec:
-    """Custom backend exception handler."""
-    if str(exception) == "401: Missing authentication header X-API-Key.":
-        return rx.toast.error("Please enter your API key.")
-    if str(exception) == "401: The provided API Key is not recognized.":
-        return rx.toast.error("Invalid API key.")
-    return rx.toast.error("Backend Error: " + str(exception))
-
-
+app.register_lifespan_task(DropSettings.get)
 app.backend_exception_handler = custom_backend_handler

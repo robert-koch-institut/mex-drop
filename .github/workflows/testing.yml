@@ -64,7 +64,7 @@ jobs:
         env:
           MEX_DROP_API_KEY_DATABASE: ${{ secrets.MEX_DROP_API_KEY_DATABASE }}
         run: |
-          pdm run drop run &
+          pdm run drop &
           sleep 30 &&
           curl --connect-timeout 1 --max-time 20 --retry 10 --retry-delay 1 http://localhost:8000/_system/check &&
           make pytest
