@@ -18,7 +18,7 @@ def setup_list_state(get_test_key) -> ListState:
 @patch("mex.drop.file_history.state.pathlib.Path")
 @patch("mex.drop.file_history.state.DropSettings.get")
 @patch("mex.drop.file_history.state.rx.toast.error")
-def test_get_uploaded_files_missing_directory(
+def test_refresh_missing_directory(
     mock_toast_error, mock_drop_settings_get, mock_path, setup_list_state
 ):
     """Test the case where the x-system directory does not exist."""
@@ -31,7 +31,7 @@ def test_get_uploaded_files_missing_directory(
     mock_x_system_dir = mock_path.return_value
     mock_x_system_dir.is_dir.return_value = False
 
-    state.get_uploaded_files()
+    state.refresh()
 
     mock_toast_error.assert_called_once_with(
         "The requested x-system was not found on this server.", close_button=True
@@ -40,9 +40,7 @@ def test_get_uploaded_files_missing_directory(
 
 @patch("mex.drop.file_history.state.pathlib.Path")
 @patch("mex.drop.file_history.state.DropSettings.get")
-def test_get_uploaded_files_success(
-    mock_drop_settings_get, mock_path, setup_list_state
-):
+def test_refresh_success(mock_drop_settings_get, mock_path, setup_list_state):
     """Test successful retrieval of uploaded files."""
     state = setup_list_state
 
@@ -61,7 +59,7 @@ def test_get_uploaded_files_success(
 
     mock_x_system_dir.glob.return_value = [mock_file]
 
-    state.get_uploaded_files()
+    state.refresh()
 
     expected_file_list = [
         {

@@ -1,7 +1,7 @@
 import reflex as rx
 
 from mex.drop.file_history.state import ListState
-from mex.drop.navigation import nav_bar
+from mex.drop.layout import page
 
 
 def render_file_row(file: dict) -> rx.Component:
@@ -39,31 +39,20 @@ def uploaded_files_display() -> rx.Component:
     )
 
 
-def file_history_index() -> rx.Component:
-    """Return the index for the file history page."""
-    return rx.box(
-        nav_bar(),
-        rx.center(
-            rx.card(
-                rx.vstack(
-                    rx.text("File Upload History", weight="bold", align="center"),
-                    rx.divider(size="4"),
-                    rx.scroll_area(
-                        rx.flex(
-                            uploaded_files_display(),
-                        ),
-                        type="always",
-                        scrollbars="vertical",
-                        height=350,
+def index() -> rx.Component:
+    """Return the index for the file history component."""
+    return page(
+        rx.card(
+            rx.vstack(
+                rx.scroll_area(
+                    rx.flex(
+                        uploaded_files_display(),
                     ),
+                    type="hover",
+                    scrollbars="vertical",
                 ),
-                width="70%",
-                padding="2em",
-                margin="4em",
-                custom_attrs={"data-testid": "index-card"},
             ),
+            custom_attrs={"data-testid": "index-card"},
+            width="100%",
         ),
-        background_color="var(--gray-2)",
-        height="100%",
-        padding="2em",
     )

@@ -3,13 +3,12 @@ import uvicorn
 from fastapi import (
     FastAPI,
 )
-from pydantic import BaseModel
 from reflex.reflex import run
 from uvicorn.config import LOGGING_CONFIG as DEFAULT_UVICORN_LOGGING_CONFIG
 
 from mex.common.cli import entrypoint
 from mex.common.logging import logger
-from mex.drop.api import router
+from mex.drop.api.main import check_system_status, router
 from mex.drop.settings import DropSettings
 
 UVICORN_LOGGING_CONFIG = DEFAULT_UVICORN_LOGGING_CONFIG.copy()
@@ -26,18 +25,7 @@ app = FastAPI(
     description="Upload and download data for the MEx service.",
 )
 app.include_router(router)
-
-
-class SystemStatus(BaseModel):
-    """Response model for system status check."""
-
-    status: str
-
-
-@app.get("/_system/check", tags=["system"])
-def check_system_status() -> SystemStatus:
-    """Check that the drop server is healthy and responsive."""
-    return SystemStatus(status="ok")
+app.add_api_route("/_system/check", check_system_status, tags=["system"])
 
 
 @entrypoint(DropSettings)

@@ -77,7 +77,7 @@ class AppState(State):
         """Delete file from temporary file list.
 
         Args:
-            filename (str): title of file to be deleted
+            filename: title of file to be deleted
 
         Returns:
             EventSpec: Reflex event, toast info message

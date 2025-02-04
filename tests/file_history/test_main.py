@@ -18,7 +18,7 @@ def upload_file(page: Page) -> None:
 
 def login(page: Page, get_test_key) -> None:
     page.get_by_placeholder("API key").fill(get_test_key("test"))
-    page.get_by_placeholder("X System").fill("test")
+    page.get_by_placeholder("X-System").fill("test")
     page.get_by_text("Log in").click()
 
 
