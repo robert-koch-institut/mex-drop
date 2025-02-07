@@ -5,10 +5,12 @@ import pytest
 from fastapi.testclient import TestClient
 
 from mex.drop.settings import DropSettings
+from mex.drop.state import State, User
 from mex.drop.types import APIKey
 from mex.mex import app
 
 pytest_plugins = ("mex.common.testing.plugin",)
+TESTDATA_DIR = Path(__file__).parent / "test_files"
 
 
 TEST_USER_DATABASE = {
@@ -81,3 +83,9 @@ def clean_test_directory() -> Callable[[], Path]:
         return test_dir
 
     return _clean_test_directory
+
+
+@pytest.fixture
+def app_state(get_test_key) -> State:
+    """Fixture to set up a global state with a mock user."""
+    return State(user=User(x_system="test_system", api_key=get_test_key("test_system")))

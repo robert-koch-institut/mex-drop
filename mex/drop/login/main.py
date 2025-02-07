@@ -1,88 +1,76 @@
-from typing import cast
-
 import reflex as rx
 
+from mex.drop.layout import app_logo
 from mex.drop.login.state import LoginState
-from mex.drop.navigation import mex_drop_logo
 
 
-def login_form() -> rx.Component:
-    """Return login form components."""
-    return rx.card(
-        rx.vstack(
-            rx.vstack(
-                rx.hstack(
-                    rx.text(
-                        "X System",
-                        size="3",
-                        weight="medium",
-                    ),
-                    justify="between",
-                    width="100%",
-                ),
-                rx.input(
-                    placeholder="Enter X System name",
-                    on_change=cast(LoginState, LoginState).set_x_system(),
-                    required=True,
-                    type="text",
-                    size="3",
-                    width="100%",
-                ),
-                spacing="2",
-                width="100%",
-            ),
-            rx.vstack(
-                rx.text(
-                    "API Key",
-                    size="3",
-                    weight="medium",
-                    text_align="left",
-                    width="100%",
-                ),
-                rx.input(
-                    placeholder="Enter API key",
-                    on_change=cast(LoginState, LoginState).set_api_key(),
-                    required=True,
-                    type="password",
-                    size="3",
-                    width="100%",
-                ),
-                justify="start",
-                spacing="2",
-                width="100%",
-            ),
-            rx.button(
-                "Log in",
-                on_click=cast(LoginState, LoginState).login_user(),
-                size="3",
-                width="100%",
-            ),
-            spacing="6",
-            width="100%",
+def login_x_system() -> rx.Component:
+    """Return a form field for the X-System."""
+    return rx.vstack(
+        rx.text("X-System"),
+        rx.input(
+            autofocus=True,
+            on_change=LoginState.set_x_system,
+            placeholder="X-System",
+            size="3",
+            tab_index=1,
+            style={"width": "80%"},
         ),
-        size="4",
-        max_width="28em",
-        width="100%",
+        style={"width": "100%"},
     )
 
 
-def login_index() -> rx.Component:
-    """Return the index for the login component."""
-    return rx.box(
-        rx.center(
-            rx.card(
-                rx.vstack(
-                    mex_drop_logo(),
-                    rx.divider(size="4"),
-                    login_form(),
-                    spacing="4",
-                ),
-                top="20vh",
-                width="400px",
-                variant="classic",
-                custom_attrs={"data-testid": "login-card"},
-            ),
+def login_api_key() -> rx.Component:
+    """Return a form field for the API key."""
+    return rx.vstack(
+        rx.text("API Key"),
+        rx.input(
+            on_change=LoginState.set_api_key,
+            placeholder="API Key",
+            size="3",
+            tab_index=2,
+            type="password",
+            style={"width": "80%"},
         ),
-        background_color="var(--gray-2)",
-        min_height="100vh",
+        style={"width": "100%"},
+    )
+
+
+def login_button() -> rx.Component:
+    """Return a submit button for the login form."""
+    return rx.button(
+        "Login",
+        on_click=LoginState.login,
+        size="3",
+        tab_index=3,
+        style={
+            "padding": "0 var(--space-6)",
+            "marginTop": "var(--space-4)",
+        },
+        custom_attrs={"data-testid": "login-button"},
+    )
+
+
+def index() -> rx.Component:
+    """Return the index for the login component."""
+    return rx.center(
+        rx.card(
+            rx.vstack(
+                app_logo(),
+                rx.divider(size="4"),
+                rx.vstack(
+                    login_x_system(),
+                    login_api_key(),
+                    login_button(),
+                    style={"width": "100%"},
+                ),
+                spacing="4",
+            ),
+            style={
+                "width": "calc(400px * var(--scaling))",
+                "top": "20vh",
+            },
+            variant="classic",
+            custom_attrs={"data-testid": "login-card"},
+        ),
     )

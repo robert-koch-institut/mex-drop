@@ -1,6 +1,5 @@
 import pathlib
 from datetime import UTC, datetime
-from typing import cast
 
 import reflex as rx
 from reflex.event import EventSpec
@@ -14,12 +13,13 @@ class ListState(State):
 
     file_list: list[dict] = []
 
-    def get_uploaded_files(self) -> EventSpec | None:
-        """Get the list of files uploaded by the user to X System."""
-        cast(State, State).check_login()
-        if not self.user:
-            return rx.toast.error("No User logged in.", close_button=True)
+    @rx.event
+    def refresh(self) -> EventSpec | None:
+        """Refresh the list of files uploaded by the user to X-System."""
         settings = DropSettings.get()
+        if not self.user:  # pragma: no cover
+            msg = "Should have redirected to login."
+            raise RuntimeError(msg)
         x_system_data_dir = pathlib.Path(
             settings.drop_directory, str(self.user.x_system)
         )
