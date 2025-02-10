@@ -56,7 +56,12 @@ def index() -> rx.Component:
     return rx.center(
         rx.card(
             rx.vstack(
-                app_logo(),
+                rx.hstack(
+                    app_logo(),
+                    rx.spacer(spacing="4"),
+                    rx.color_mode.button(),
+                    style={"width": "100%"},
+                ),
                 rx.divider(size="4"),
                 rx.vstack(
                     login_x_system(),
@@ -68,6 +73,7 @@ def index() -> rx.Component:
             ),
             style={
                 "width": "calc(400px * var(--scaling))",
+                "padding": "var(--space-4)",
                 "top": "20vh",
             },
             variant="classic",
