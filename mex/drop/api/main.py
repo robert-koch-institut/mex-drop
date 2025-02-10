@@ -120,7 +120,7 @@ async def drop_data(
         )
     raise HTTPException(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        detail="Unsupported content typeor format.",
+        detail="Unsupported content type or format.",
     )
 
 

@@ -13,8 +13,7 @@ import mex
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
 from mex.drop.settings import DropSettings
 from mex.drop.types import EntityType, XSystem
-
-TESTDATA_DIR = Path(__file__).parent / "test_files"
+from tests.conftest import TESTDATA_DIR
 
 
 @pytest.fixture
@@ -188,7 +187,7 @@ def test_drop_data(  # noqa: PLR0913
     settings: DropSettings,
 ) -> None:
     mocked_sink = AsyncMock(return_value=None)
-    monkeypatch.setattr(mex.drop.api, "json_sink", mocked_sink)
+    monkeypatch.setattr(mex.drop.api.main, "json_sink", mocked_sink)
 
     if api_key:
         client.headers.update({"X-API-Key": api_key})

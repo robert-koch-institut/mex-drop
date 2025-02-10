@@ -105,4 +105,4 @@ components of the MEx project are open-sourced under the same license as well.
 
 ### Drop
 
-- `pdm run drop run` starts the drop service
+- `pdm run drop` starts the drop service

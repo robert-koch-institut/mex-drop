@@ -11,13 +11,15 @@ class LoginState(State):
     api_key: str
     x_system: str
 
-    def login_user(self) -> EventSpec:
-        """Log in the user."""
+    @rx.event
+    def login(self) -> EventSpec:
+        """Login the user."""
         authorized_x_systems = get_current_authorized_x_systems(api_key=self.api_key)
-        if not is_authorized(str(self.x_system), authorized_x_systems):
-            return rx.toast.error(
-                "API Key not authorized to drop data for this x_system.",
-                close_button=True,
+        if is_authorized(str(self.x_system), authorized_x_systems):
+            self.user = User(
+                api_key=self.api_key,
+                x_system=self.x_system,
             )
-        self.user = User(api_key=self.api_key, x_system=self.x_system)
-        return rx.redirect("/upload")
+            self.reset()  # reset api_key/x_system
+            return rx.redirect("/")
+        return rx.window_alert("Invalid credentials.")
