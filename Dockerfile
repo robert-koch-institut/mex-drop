@@ -45,4 +45,4 @@ USER mex
 EXPOSE 8020
 EXPOSE 8021
 
-ENTRYPOINT [ "drop", "run" ]
+ENTRYPOINT [ "drop" ]
