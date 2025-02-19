@@ -4,7 +4,8 @@ import reflex as rx
 
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
 from mex.drop.layout import page
-from mex.drop.upload.state import TempFile, UploadState
+from mex.drop.upload.models import TempFile
+from mex.drop.upload.state import UploadState
 
 
 def uploaded_file_display() -> rx.Component:
@@ -148,6 +149,7 @@ def index() -> rx.Component:
         rx.hstack(
             create_drag_and_drop(),
             create_file_handling_card(),
+            spacing="6",
             style={
                 "width": "100%",
                 "height": "calc(480px * var(--scaling))",

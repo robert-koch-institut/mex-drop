@@ -6,13 +6,7 @@ from reflex.event import EventSpec
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES, write_to_file
 from mex.drop.settings import DropSettings
 from mex.drop.state import State
-
-
-class TempFile(rx.Base):
-    """Helper class to handle temporarily uploaded files."""
-
-    title: str
-    content: bytes
+from mex.drop.upload.models import TempFile
 
 
 class UploadState(State):
