@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.10.0] - 2025-02-19
+
+### Changes
+
 - update mex-common to version 0.49.3
 - BREAKING: you must start the local dev mode simply with `pdm run drop` (no 2nd run)
 - move custom backend exception handler to its own module
@@ -19,15 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - align login component and navbar state handling with mex-editor
 - update styling with more idiomatic variable syntax and responsive scaling
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - decorate state handlers with `@rx.event` to satisfy new reflex versions
-
-### Security
 
 ## [0.9.1] - 2025-01-09
 
