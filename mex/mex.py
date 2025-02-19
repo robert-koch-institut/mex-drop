@@ -14,10 +14,8 @@ from mex.drop.upload.main import index as upload_index
 
 app = rx.App(
     html_lang="en",
-    theme=themes.theme(
-        accent_color="blue",
-        has_background=False,
-    ),
+    theme=themes.theme(accent_color="blue", has_background=False),
+    style={">a": {"opacity": "0"}},
 )
 app.add_page(
     upload_index,
