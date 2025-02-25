@@ -35,6 +35,8 @@ def test_refresh_missing_directory(
         "The requested x-system was not found on this server.", close_button=True
     )
 
+    assert state.file_list == []
+
 
 @patch("mex.drop.file_history.state.pathlib.Path")
 @patch("mex.drop.file_history.state.DropSettings.get")
