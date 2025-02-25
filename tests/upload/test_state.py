@@ -5,7 +5,8 @@ import nest_asyncio
 import pytest
 
 from mex.drop.state import State
-from mex.drop.upload.state import TempFile, UploadState
+from mex.drop.upload.models import TempFile
+from mex.drop.upload.state import UploadState
 
 nest_asyncio.apply()
 

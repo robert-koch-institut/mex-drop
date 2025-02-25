@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+- update mex-common to 0.52.2
+- use a model for file-history state
+- show an empty file-history page even when x-system is not found
+- clean up styling a bit
+
 ### Deprecated
 
 ### Removed
