@@ -8,24 +8,31 @@ from mex.drop.types import APIKey, UserDatabase, XSystem
 class DropSettings(BaseSettings):
     """Settings definition for the drop server."""
 
-    drop_host: str = Field(
+    drop_api_host: str = Field(
         "localhost",
         min_length=1,
         max_length=250,
-        description="Host that the drop server will run on.",
-        validation_alias="MEX_DROP_HOST",
+        description="Host that the drop api will run on.",
+        validation_alias="MEX_DROP_API_HOST",
     )
-    drop_port: int = Field(
-        8081,
+    drop_api_port: int = Field(
+        8021,
         gt=0,
         lt=65536,
-        description="Port that the drop server should listen on.",
-        validation_alias="MEX_DROP_PORT",
+        description="Port that the drop api should listen on.",
+        validation_alias="MEX_DROP_API_PORT",
     )
-    drop_root_path: str = Field(
+    drop_frontend_port: int = Field(
+        8020,
+        gt=0,
+        lt=65536,
+        description="Port that the drop frontend should serve on.",
+        validation_alias="MEX_DROP_FRONTEND_PORT",
+    )
+    drop_api_root_path: str = Field(
         "",
         description="Root path that the drop server should run under.",
-        validation_alias="MEX_DROP_ROOT_PATH",
+        validation_alias="MEX_DROP_API_ROOT_PATH",
     )
     drop_directory: WorkPath = Field(
         WorkPath("data"),

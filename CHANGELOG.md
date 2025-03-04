@@ -9,12 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- add `drop-frontend` entrypoint to start frontend in prod mode
+- add `MEX_DROP_FRONTEND_PORT` to set the port for `drop-frontend`
+
 ### Changes
 
 - update mex-common to 0.52.2
 - use a model for file-history state
 - show an empty file-history page even when x-system is not found
 - clean up styling a bit
+- wrap style args in `rx.Style` in prep for reflex 0.7, but pin to <0.6
+- BREAKING: change drop api port default from `8081` to `8021`
+- BREAKING: change drop frontend port default from `8080` to `8020`
+- BREAKING: rename `MEX_DROP_ROOT_PATH` to `MEX_DROP_API_ROOT_PATH`
+- BREAKING: rename `MEX_DROP_HOST` to `MEX_DROP_API_HOST`
+- BREAKING: rename `MEX_DROP_API_PORT` to `MEX_DROP_API_PORT`
+- BREAKING: rename `backend-only` entrypoint to `drop-api`
+- BREAKING: `drop-api` starts reflex and fastapi backend in prod mode
 
 ### Deprecated
 

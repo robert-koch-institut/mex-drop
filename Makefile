@@ -48,7 +48,7 @@ run: image
 	# run the service as a docker container
 	@ echo running docker container mex-drop:${LATEST}; \
 	docker run \
-		--env MEX_DROP_HOST=0.0.0.0 \
+		--env MEX_DROP_API_HOST=0.0.0.0 \
 		--publish 8020:8020 \
 		--publish 8021:8021 \
 		rki/mex-drop:${LATEST}; \

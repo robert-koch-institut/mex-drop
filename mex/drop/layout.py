@@ -11,7 +11,7 @@ def user_button() -> rx.Component:
     return rx.button(
         rx.icon(tag="user_round_cog"),
         variant="ghost",
-        style={"marginTop": "0"},
+        style=rx.Style({"marginTop": "0"}),
     )
 
 
@@ -53,7 +53,7 @@ def app_logo() -> rx.Component:
         rx.heading(
             "MEx Drop",
             weight="medium",
-            style={"userSelect": "none"},
+            style=rx.Style({"userSelect": "none"}),
         ),
         custom_attrs={"data-testid": "app-logo"},
     )
@@ -63,12 +63,14 @@ def nav_bar() -> rx.Component:
     """Return a navigation bar component."""
     return rx.vstack(
         rx.box(
-            style={
-                "height": "var(--space-6)",
-                "width": "100%",
-                "backdropFilter": " var(--backdrop-filter-panel)",
-                "backgroundColor": "var(--card-background-color)",
-            },
+            style=rx.Style(
+                {
+                    "height": "var(--space-6)",
+                    "width": "100%",
+                    "backdropFilter": " var(--backdrop-filter-panel)",
+                    "backgroundColor": "var(--card-background-color)",
+                }
+            ),
         ),
         rx.card(
             rx.hstack(
@@ -88,20 +90,24 @@ def nav_bar() -> rx.Component:
             ),
             size="2",
             custom_attrs={"data-testid": "nav-bar"},
-            style={
-                "width": "100%",
-                "marginTop": "calc(-1 * var(--base-card-border-width))",
-            },
+            style=rx.Style(
+                {
+                    "width": "100%",
+                    "marginTop": "calc(-1 * var(--base-card-border-width))",
+                }
+            ),
         ),
         spacing="0",
-        style={
-            "maxWidth": "calc(1480px * var(--scaling))",
-            "minWidth": "calc(800px * var(--scaling))",
-            "position": "fixed",
-            "top": "0",
-            "width": "100%",
-            "zIndex": "1000",
-        },
+        style=rx.Style(
+            {
+                "maxWidth": "calc(1480px * var(--scaling))",
+                "minWidth": "calc(800px * var(--scaling))",
+                "position": "fixed",
+                "top": "0",
+                "width": "100%",
+                "zIndex": "1000",
+            }
+        ),
     )
 
 
@@ -113,17 +119,21 @@ def page(*children: rx.Component) -> rx.Component:
             nav_bar(),
             rx.hstack(
                 *children,
-                style={
-                    "maxWidth": "calc(1480px * var(--scaling))",
-                    "minWidth": "calc(800px * var(--scaling))",
-                    "padding": "calc(var(--space-6) * 4) var(--space-6) var(--space-6)",
-                    "width": "100%",
-                },
+                style=rx.Style(
+                    {
+                        "maxWidth": "calc(1480px * var(--scaling))",
+                        "minWidth": "calc(800px * var(--scaling))",
+                        "padding": (
+                            "calc(var(--space-6) * 4) var(--space-6) var(--space-6)"
+                        ),
+                        "width": "100%",
+                    }
+                ),
                 custom_attrs={"data-testid": "page-body"},
             ),
         ),
         rx.center(
             rx.spinner(size="3"),
-            style={"marginTop": "40vh"},
+            style=rx.Style({"marginTop": "40vh"}),
         ),
     )

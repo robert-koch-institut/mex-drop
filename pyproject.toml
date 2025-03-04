@@ -12,7 +12,7 @@ dependencies = [
     "fastapi[standard]>=0.115,<1",
     "mex-common @ git+https://github.com/robert-koch-institut/mex-common.git@0.52.2",
     "pydantic>=2,<3",
-    "reflex>=0.7,<1",
+    "reflex>=0.6,<0.7",
     "starlette>=0.45,<1",
     "typer>=0.15,<1",
 ]
@@ -30,7 +30,8 @@ optional-dependencies.dev = [
 
 [project.scripts]
 drop = "mex.drop.main:main"
-backend-only = "mex.drop.main:backend"
+drop-api = "mex.drop.main:drop_api"
+drop-frontend = "mex.drop.main:drop_frontend"
 
 [tool.cruft]
 template = "https://github.com/robert-koch-institut/mex-template"
@@ -116,6 +117,9 @@ ignore = [
 select = ["ALL"]
 
 [tool.ruff.lint.per-file-ignores]
+"mex/drop/logging.py" = [
+    "A005",     # Allow custom logging module to shadow standard-library
+]
 "mex/drop/sinks/json.py" = [
     "A005",     # Allow custom json module to shadow standard-library
 ]
