@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changes
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [0.11.0] - 2025-03-04
+
+### Added
+
 - add `drop-frontend` entrypoint to start frontend in prod mode
 - add `MEX_DROP_FRONTEND_PORT` to set the port for `drop-frontend`
 
@@ -26,14 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - BREAKING: rename `MEX_DROP_API_PORT` to `MEX_DROP_API_PORT`
 - BREAKING: rename `backend-only` entrypoint to `drop-api`
 - BREAKING: `drop-api` starts reflex and fastapi backend in prod mode
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [0.10.0] - 2025-02-19
 
