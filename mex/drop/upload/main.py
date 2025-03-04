@@ -16,7 +16,7 @@ def uploaded_file_display() -> rx.Component:
                 rx.table.row(
                     rx.table.column_header_cell(
                         "Selected File",
-                        style={"width": "80%"},
+                        style=rx.Style({"width": "80%"}),
                     ),
                     rx.table.column_header_cell(
                         "Action",
@@ -32,10 +32,12 @@ def uploaded_file_display() -> rx.Component:
         ),
         type="hover",
         scrollbars="both",
-        style={
-            "width": "100%",
-            "height": "100%",
-        },
+        style=rx.Style(
+            {
+                "width": "100%",
+                "height": "100%",
+            }
+        ),
     )
 
 
@@ -57,7 +59,7 @@ def create_file_row(temp_file: TempFile) -> rx.Component:
                     temp_file.title
                 ),
             ),
-            style={"width": "100%"},
+            style=rx.Style({"width": "100%"}),
         ),
     )
 
@@ -70,10 +72,12 @@ def create_drag_and_drop() -> rx.Component:
                 "File Upload",
                 size="2",
                 weight="bold",
-                style={
-                    "padding": "calc(12px * var(--scaling)) "
-                    "calc(12px * var(--scaling)) 0;"
-                },
+                style=rx.Style(
+                    {
+                        "padding": "calc(12px * var(--scaling)) "
+                        "calc(12px * var(--scaling)) 0;"
+                    }
+                ),
             ),
             rx.divider(size="4"),
             rx.upload(
@@ -100,23 +104,27 @@ def create_drag_and_drop() -> rx.Component:
                 ),
                 id="file_upload_area",
                 max_files=100,
-                style={
-                    "border": "var(--card-border-width) dotted var(--accent-8)",
-                    "borderRadius": "calc(var(--base-card-border-radius) - "
-                    "var(--base-card-border-width))",
-                    "padding": "var(--space-4)",
-                    "margin": "var(--space-8) auto",
-                },
+                style=rx.Style(
+                    {
+                        "border": "var(--card-border-width) dotted var(--accent-8)",
+                        "borderRadius": "calc(var(--base-card-border-radius) - "
+                        "var(--base-card-border-width))",
+                        "padding": "var(--space-4)",
+                        "margin": "var(--space-8) auto",
+                    }
+                ),
                 on_drop=cast(UploadState, UploadState).handle_upload(
                     rx.upload_files(upload_id="file_upload_area")
                 ),
             ),
             spacing="3",
         ),
-        style={
-            "width": "100%",
-            "height": "100%",
-        },
+        style=rx.Style(
+            {
+                "width": "100%",
+                "height": "100%",
+            }
+        ),
     )
 
 
@@ -132,14 +140,16 @@ def create_file_handling_card() -> rx.Component:
                     on_click=UploadState.submit_data,
                     color_scheme="jade",
                 ),
-                style={"width": "100%"},
+                style=rx.Style({"width": "100%"}),
             ),
-            style={"height": "100%"},
+            style=rx.Style({"height": "100%"}),
         ),
-        style={
-            "width": "100%",
-            "height": "100%",
-        },
+        style=rx.Style(
+            {
+                "width": "100%",
+                "height": "100%",
+            }
+        ),
     )
 
 
@@ -150,9 +160,11 @@ def index() -> rx.Component:
             create_drag_and_drop(),
             create_file_handling_card(),
             spacing="6",
-            style={
-                "width": "100%",
-                "height": "calc(480px * var(--scaling))",
-            },
+            style=rx.Style(
+                {
+                    "width": "100%",
+                    "height": "calc(480px * var(--scaling))",
+                }
+            ),
         )
     )

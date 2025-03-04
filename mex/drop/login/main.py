@@ -14,9 +14,9 @@ def login_x_system() -> rx.Component:
             placeholder="X-System",
             size="3",
             tab_index=1,
-            style={"width": "80%"},
+            style=rx.Style({"width": "80%"}),
         ),
-        style={"width": "100%"},
+        style=rx.Style({"width": "100%"}),
     )
 
 
@@ -30,9 +30,9 @@ def login_api_key() -> rx.Component:
             size="3",
             tab_index=2,
             type="password",
-            style={"width": "80%"},
+            style=rx.Style({"width": "80%"}),
         ),
-        style={"width": "100%"},
+        style=rx.Style({"width": "100%"}),
     )
 
 
@@ -43,10 +43,12 @@ def login_button() -> rx.Component:
         on_click=LoginState.login,
         size="3",
         tab_index=3,
-        style={
-            "padding": "0 var(--space-6)",
-            "marginTop": "var(--space-4)",
-        },
+        style=rx.Style(
+            {
+                "padding": "0 var(--space-6)",
+                "marginTop": "var(--space-4)",
+            }
+        ),
         custom_attrs={"data-testid": "login-button"},
     )
 
@@ -60,22 +62,24 @@ def index() -> rx.Component:
                     app_logo(),
                     rx.spacer(spacing="4"),
                     rx.color_mode.button(),
-                    style={"width": "100%"},
+                    style=rx.Style({"width": "100%"}),
                 ),
                 rx.divider(size="4"),
                 rx.vstack(
                     login_x_system(),
                     login_api_key(),
                     login_button(),
-                    style={"width": "100%"},
+                    style=rx.Style({"width": "100%"}),
                 ),
                 spacing="4",
             ),
-            style={
-                "width": "calc(400px * var(--scaling))",
-                "padding": "var(--space-4)",
-                "top": "20vh",
-            },
+            style=rx.Style(
+                {
+                    "width": "calc(400px * var(--scaling))",
+                    "padding": "var(--space-4)",
+                    "top": "20vh",
+                }
+            ),
             variant="classic",
             custom_attrs={"data-testid": "login-card"},
         ),
