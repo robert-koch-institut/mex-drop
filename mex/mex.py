@@ -1,5 +1,8 @@
 import reflex as rx
+from reflex.app import UnevaluatedPage
+from reflex.components.core.client_side_routing import Default404Page
 from reflex.components.radix import themes
+from reflex.constants import Page404
 from reflex.utils.console import info as log_info
 
 from mex.common.logging import logger
@@ -33,6 +36,17 @@ app.add_page(
     login_index,
     route="/login",
     title="MEx Drop | Login",
+)
+# side-step `add_page` to avoid `wait_for_client_redirect`,
+# because that breaks deployment behind a base path.
+app.unevaluated_pages[Page404.SLUG] = UnevaluatedPage(
+    component=Default404Page.create(),
+    route=Page404.SLUG,
+    title=Page404.TITLE,
+    description=Page404.DESCRIPTION,
+    image=Page404.IMAGE,
+    on_load=None,
+    meta=[],
 )
 app.api.add_api_route(
     "/_system/check",
