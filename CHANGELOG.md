@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- added version pin for uvicorn because it is used in logging module
+
 ### Changes
 
 ### Deprecated
@@ -17,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- fix redirect bug on 404 pages, by side-stepping add_page
+- fix exposed ports in compose.yaml
 
 ### Security
 
