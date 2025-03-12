@@ -1,4 +1,5 @@
 import pathlib
+from importlib.metadata import version
 from typing import Annotated, Any
 
 from aiofile import async_open
@@ -329,8 +330,9 @@ class SystemStatus(BaseModel):
     """Response model for system status check."""
 
     status: str
+    version: str
 
 
 def check_system_status() -> SystemStatus:
     """Check that the drop server is healthy and responsive."""
-    return SystemStatus(status="ok")
+    return SystemStatus(status="ok", version=version("mex-drop"))
