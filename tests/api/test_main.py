@@ -10,6 +10,7 @@ from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
 
 import mex
+from mex.common.testing import Joker
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
 from mex.drop.settings import DropSettings
 from mex.drop.types import EntityType, XSystem
@@ -368,4 +369,4 @@ def test_list_entity_types_forbidden(client: TestClient) -> None:
 def test_health_check(client: TestClient) -> None:
     response = client.get("/_system/check")
     assert response.status_code == 200, response.text
-    assert response.json() == {"status": "ok"}
+    assert response.json() == {"status": "ok", "version": Joker()}

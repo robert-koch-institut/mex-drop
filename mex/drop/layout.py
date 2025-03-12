@@ -45,17 +45,27 @@ def nav_link(item: NavItem) -> rx.Component:
 
 def app_logo() -> rx.Component:
     """Return the app logo with icon and label."""
-    return rx.hstack(
-        rx.icon(
-            "droplets",
-            size=28,
+    return rx.hover_card.root(
+        rx.hover_card.trigger(
+            rx.hstack(
+                rx.icon(
+                    "droplets",
+                    size=28,
+                ),
+                rx.heading(
+                    "MEx Drop",
+                    weight="medium",
+                    style={"userSelect": "none"},
+                ),
+                custom_attrs={"data-testid": "app-logo"},
+            )
         ),
-        rx.heading(
-            "MEx Drop",
-            weight="medium",
-            style=rx.Style({"userSelect": "none"}),
+        rx.hover_card.content(
+            rx.vstack(
+                rx.code(f"mex-drop=={State.drop_version}", variant="outline"),
+            ),
         ),
-        custom_attrs={"data-testid": "app-logo"},
+        open_delay=500,
     )
 
 
