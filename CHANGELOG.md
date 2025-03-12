@@ -9,9 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- added version pin for uvicorn because it is used in logging module
-- show mex-drop version when hovering over logo
-
 ### Changes
 
 ### Deprecated
@@ -20,9 +17,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- fix exposed ports in compose.yaml
-
 ### Security
+
+## [0.11.2] - 2025-03-12
+
+### Added
+
+- added version pin for uvicorn because it is used in logging module
+- show mex-drop version when hovering over logo
+
+### Fixed
+
+- fix exposed ports in compose.yaml
 
 ## [0.11.1] - 2025-03-05
 
