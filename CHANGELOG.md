@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 - BREAKING: allow other extensions than json for list_entity_types, download data
-- bump mex-common depedency
+- bump mex-common dependency
+- allow "." in regex path
 
 ### Deprecated
 
