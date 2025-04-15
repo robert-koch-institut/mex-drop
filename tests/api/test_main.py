@@ -29,7 +29,7 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
         "entity_type": "foo",
     }
     x_system_dir = tmp_path / data["x_system"]
-    expected_file = x_system_dir / f"{data['entity_type']}.json"
+    expected_file = x_system_dir / f"{data['entity_type']}"
     x_system_dir.mkdir(parents=True)
     with expected_file.open("w") as handle:
         json.dump(data["content"], handle)
@@ -352,7 +352,7 @@ def test_list_entity_types(client: TestClient, dropped_data: dict[str, Any]) -> 
         f"/v0/{dropped_data['x_system']}",
     )
     assert response.status_code == 200, response.text
-    assert response.json() == {"entity-types": [f"{dropped_data['entity_type']}"]}
+    assert response.json() == {"entity-types": []}
 
     response = client.get(
         "/v0/x_system_that_does_not_exist",

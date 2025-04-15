@@ -214,14 +214,14 @@ async def download_data(
 
     Args:
         x_system: name of the x-system that is the original data source
-        entity_type: name of the data file to download, without json extension
+        entity_type: name of the data file to download
         authorized_x_systems: list of authorized x-systems
 
     Settings:
         drop_directory: where data is stored
 
     Returns:
-        A JSON response
+        A response
     """
     if not is_authorized(x_system, authorized_x_systems):
         raise HTTPException(
@@ -229,7 +229,7 @@ async def download_data(
             detail="API Key not authorized to download data for this x_system.",
         )
     settings = DropSettings.get()
-    out_file = pathlib.Path(settings.drop_directory, x_system, entity_type + ".json")
+    out_file = pathlib.Path(settings.drop_directory, x_system, entity_type)
     if not out_file.is_file():
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -258,7 +258,7 @@ def list_x_systems(
         drop_directory: where data is stored
 
     Returns:
-        A JSON response
+        A response
     """
     if not is_authorized(XSystem("admin"), authorized_x_systems):
         raise HTTPException(
@@ -303,7 +303,7 @@ def list_entity_types(
         drop_directory: where data is stored
 
     Returns:
-        A JSON response
+        A response
     """
     if not is_authorized(x_system, authorized_x_systems):
         raise HTTPException(
@@ -317,10 +317,14 @@ def list_entity_types(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="The requested x-system was not found on this server.",
         )
+    unique_extensions = {
+        f"*{extension}" for extension in ALLOWED_CONTENT_TYPES.values()
+    }
     return {
         "entity-types": [
-            f.relative_to(x_system_data_dir).as_posix().removesuffix(".json")
-            for f in x_system_data_dir.glob("*.json")
+            f.relative_to(x_system_data_dir).as_posix()
+            for extension in unique_extensions
+            for f in x_system_data_dir.glob(extension)
             if f.is_file()
         ]
     }
