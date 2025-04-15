@@ -11,10 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- BREAKING: allow other extensions than json for list_entity_types, download data
-- bump mex-common dependency
-- allow "." in regex path
-
 ### Deprecated
 
 ### Removed
@@ -22,6 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [0.12.0] - 2025-04-15
+
+### Changes
+
+- BREAKING: allow other extensions than json for list_entity_types, download data
+- bump mex-common dependency
+- allow "." in regex path
 
 ## [0.11.2] - 2025-03-12
 
