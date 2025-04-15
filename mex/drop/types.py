@@ -13,7 +13,7 @@ class APIKey(SecretStr):
         return f"APIKey('{self}')"
 
 
-PATH_REGEX = r"^[a-zA-Z0-9_-]{1,128}$"
+PATH_REGEX = r"^[a-zA-Z0-9\._-]{1,128}$"
 
 XSystem = Annotated[str, constr(pattern=PATH_REGEX)]
 

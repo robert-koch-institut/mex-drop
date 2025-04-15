@@ -26,10 +26,10 @@ def dropped_data(tmp_path: Path) -> dict[str, Any]:
         "content": {"foo": "bar"},
         "api_key": "api-test-key",
         "x_system": "test_system",
-        "entity_type": "foo",
+        "entity_type": "foo.json",
     }
     x_system_dir = tmp_path / data["x_system"]
-    expected_file = x_system_dir / f"{data['entity_type']}.json"
+    expected_file = x_system_dir / f"{data['entity_type']}"
     x_system_dir.mkdir(parents=True)
     with expected_file.open("w") as handle:
         json.dump(data["content"], handle)
