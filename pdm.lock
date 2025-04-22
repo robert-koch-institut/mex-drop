@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:9de307dd6cf9f19e3836aef5d9195dcf7252c675527d25fb770f284b002c62d0"
+content_hash = "sha256:96f027c7571736a506ff05bcf606d7cf6b9d901a8dfb2ba3ad6297e0ee5ba8c6"
 
 [[metadata.targets]]
 requires_python = ">=3.11,<3.13"
@@ -976,11 +976,11 @@ files = [
 
 [[package]]
 name = "mex-common"
-version = "0.58.0"
+version = "0.58.1"
 requires_python = ">=3.11,<3.13"
 git = "https://github.com/robert-koch-institut/mex-common.git"
-ref = "0.58.0"
-revision = "7cf56d21046ca8de4ff32d5bc1d26e44fef76d34"
+ref = "0.58.1"
+revision = "82ebd6c41572d5bceadca4adc855fbdb575d44cd"
 summary = "Common library for MEx python projects."
 groups = ["default"]
 dependencies = [
