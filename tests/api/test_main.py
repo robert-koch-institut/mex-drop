@@ -183,7 +183,7 @@ def test_drop_data(  # noqa: PLR0913
     entity_type: EntityType,
     expected_response_code: int,
     content_type: str,
-    expected_content: Any,
+    expected_content: dict[str, Any] | str | bytes,
     monkeypatch: MonkeyPatch,
     settings: DropSettings,
 ) -> None:
@@ -208,7 +208,7 @@ def test_drop_data(  # noqa: PLR0913
         if content_type == "application/json":
             assert mocked_sink.call_args == call(expected_content, expected_file)
         else:
-            with open(expected_file, "rb") as f:
+            with expected_file.open("rb") as f:
                 saved_content = f.read()
 
             if content_type in {"text/csv", "text/tab-separated-values"}:

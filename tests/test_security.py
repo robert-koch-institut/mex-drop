@@ -25,6 +25,8 @@ from mex.drop.types import XSystem
     ],
 )
 def test_is_authorized(
-    x_system: XSystem, authorized_x_systems: list[XSystem], expected: bool
+    x_system: XSystem,
+    authorized_x_systems: list[XSystem],
+    expected: bool,  # noqa: FBT001
 ) -> None:
     assert is_authorized(x_system, authorized_x_systems) is expected

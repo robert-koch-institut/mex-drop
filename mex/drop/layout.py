@@ -23,7 +23,7 @@ def user_menu() -> rx.Component:
             custom_attrs={"data-testid": "user-menu"},
         ),
         rx.menu.content(
-            rx.menu.item(cast(User, State.user).x_system, disabled=True),
+            rx.menu.item(cast("User", State.user).x_system, disabled=True),
             rx.menu.separator(),
             rx.menu.item(
                 "Logout",

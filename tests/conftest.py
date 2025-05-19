@@ -28,7 +28,9 @@ TEST_USER_DATABASE = {
 
 @pytest.fixture(autouse=True)
 def isolate_work_dir(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, is_integration_test: bool
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    is_integration_test: bool,  # noqa: FBT001
 ) -> None:
     """Set the `MEX_WORK_DIR` environment variable to a temp path for all tests."""
     if not is_integration_test:
@@ -36,7 +38,7 @@ def isolate_work_dir(
 
 
 @pytest.fixture(autouse=True)
-def settings(is_integration_test: bool) -> DropSettings:
+def settings(is_integration_test: bool) -> DropSettings:  # noqa: FBT001
     """Load the settings for this pytest session."""
     settings = DropSettings.get()
     if not is_integration_test:
@@ -86,6 +88,6 @@ def clean_test_directory() -> Callable[[], Path]:
 
 
 @pytest.fixture
-def app_state(get_test_key) -> State:
+def app_state(get_test_key: Callable[[str], str]) -> State:
     """Fixture to set up a global state with a mock user."""
     return State(user=User(x_system="test_system", api_key=get_test_key("test_system")))
