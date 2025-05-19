@@ -1,3 +1,6 @@
+from collections.abc import Callable
+from pathlib import Path
+
 import pytest
 from playwright.sync_api import Page, expect
 
@@ -14,14 +17,18 @@ def upload_file(page: Page) -> None:
     page.get_by_text("Submit").click()
 
 
-def login(page: Page, get_test_key) -> None:
+def login(page: Page, get_test_key: Callable[[str], str]) -> None:
     page.get_by_placeholder("API Key").fill(get_test_key("test"))
     page.get_by_placeholder("X-System").fill("test")
     page.get_by_test_id("login-button").click()
 
 
 @pytest.mark.integration
-def test_upload(page: Page, get_test_key, clean_test_directory) -> None:
+def test_upload(
+    page: Page,
+    get_test_key: Callable[[str], str],
+    clean_test_directory: Callable[[], Path],
+) -> None:
     page.goto("http://localhost:3000")
     clean_test_directory()
     login(page, get_test_key)

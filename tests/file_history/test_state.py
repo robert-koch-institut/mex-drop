@@ -17,8 +17,11 @@ def setup_list_state(app_state: State) -> ListState:
 @patch("mex.drop.file_history.state.DropSettings.get")
 @patch("mex.drop.file_history.state.rx.toast.error")
 def test_refresh_missing_directory(
-    mock_toast_error, mock_drop_settings_get, mock_path, setup_list_state
-):
+    mock_toast_error: MagicMock,
+    mock_drop_settings_get: MagicMock,
+    mock_path: MagicMock,
+    setup_list_state: ListState,
+) -> None:
     """Test the case where the x-system directory does not exist."""
     state = setup_list_state
 
@@ -40,7 +43,9 @@ def test_refresh_missing_directory(
 
 @patch("mex.drop.file_history.state.pathlib.Path")
 @patch("mex.drop.file_history.state.DropSettings.get")
-def test_refresh_success(mock_drop_settings_get, mock_path, setup_list_state):
+def test_refresh_success(
+    mock_drop_settings_get: MagicMock, mock_path: MagicMock, setup_list_state: ListState
+) -> None:
     """Test successful retrieval of uploaded files."""
     state = setup_list_state
 

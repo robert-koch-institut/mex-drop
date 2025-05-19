@@ -1,4 +1,5 @@
 import pathlib
+from collections.abc import Callable
 
 import pytest
 from playwright.sync_api import Page, expect
@@ -7,14 +8,14 @@ from mex.drop.settings import DropSettings
 from tests.conftest import TESTDATA_DIR
 
 
-def login(page: Page, get_test_key) -> None:
+def login(page: Page, get_test_key: Callable[[str], str]) -> None:
     page.get_by_placeholder("API Key").fill(get_test_key("test"))
     page.get_by_placeholder("X-System").fill("test")
     page.get_by_test_id("login-button").click()
 
 
 @pytest.mark.integration
-def test_upload(page: Page, get_test_key) -> None:
+def test_upload(page: Page, get_test_key: Callable[[str], str]) -> None:
     page.goto("http://localhost:3000")
     login(page, get_test_key)
     with page.expect_file_chooser() as fc_info:
@@ -38,7 +39,7 @@ def test_upload(page: Page, get_test_key) -> None:
 
 
 @pytest.mark.integration
-def test_empty_upload(page: Page, get_test_key) -> None:
+def test_empty_upload(page: Page, get_test_key: Callable[[str], str]) -> None:
     page.goto("http://localhost:3000")
     login(page, get_test_key)
     page.get_by_text("Submit").click()
@@ -47,7 +48,7 @@ def test_empty_upload(page: Page, get_test_key) -> None:
 
 
 @pytest.mark.integration
-def test_remove_selected_file(page: Page, get_test_key) -> None:
+def test_remove_selected_file(page: Page, get_test_key: Callable[[str], str]) -> None:
     page.goto("http://localhost:3000")
     login(page, get_test_key)
     with page.expect_file_chooser() as fc_info:

@@ -1,8 +1,10 @@
+from collections.abc import Callable
+
 from mex.drop.login.state import LoginState
 from mex.drop.state import State
 
 
-def test_login_and_logout(get_test_key) -> None:
+def test_login_and_logout(get_test_key: Callable[[str], str]) -> None:
     login_state = LoginState(
         api_key=get_test_key("test_system"),
         x_system="test_system",
@@ -17,7 +19,7 @@ def test_login_and_logout(get_test_key) -> None:
     assert login_state.user is None
 
 
-def test_login_fail(get_test_key) -> None:
+def test_login_fail(get_test_key: Callable[[str], str]) -> None:
     login_state = LoginState(
         api_key=get_test_key("test_system"), x_system="wrong_sys", parent_state=State()
     )

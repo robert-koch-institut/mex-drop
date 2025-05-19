@@ -17,6 +17,6 @@ def json_sink(data: dict[str, Any] | list[Any], out_file: Path) -> None:
         None
     """
     out_file.parent.mkdir(exist_ok=True, parents=True)
-    with open(out_file, "w", encoding="utf-8") as handle:
+    with out_file.open("w", encoding="utf-8") as handle:
         logger.info(f"writing data to {out_file.absolute().as_posix()}")
         json.dump(data, handle, sort_keys=True)

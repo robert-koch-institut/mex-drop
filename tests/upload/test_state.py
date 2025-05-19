@@ -12,7 +12,7 @@ nest_asyncio.apply()
 
 
 @pytest.fixture
-def anyio_backend():
+def anyio_backend() -> str:
     return "asyncio"
 
 
