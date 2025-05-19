@@ -1,80 +1,64 @@
 from datetime import UTC, datetime
-from unittest.mock import MagicMock, patch
+from pathlib import Path
+from unittest.mock import Mock
 
 import pytest
+from pytest import MonkeyPatch
 
 from mex.drop.file_history.state import ListState
+from mex.drop.settings import DropSettings
 from mex.drop.state import State
 
 
 @pytest.fixture
-def setup_list_state(app_state: State) -> ListState:
+def list_state(app_state: State) -> ListState:
     """Fixture to set up ListState with a mock user."""
     return ListState(parent_state=app_state)
 
 
-@patch("mex.drop.file_history.state.pathlib.Path")
-@patch("mex.drop.file_history.state.DropSettings.get")
-@patch("mex.drop.file_history.state.rx.toast.error")
 def test_refresh_missing_directory(
-    mock_toast_error: MagicMock,
-    mock_drop_settings_get: MagicMock,
-    mock_path: MagicMock,
-    setup_list_state: ListState,
+    list_state: ListState,
+    tmp_path: Path,
+    settings: DropSettings,
+    monkeypatch: MonkeyPatch,
 ) -> None:
     """Test the case where the x-system directory does not exist."""
-    state = setup_list_state
+    settings.drop_directory = tmp_path
+    mock_toast_error = Mock()
+    monkeypatch.setattr("mex.drop.file_history.state.rx.toast.error", mock_toast_error)
 
-    mock_settings = MagicMock()
-    mock_settings.drop_directory = "/mock/drop/directory"
-    mock_drop_settings_get.return_value = mock_settings
-
-    mock_x_system_dir = mock_path.return_value
-    mock_x_system_dir.is_dir.return_value = False
-
-    state.refresh()
+    list_state.refresh()
 
     mock_toast_error.assert_called_once_with(
         "The requested x-system was not found on this server.", close_button=True
     )
 
-    assert state.file_list == []
+    assert list_state.file_list == []
 
 
-@patch("mex.drop.file_history.state.pathlib.Path")
-@patch("mex.drop.file_history.state.DropSettings.get")
 def test_refresh_success(
-    mock_drop_settings_get: MagicMock, mock_path: MagicMock, setup_list_state: ListState
+    settings: DropSettings, list_state: ListState, tmp_path: Path
 ) -> None:
     """Test successful retrieval of uploaded files."""
-    state = setup_list_state
+    settings.drop_directory = tmp_path
 
-    mock_settings = MagicMock()
-    mock_settings.drop_directory = "/mock/drop/directory"
-    mock_drop_settings_get.return_value = mock_settings
+    mock_x_system_dir = settings.drop_directory / "test_system"
+    mock_x_system_dir.mkdir()
 
-    mock_x_system_dir = mock_path.return_value
-    mock_x_system_dir.is_dir.return_value = True
+    mock_file = mock_x_system_dir / "test_file.csv"
+    mock_file.touch()
 
-    mock_file = MagicMock()
-    mock_file.is_file.return_value = True
-    mock_file.name = "test_file.csv"
-    mock_file.stat.return_value.st_ctime = 1680000000
-    mock_file.stat.return_value.st_mtime = 1680001000
-
-    mock_x_system_dir.glob.return_value = [mock_file]
-
-    state.refresh()
+    list_state.refresh()
 
     expected_file_list = [
         {
             "name": "test_file.csv",
-            "created": datetime.fromtimestamp(1680000000, tz=UTC).strftime(
-                "%d-%m-%Y %H:%M:%S"
-            ),
-            "modified": datetime.fromtimestamp(1680001000, tz=UTC).strftime(
-                "%d-%m-%Y %H:%M:%S"
-            ),
+            "created": datetime.fromtimestamp(
+                mock_file.stat().st_ctime, tz=UTC
+            ).strftime("%d-%m-%Y %H:%M:%S"),
+            "modified": datetime.fromtimestamp(
+                mock_file.stat().st_mtime, tz=UTC
+            ).strftime("%d-%m-%Y %H:%M:%S"),
         }
     ]
-    assert state.file_list == expected_file_list
+    assert list_state.file_list == expected_file_list
