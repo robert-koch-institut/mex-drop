@@ -11,9 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- apply mex-template 716a581e36bd544e0b34a7f92078435de557fa76
-- update mex-common to 0.61.0
-
 ### Deprecated
 
 ### Removed
@@ -21,6 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [0.12.1] - 2025-05-19
+
+### Changes
+
+- apply mex-template 716a581e36bd544e0b34a7f92078435de557fa76
+- update mex-common to 0.61.0
 
 ## [0.12.0] - 2025-04-15
 
