@@ -22,8 +22,9 @@ def drop_api() -> None:  # pragma: no cover
     # Set the log level.
     set_log_level(constants.LogLevel.INFO)
 
-    # Set env mode in the environment.
+    # Configure the environment.
     environment.REFLEX_ENV_MODE.set(constants.Env.PROD)
+    environment.REFLEX_CHECK_LATEST_VERSION.set(False)
 
     # Skip the compile step.
     environment.REFLEX_SKIP_COMPILE.set(True)
@@ -74,4 +75,5 @@ def drop_frontend() -> None:  # pragma: no cover
 
 def main() -> None:  # pragma: no cover
     """Start the drop api together with frontend."""
+    environment.REFLEX_USE_NPM.set(True)
     typer.run(run)
