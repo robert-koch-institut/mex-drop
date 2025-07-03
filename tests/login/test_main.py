@@ -19,3 +19,26 @@ def test_login_page(page: Page, get_test_key: Callable[[str], str]) -> None:
     expect(page.locator("text=Logout")).to_be_visible()
     page.get_by_text("Logout").click()
     expect(page.get_by_test_id("login-button")).to_be_visible()
+
+
+@pytest.mark.integration
+def test_login_page_with_enter_key(
+    page: Page, get_test_key: Callable[[str], str]
+) -> None:
+    page.goto("http://localhost:3000")
+    form_elements = ["API Key", "X-System", "login-button"]
+    for elem in form_elements:
+        page.get_by_placeholder("API Key").fill(get_test_key("test"))
+        page.get_by_placeholder("X-System").fill("test")
+
+        page.get_by_placeholder(elem).press(
+            "Enter"
+        ) if elem != "login-button" else page.get_by_test_id("login-button").press(
+            "Enter"
+        )
+        expect(page.get_by_test_id("nav-bar")).to_be_visible()
+
+        page.get_by_test_id("user-menu").click()
+        expect(page.locator("text=Logout")).to_be_visible()
+        page.get_by_text("Logout").click()
+        expect(page.get_by_test_id("login-button")).to_be_visible()

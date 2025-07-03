@@ -40,7 +40,7 @@ def login_button() -> rx.Component:
     """Return a submit button for the login form."""
     return rx.button(
         "Login",
-        on_click=LoginState.login,
+        type="submit",
         size="3",
         tab_index=3,
         style=rx.Style(
@@ -65,13 +65,16 @@ def index() -> rx.Component:
                     style=rx.Style({"width": "100%"}),
                 ),
                 rx.divider(size="4"),
-                rx.vstack(
-                    login_x_system(),
-                    login_api_key(),
-                    login_button(),
-                    style=rx.Style({"width": "100%"}),
+                rx.form(
+                    rx.vstack(
+                        login_x_system(),
+                        login_api_key(),
+                        login_button(),
+                        style=rx.Style({"width": "100%"}),
+                    ),
+                    on_submit=LoginState.login,
+                    spacing="4",
                 ),
-                spacing="4",
             ),
             style=rx.Style(
                 {
