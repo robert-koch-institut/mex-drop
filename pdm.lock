@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:9db3fbbf9e45dba507d616fc16c5b686f53a9a88692001382f69893370e16c8b"
+content_hash = "sha256:5ce4de87fa5cc4ac922b655dd5f3f6d0d577ac2063a95a652805e4b65ce1dee5"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -403,7 +403,7 @@ files = [
 
 [[package]]
 name = "fastapi"
-version = "0.115.14"
+version = "0.116.0"
 requires_python = ">=3.8"
 summary = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 groups = ["default"]
@@ -413,61 +413,82 @@ dependencies = [
     "typing-extensions>=4.8.0",
 ]
 files = [
-    {file = "fastapi-0.115.14-py3-none-any.whl", hash = "sha256:6c0c8bf9420bd58f565e585036d971872472b4f7d3f6c73b698e10cffdefb3ca"},
-    {file = "fastapi-0.115.14.tar.gz", hash = "sha256:b1de15cdc1c499a4da47914db35d0e4ef8f1ce62b624e94e0e5824421df99739"},
+    {file = "fastapi-0.116.0-py3-none-any.whl", hash = "sha256:fdcc9ed272eaef038952923bef2b735c02372402d1203ee1210af4eea7a78d2b"},
+    {file = "fastapi-0.116.0.tar.gz", hash = "sha256:80dc0794627af0390353a6d1171618276616310d37d24faba6648398e57d687a"},
 ]
 
 [[package]]
 name = "fastapi-cli"
-version = "0.0.7"
+version = "0.0.8"
 requires_python = ">=3.8"
 summary = "Run and manage FastAPI apps from the command line with FastAPI CLI. 🚀"
 groups = ["default"]
 dependencies = [
-    "rich-toolkit>=0.11.1",
-    "typer>=0.12.3",
+    "rich-toolkit>=0.14.8",
+    "typer>=0.15.1",
     "uvicorn[standard]>=0.15.0",
 ]
 files = [
-    {file = "fastapi_cli-0.0.7-py3-none-any.whl", hash = "sha256:d549368ff584b2804336c61f192d86ddea080c11255f375959627911944804f4"},
-    {file = "fastapi_cli-0.0.7.tar.gz", hash = "sha256:02b3b65956f526412515907a0793c9094abd4bfb5457b389f645b0ea6ba3605e"},
+    {file = "fastapi_cli-0.0.8-py3-none-any.whl", hash = "sha256:0ea95d882c85b9219a75a65ab27e8da17dac02873e456850fa0a726e96e985eb"},
+    {file = "fastapi_cli-0.0.8.tar.gz", hash = "sha256:2360f2989b1ab4a3d7fc8b3a0b20e8288680d8af2e31de7c38309934d7f8a0ee"},
 ]
 
 [[package]]
 name = "fastapi-cli"
-version = "0.0.7"
+version = "0.0.8"
 extras = ["standard"]
 requires_python = ">=3.8"
 summary = "Run and manage FastAPI apps from the command line with FastAPI CLI. 🚀"
 groups = ["default"]
 dependencies = [
-    "fastapi-cli==0.0.7",
+    "fastapi-cli==0.0.8",
+    "fastapi-cloud-cli>=0.1.1",
     "uvicorn[standard]>=0.15.0",
 ]
 files = [
-    {file = "fastapi_cli-0.0.7-py3-none-any.whl", hash = "sha256:d549368ff584b2804336c61f192d86ddea080c11255f375959627911944804f4"},
-    {file = "fastapi_cli-0.0.7.tar.gz", hash = "sha256:02b3b65956f526412515907a0793c9094abd4bfb5457b389f645b0ea6ba3605e"},
+    {file = "fastapi_cli-0.0.8-py3-none-any.whl", hash = "sha256:0ea95d882c85b9219a75a65ab27e8da17dac02873e456850fa0a726e96e985eb"},
+    {file = "fastapi_cli-0.0.8.tar.gz", hash = "sha256:2360f2989b1ab4a3d7fc8b3a0b20e8288680d8af2e31de7c38309934d7f8a0ee"},
+]
+
+[[package]]
+name = "fastapi-cloud-cli"
+version = "0.1.1"
+requires_python = ">=3.8"
+summary = "Deploy and manage FastAPI Cloud apps from the command line 🚀"
+groups = ["default"]
+dependencies = [
+    "httpx<0.28.0,>=0.27.0",
+    "pydantic[email]>=1.6.1",
+    "rich-toolkit>=0.14.5",
+    "rignore>=0.5.1",
+    "sentry-sdk>=2.20.0",
+    "typer>=0.12.3",
+    "uvicorn[standard]>=0.15.0",
+]
+files = [
+    {file = "fastapi_cloud_cli-0.1.1-py3-none-any.whl", hash = "sha256:56e453f6ddbb2ef23c3e1da43dfc40b406cad680c6cf36832d8ef9422eda5ce8"},
+    {file = "fastapi_cloud_cli-0.1.1.tar.gz", hash = "sha256:8014ed3529382e61b88628ecb1904df5fc51256f9090de3cc8acae892dbb7109"},
 ]
 
 [[package]]
 name = "fastapi"
-version = "0.115.14"
+version = "0.116.0"
 extras = ["standard"]
 requires_python = ">=3.8"
 summary = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 groups = ["default"]
 dependencies = [
     "email-validator>=2.0.0",
-    "fastapi-cli[standard]>=0.0.5",
-    "fastapi==0.115.14",
+    "fastapi-cli[standard]>=0.0.8",
+    "fastapi==0.116.0",
     "httpx>=0.23.0",
     "jinja2>=3.1.5",
     "python-multipart>=0.0.18",
     "uvicorn[standard]>=0.12.0",
 ]
 files = [
-    {file = "fastapi-0.115.14-py3-none-any.whl", hash = "sha256:6c0c8bf9420bd58f565e585036d971872472b4f7d3f6c73b698e10cffdefb3ca"},
-    {file = "fastapi-0.115.14.tar.gz", hash = "sha256:b1de15cdc1c499a4da47914db35d0e4ef8f1ce62b624e94e0e5824421df99739"},
+    {file = "fastapi-0.116.0-py3-none-any.whl", hash = "sha256:fdcc9ed272eaef038952923bef2b735c02372402d1203ee1210af4eea7a78d2b"},
+    {file = "fastapi-0.116.0.tar.gz", hash = "sha256:80dc0794627af0390353a6d1171618276616310d37d24faba6648398e57d687a"},
 ]
 
 [[package]]
@@ -549,7 +570,7 @@ files = [
 
 [[package]]
 name = "httpx"
-version = "0.28.1"
+version = "0.27.2"
 requires_python = ">=3.8"
 summary = "The next generation HTTP client."
 groups = ["default"]
@@ -558,10 +579,11 @@ dependencies = [
     "certifi",
     "httpcore==1.*",
     "idna",
+    "sniffio",
 ]
 files = [
-    {file = "httpx-0.28.1-py3-none-any.whl", hash = "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"},
-    {file = "httpx-0.28.1.tar.gz", hash = "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc"},
+    {file = "httpx-0.27.2-py3-none-any.whl", hash = "sha256:7bb2708e112d8fdd7829cd4243970f0c223274051cb35ee80c03301ee29a3df0"},
+    {file = "httpx-0.27.2.tar.gz", hash = "sha256:f7c2be1d2f3c3c3160d441802406b206c2b76f5947b11115e6df10c6c65e66c2"},
 ]
 
 [[package]]
@@ -922,7 +944,7 @@ files = [
 
 [[package]]
 name = "mex-common"
-version = "0.62.0"
+version = "0.62.1"
 requires_python = "<3.12,>=3.11"
 summary = "Common library for MEx python projects."
 groups = ["default"]
@@ -941,8 +963,8 @@ dependencies = [
     "requests<3,>=2",
 ]
 files = [
-    {file = "mex_common-0.62.0-py3-none-any.whl", hash = "sha256:680b4b1057dba6bdc42e6ba5e7bdcabdf29b26834119650d208044753c621d76"},
-    {file = "mex_common-0.62.0.tar.gz", hash = "sha256:fe6fca6f823086a5ca3775e338ee36aefe11435e279414a03cd15313a3647e3b"},
+    {file = "mex_common-0.62.1-py3-none-any.whl", hash = "sha256:c35d719114581892e429d586f162bd36e0bcdd4bfb0175dc20305fd2c37451d8"},
+    {file = "mex_common-0.62.1.tar.gz", hash = "sha256:2a8f6b33f1e40865a151748d73a3e3036da7bccf4e3c53ee9a15b263a8873cbd"},
 ]
 
 [[package]]
@@ -1348,6 +1370,22 @@ files = [
 ]
 
 [[package]]
+name = "pydantic"
+version = "2.9.2"
+extras = ["email"]
+requires_python = ">=3.8"
+summary = "Data validation using Python type hints"
+groups = ["default"]
+dependencies = [
+    "email-validator>=2.0.0",
+    "pydantic==2.9.2",
+]
+files = [
+    {file = "pydantic-2.9.2-py3-none-any.whl", hash = "sha256:f048cec7b26778210e28a0459867920654d48e5e62db0958433636cde4254f12"},
+    {file = "pydantic-2.9.2.tar.gz", hash = "sha256:d155cef71265d1e9807ed1c32b4c8deec042a44a50a4188b25ac67ecd81a9c0f"},
+]
+
+[[package]]
 name = "pyee"
 version = "13.0.0"
 requires_python = ">=3.8"
@@ -1749,7 +1787,7 @@ files = [
 
 [[package]]
 name = "rich-toolkit"
-version = "0.14.7"
+version = "0.14.8"
 requires_python = ">=3.8"
 summary = "Rich toolkit for building command-line applications"
 groups = ["default"]
@@ -1759,8 +1797,44 @@ dependencies = [
     "typing-extensions>=4.12.2",
 ]
 files = [
-    {file = "rich_toolkit-0.14.7-py3-none-any.whl", hash = "sha256:def05cc6e0f1176d6263b6a26648f16a62c4563b277ca2f8538683acdba1e0da"},
-    {file = "rich_toolkit-0.14.7.tar.gz", hash = "sha256:6cca5a68850cc5778915f528eb785662c27ba3b4b2624612cce8340fa9701c5e"},
+    {file = "rich_toolkit-0.14.8-py3-none-any.whl", hash = "sha256:c54bda82b93145a79bbae04c3e15352e6711787c470728ff41fdfa0c2f0c11ae"},
+    {file = "rich_toolkit-0.14.8.tar.gz", hash = "sha256:1f77b32e6c25d9e3644c1efbce00d8d90daf2457b3abdb4699e263c03b9ca6cf"},
+]
+
+[[package]]
+name = "rignore"
+version = "0.5.1"
+requires_python = ">=3.8"
+summary = "Python Bindings for the ignore crate"
+groups = ["default"]
+files = [
+    {file = "rignore-0.5.1-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:6086dcd720475cbfd68978f57a549c85e15544c819ea26fb78262e384080c4a2"},
+    {file = "rignore-0.5.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:ead6bec0cfd23527cadba640a1dfeff32dc944cd25fff8327a8debd995441efc"},
+    {file = "rignore-0.5.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ce0d3731551484aa6a78a319ba55d36ae5d34395e2df7aef8fd2ad84a1f24365"},
+    {file = "rignore-0.5.1-cp311-cp311-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:563f48c561fcb12c5f3fbd7a67434f84739961fb794c8d371789be2d1732d520"},
+    {file = "rignore-0.5.1-cp311-cp311-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:7e0c097f3d8e0af8df46ba7587ad4d71e386dd9b47740afef03b4a9da2e0725e"},
+    {file = "rignore-0.5.1-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:71cc68938c7d17f571bddb2f4d52cd5c087edf258aa0bf0076dfcb9a48aea018"},
+    {file = "rignore-0.5.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e9d71f376c14015fbde075571ca6e5de12f2f470b6a1e1eb88d5fc1bd7dd7f05"},
+    {file = "rignore-0.5.1-cp311-cp311-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:0af519e4286634a16c3c8c7becaccd27125cd23b3d7656f9baf2957da12d8a80"},
+    {file = "rignore-0.5.1-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:ad7e2603533cf5125bf50bdaa513ca75b8cf72ac45b014b8f9f7d52d23d50848"},
+    {file = "rignore-0.5.1-cp311-cp311-musllinux_1_2_armv7l.whl", hash = "sha256:8f1b647c05937f358c1521a1da29018f5ad06bd77cc7e2c1a2526ca2fc749bef"},
+    {file = "rignore-0.5.1-cp311-cp311-musllinux_1_2_i686.whl", hash = "sha256:b29838382551ab11e874cfa05de98e3eb6076d6ce33e0eb421574a63de8203b3"},
+    {file = "rignore-0.5.1-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:89b27f78d96f9f34b61bdb713ed988822206bc20ee9ba01a3169925a6997ceaf"},
+    {file = "rignore-0.5.1-cp311-cp311-win32.whl", hash = "sha256:a5c57f1180db90a120002ef584ab7d92d68dd48665d42ab3fc89e39aa815db57"},
+    {file = "rignore-0.5.1-cp311-cp311-win_amd64.whl", hash = "sha256:75bfc98896bb606cb2cea1aa7cc59534eaf7f7153750ed10bcfc0ff79d79f635"},
+    {file = "rignore-0.5.1-cp311-none-win32.whl", hash = "sha256:051615fdbd5659e2ffa04ccd3356b6a2b01c8a29288b2a6cf6e9dd39ae437671"},
+    {file = "rignore-0.5.1-cp311-none-win_amd64.whl", hash = "sha256:f4a5ea2f4bfd6472532a676eb671a91dde756772b0ba40a808db200c2b55c2e3"},
+    {file = "rignore-0.5.1-pp311-pypy311_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e9238096b7a7e22a05ea911ea2a1db702cbee0d54fa903b2d74bf5c4626ae096"},
+    {file = "rignore-0.5.1-pp311-pypy311_pp73-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:f1fd4c6b040cbc1b1ca762d6b2afc0a6e8f8a100750703902a6ec5e898544cb6"},
+    {file = "rignore-0.5.1-pp311-pypy311_pp73-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:96541458a22256d2001157109d65cd81b8a3ba024f2aa43c95c50cab02c9316f"},
+    {file = "rignore-0.5.1-pp311-pypy311_pp73-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:287fcfd281057ab3003477d521bf1c16befaaf19138ed78dd29b02158c75d9fe"},
+    {file = "rignore-0.5.1-pp311-pypy311_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:86228748bafa61adfd43c21138f1167de764856831f20726c07939ded74e38ee"},
+    {file = "rignore-0.5.1-pp311-pypy311_pp73-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:604baaa1897625eb5cc0f3d4f9a9209977b244dc01efbf5b37db18379f15263a"},
+    {file = "rignore-0.5.1-pp311-pypy311_pp73-musllinux_1_2_aarch64.whl", hash = "sha256:b241588975b961f536a7607bb73ad6f9c50c122437c4612d6c99fbac2d0683df"},
+    {file = "rignore-0.5.1-pp311-pypy311_pp73-musllinux_1_2_armv7l.whl", hash = "sha256:937c8a65c66daa95064107ea9f91b6738d9b8be06b98ed75257e1124dc73078c"},
+    {file = "rignore-0.5.1-pp311-pypy311_pp73-musllinux_1_2_i686.whl", hash = "sha256:d51f310a573d99ecd517c47995c44833c8119c0945fb254d00e9e1e559bdbdc1"},
+    {file = "rignore-0.5.1-pp311-pypy311_pp73-musllinux_1_2_x86_64.whl", hash = "sha256:50032d3b933c2e06b32008039b9c156ecc7d776886f9bac787873ae05da3704c"},
+    {file = "rignore-0.5.1.tar.gz", hash = "sha256:4f5bdedf02eaf94fc7550405ae2bcb75bdc6449ae1deb2dbea61c8a97186f7ae"},
 ]
 
 [[package]]
@@ -1815,6 +1889,21 @@ dependencies = [
 files = [
     {file = "SecretStorage-3.3.3-py3-none-any.whl", hash = "sha256:f356e6628222568e3af06f2eba8df495efa13b3b63081dafd4f7d9a7b7bc9f99"},
     {file = "SecretStorage-3.3.3.tar.gz", hash = "sha256:2403533ef369eca6d2ba81718576c5e0f564d5cca1b58f73a8b23e7d4eeebd77"},
+]
+
+[[package]]
+name = "sentry-sdk"
+version = "2.32.0"
+requires_python = ">=3.6"
+summary = "Python client for Sentry (https://sentry.io)"
+groups = ["default"]
+dependencies = [
+    "certifi",
+    "urllib3>=1.26.11",
+]
+files = [
+    {file = "sentry_sdk-2.32.0-py2.py3-none-any.whl", hash = "sha256:6cf51521b099562d7ce3606da928c473643abe99b00ce4cb5626ea735f4ec345"},
+    {file = "sentry_sdk-2.32.0.tar.gz", hash = "sha256:9016c75d9316b0f6921ac14c8cd4fb938f26002430ac5be9945ab280f78bec6b"},
 ]
 
 [[package]]

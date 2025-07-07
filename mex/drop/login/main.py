@@ -10,13 +10,14 @@ def login_x_system() -> rx.Component:
         rx.text("X-System"),
         rx.input(
             autofocus=True,
+            name="x_system",
             on_change=LoginState.set_x_system,
             placeholder="X-System",
             size="3",
             tab_index=1,
-            style=rx.Style({"width": "80%"}),
+            style={"width": "100%"},
         ),
-        style=rx.Style({"width": "100%"}),
+        style={"width": "100%"},
     )
 
 
@@ -26,30 +27,33 @@ def login_api_key() -> rx.Component:
         rx.text("API Key"),
         rx.input(
             on_change=LoginState.set_api_key,
+            name="api_key",
             placeholder="API Key",
             size="3",
             tab_index=2,
             type="password",
-            style=rx.Style({"width": "80%"}),
+            style={"width": "100%"},
         ),
-        style=rx.Style({"width": "100%"}),
+        style={"width": "100%"},
     )
 
 
 def login_button() -> rx.Component:
     """Return a submit button for the login form."""
-    return rx.button(
-        "Login",
-        type="submit",
-        size="3",
-        tab_index=3,
-        style=rx.Style(
-            {
+    return rx.hstack(
+        rx.spacer(),
+        rx.button(
+            "Login",
+            size="3",
+            tab_index=3,
+            style={
                 "padding": "0 var(--space-6)",
                 "marginTop": "var(--space-4)",
-            }
+            },
+            custom_attrs={"data-testid": "login-button"},
+            type="submit",
         ),
-        custom_attrs={"data-testid": "login-button"},
+        style={"width": "100%"},
     )
 
 
@@ -62,7 +66,7 @@ def index() -> rx.Component:
                     app_logo(),
                     rx.spacer(spacing="4"),
                     rx.color_mode.button(),
-                    style=rx.Style({"width": "100%"}),
+                    style={"width": "100%"},
                 ),
                 rx.divider(size="4"),
                 rx.form(
@@ -70,20 +74,17 @@ def index() -> rx.Component:
                         login_x_system(),
                         login_api_key(),
                         login_button(),
-                        style=rx.Style({"width": "100%"}),
+                        style={"width": "100%"},
                     ),
                     on_submit=LoginState.login,
                     spacing="4",
                 ),
             ),
-            style=rx.Style(
-                {
-                    "width": "calc(400px * var(--scaling))",
-                    "padding": "var(--space-4)",
-                    "top": "20vh",
-                }
-            ),
-            variant="classic",
+            style={
+                "width": "calc(340px * var(--scaling))",
+                "padding": "var(--space-4)",
+                "top": "20vh",
+            },
             custom_attrs={"data-testid": "login-card"},
-        ),
+        )
     )
