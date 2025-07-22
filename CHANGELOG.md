@@ -9,12 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- add support for logging-in with ENTER key
-
 ### Changes
-
-- use npm over bun
-- update mex-common to 0.62.1
 
 ### Deprecated
 
@@ -23,6 +18,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [0.12.2] - 2025-07-22
+
+### Added
+
+- add support for logging-in with ENTER key
+
+### Changes
+
+- use npm over bun
+- update mex-common to 0.62.1
 
 ## [0.12.1] - 2025-05-19
 
