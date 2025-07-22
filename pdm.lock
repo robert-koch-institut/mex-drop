@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:5ce4de87fa5cc4ac922b655dd5f3f6d0d577ac2063a95a652805e4b65ce1dee5"
+content_hash = "sha256:d3926bfbbc441deba0687fb32450963ca5b33d80eed77d9743198942f797c64b"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -267,7 +267,7 @@ version = "0.4.6"
 requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 summary = "Cross-platform colored terminal text."
 groups = ["default", "dev"]
-marker = "sys_platform == \"win32\" or platform_system == \"Windows\" or os_name == \"nt\""
+marker = "platform_system == \"Windows\" or sys_platform == \"win32\" or os_name == \"nt\""
 files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
@@ -944,7 +944,7 @@ files = [
 
 [[package]]
 name = "mex-common"
-version = "0.62.2"
+version = "0.63.0"
 requires_python = "<3.12,>=3.11"
 summary = "Common library for MEx python projects."
 groups = ["default"]
@@ -963,8 +963,8 @@ dependencies = [
     "requests<3,>=2",
 ]
 files = [
-    {file = "mex_common-0.62.2-py3-none-any.whl", hash = "sha256:e55cad886e878df872a6a58a4cae12f8d80d69507013aaea838e860a8ca8f184"},
-    {file = "mex_common-0.62.2.tar.gz", hash = "sha256:a5e6004e7bb770cde8486e1dc0be262beec3508ec0911b9f74bb1bb58517d526"},
+    {file = "mex_common-0.63.0-py3-none-any.whl", hash = "sha256:1fefb1b62eace93587cfc0d3b20249afaa4cc692362a29a60600f6cd7557c2f6"},
+    {file = "mex_common-0.63.0.tar.gz", hash = "sha256:b3aa98651f754adf9ab146697d00b88381d7114a6d998e661365e41d7b18d4da"},
 ]
 
 [[package]]
