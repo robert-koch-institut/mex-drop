@@ -44,7 +44,7 @@ def dropped_data(settings: DropSettings) -> dict[str, Any]:
         "expected_content",
     ),
     [
-        (
+        pytest.param(
             "api-test-key",
             "test_system",
             "valid_entity_type",
@@ -57,40 +57,45 @@ def dropped_data(settings: DropSettings) -> dict[str, Any]:
                 "list": [1, 2, 3],
                 "dict": {"a": "b"},
             },
+            id="valid",
         ),
-        (
+        pytest.param(
             "api-test-key",
             "foo_system",
             "valid_entity_type",
             200,
             "text/csv",
             "asd,foo,bar,list,dict.a\ndef,1,1.2,\"[1, 2, 3]\",\"{'a': 'b'}\"\n",
+            id="valid csv",
         ),
-        (
+        pytest.param(
             "api-test-key",
             "test_system",
             "valid_entity_type",
             200,
             "application/xml",
             (TESTDATA_DIR / "test.xml").read_text(),
+            id="valid xml",
         ),
-        (
+        pytest.param(
             "api-test-key",
             "test_system",
             "valid_entity_type",
             200,
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             (TESTDATA_DIR / "test.xlsx").read_bytes(),
+            id="valid xlsx",
         ),
-        (
+        pytest.param(
             "api-test-key",
             "test_system",
             "valid_entity_type",
             400,
             "application/pdf",
             "foo",
+            id="invalid content type",
         ),
-        (
+        pytest.param(
             "api-test-key",
             "test_system",
             "invalid entity type",
@@ -103,8 +108,9 @@ def dropped_data(settings: DropSettings) -> dict[str, Any]:
                 "list": [1, 2, 3],
                 "dict": {"a": "b"},
             },
+            id="invalid entity type",
         ),
-        (
+        pytest.param(
             "api-test-key",
             "invalid x_system",
             "valid_entity_type",
@@ -117,8 +123,9 @@ def dropped_data(settings: DropSettings) -> dict[str, Any]:
                 "list": [1, 2, 3],
                 "dict": {"a": "b"},
             },
+            id="invalid x_system",
         ),
-        (
+        pytest.param(
             None,
             "test_system",
             "valid_entity_type",
@@ -131,8 +138,9 @@ def dropped_data(settings: DropSettings) -> dict[str, Any]:
                 "list": [1, 2, 3],
                 "dict": {"a": "b"},
             },
+            id="missing header",
         ),
-        (
+        pytest.param(
             "invalid-key",
             "test_system",
             "valid_entity_type",
@@ -145,8 +153,9 @@ def dropped_data(settings: DropSettings) -> dict[str, Any]:
                 "list": [1, 2, 3],
                 "dict": {"a": "b"},
             },
+            id="invalid api_key",
         ),
-        (
+        pytest.param(
             "api-key-one",
             "foo_system",
             "valid_entity_type",
@@ -159,20 +168,9 @@ def dropped_data(settings: DropSettings) -> dict[str, Any]:
                 "list": [1, 2, 3],
                 "dict": {"a": "b"},
             },
+            id="unauthorized x_system",
         ),
     ],
-    ids=(
-        "valid",
-        "valid csv",
-        "valid xml",
-        "valid xlsx",
-        "invalid content type",
-        "invalid entity type",
-        "invalid x_system",
-        "missing header",
-        "invalid api_key",
-        "unauthorized x_system",
-    ),
 )
 def test_drop_data(  # noqa: PLR0913
     client: TestClient,
@@ -229,7 +227,7 @@ def test_drop_data(  # noqa: PLR0913
 @pytest.mark.parametrize(
     ("api_key", "x_system", "expected_response_code", "files"),
     [
-        (
+        pytest.param(
             "api-test-key",
             "test_system",
             202,
@@ -237,45 +235,52 @@ def test_drop_data(  # noqa: PLR0913
                 ("file1.json", "file1 content", "application/json"),
                 ("file2.csv", "1,2,3", "text/csv"),
             ],
+            id="valid",
         ),
-        (
+        pytest.param(
             "api-test-key",
             "test_system",
             202,
             [("file1.xls", "file1 content", "application/vnd.ms-excel")],
+            id="valid xls",
         ),
-        (
+        pytest.param(
             "api-test-key",
             "test_system",
             422,
             [("file1.html", "file1 content", "text/html")],
+            id="invalid file format",
         ),
         ("api-test-key", "foo_system", 422, {}),
-        (
+        pytest.param(
             "api-test-key",
             "invalid x_system",
             422,
             [("file1.json", "file1 content", "application/json")],
+            id="missing upload",
         ),
-        (
+        pytest.param(
             None,
             "test_system",
             401,
             [("file1.json", "file1 content", "application/json")],
+            id="invalid x_system",
         ),
-        (
+        pytest.param(
             "invalid-key",
             "test_system",
             401,
             [("file1.json", "file1 content", "application/json")],
+            id="missing header",
         ),
-        (
+        pytest.param(
             "api-key-one",
             "foo_system",
             403,
             [("file1.json", "file1 content", "application/json")],
+            id="invalid api_key",
         ),
-        (
+        pytest.param(
             "api-test-key",
             "test_system",
             400,
@@ -283,19 +288,9 @@ def test_drop_data(  # noqa: PLR0913
                 ("file1.json", "file1 content", "application/json"),
                 ("file1.json", "file1 different content", "application/json"),
             ],
+            id="unauthorized x_system",
         ),
     ],
-    ids=(
-        "valid",
-        "valid xls",
-        "invalid file format",
-        "missing upload",
-        "invalid x_system",
-        "missing header",
-        "invalid api_key",
-        "unauthorized x_system",
-        "duplicate filename",
-    ),
 )
 def test_drop_multiple_files(  # noqa: PLR0913
     client: TestClient,
