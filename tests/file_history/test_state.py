@@ -1,5 +1,4 @@
 from datetime import UTC, datetime
-from pathlib import Path
 from unittest.mock import Mock
 
 import pytest
@@ -18,12 +17,9 @@ def list_state(app_state: State) -> ListState:
 
 def test_refresh_missing_directory(
     list_state: ListState,
-    tmp_path: Path,
-    settings: DropSettings,
     monkeypatch: MonkeyPatch,
 ) -> None:
     """Test the case where the x-system directory does not exist."""
-    settings.drop_directory = tmp_path
     mock_toast_error = Mock()
     monkeypatch.setattr("mex.drop.file_history.state.rx.toast.error", mock_toast_error)
 
@@ -36,14 +32,10 @@ def test_refresh_missing_directory(
     assert list_state.file_list == []
 
 
-def test_refresh_success(
-    settings: DropSettings, list_state: ListState, tmp_path: Path
-) -> None:
+def test_refresh_success(settings: DropSettings, list_state: ListState) -> None:
     """Test successful retrieval of uploaded files."""
-    settings.drop_directory = tmp_path
-
     mock_x_system_dir = settings.drop_directory / "test_system"
-    mock_x_system_dir.mkdir()
+    mock_x_system_dir.mkdir(parents=True)
 
     mock_file = mock_x_system_dir / "test_file.csv"
     mock_file.touch()

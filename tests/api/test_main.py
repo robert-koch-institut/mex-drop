@@ -18,18 +18,16 @@ from tests.conftest import TESTDATA_DIR
 
 
 @pytest.fixture
-def dropped_data(tmp_path: Path) -> dict[str, Any]:
+def dropped_data(settings: DropSettings) -> dict[str, Any]:
     """Dictionary of api key, x-system name, entity type and content."""
-    settings = DropSettings.get()
-    settings.drop_directory = tmp_path
     data = {
         "content": {"foo": "bar"},
         "api_key": "api-test-key",
         "x_system": "test_system",
         "entity_type": "foo.json",
     }
-    x_system_dir = tmp_path / data["x_system"]
-    expected_file = x_system_dir / f"{data['entity_type']}"
+    x_system_dir = settings.drop_directory / str(data["x_system"])
+    expected_file = x_system_dir / str(data["entity_type"])
     x_system_dir.mkdir(parents=True)
     with expected_file.open("w") as handle:
         json.dump(data["content"], handle)
@@ -193,23 +191,24 @@ def test_drop_data(  # noqa: PLR0913
     if api_key:
         client.headers.update({"X-API-Key": api_key})
     client.headers.update({"Content-Type": content_type})
-    kwargs = (
-        {"json": expected_content}
-        if content_type == "application/json"
-        else {"content": expected_content}
-    )
-    response = client.post(f"/v0/{x_system}/{entity_type}", **kwargs)
+
+    if content_type == "application/json":
+        response = client.post(f"/v0/{x_system}/{entity_type}", json=expected_content)
+    else:
+        assert not isinstance(expected_content, dict)
+        response = client.post(
+            f"/v0/{x_system}/{entity_type}", content=expected_content
+        )
     assert response.status_code == expected_response_code, response.text
 
     if 200 <= response.status_code < 300:
-        base_path = Path(settings.drop_directory, x_system, entity_type)
+        base_path = settings.drop_directory / x_system / entity_type
         expected_file = base_path.with_suffix(ALLOWED_CONTENT_TYPES[content_type])
 
         if content_type == "application/json":
             assert mocked_sink.call_args == call(expected_content, expected_file)
         else:
-            with expected_file.open("rb") as f:
-                saved_content = f.read()
+            saved_content = expected_file.read_bytes()
 
             if content_type in {"text/csv", "text/tab-separated-values"}:
                 assert saved_content.decode("utf-8") == expected_content
@@ -217,6 +216,7 @@ def test_drop_data(  # noqa: PLR0913
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 "application/vnd.ms-excel",
             }:
+                assert isinstance(expected_content, bytes)
                 original_df = pd.read_excel(BytesIO(expected_content), sheet_name=None)
                 saved_df = pd.read_excel(BytesIO(saved_content), sheet_name=None)
 
