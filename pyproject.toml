@@ -22,6 +22,7 @@ optional-dependencies.dev = [
     "mypy>=1",
     "nest-asyncio>=1",
     "openpyxl>=3",
+    "pandas-stubs>=2",
     "pytest-playwright>=0.7",
     "pytest-random-order>=1",
     "pytest>=8",
@@ -47,6 +48,10 @@ show_error_codes = true
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
+module = "nest_asyncio.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
 module = "reflex.*"
 ignore_missing_imports = true
 
@@ -64,7 +69,7 @@ apidoc = { cmd = "pdm run sphinx-apidoc -f -o docs/source mex" }
 sphinx = { cmd = "pdm run sphinx-build -aE -b dirhtml docs docs/dist" }
 doc = { composite = ["apidoc", "sphinx"] }
 wheel = { cmd = "pdm build --no-sdist" }
-mypy-daemon = { cmd = "pdm run dmypy run --timeout 7200 -- mex" }
+mypy-daemon = { cmd = "pdm run dmypy run --timeout 7200 -- mex tests" }
 lint = { cmd = "pre-commit run --all-files" }
 unit = { cmd = "pdm run pytest -m 'not integration'" }
 test = { cmd = "pdm run pytest" }

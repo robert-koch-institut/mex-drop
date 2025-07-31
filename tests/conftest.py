@@ -6,24 +6,26 @@ from fastapi.testclient import TestClient
 
 from mex.drop.settings import DropSettings
 from mex.drop.state import State, User
-from mex.drop.types import APIKey
+from mex.drop.types import APIKey, UserDatabase
 from mex.mex import app
 
 pytest_plugins = ("mex.common.testing.plugin",)
 TESTDATA_DIR = Path(__file__).parent / "test_files"
 
 
-TEST_USER_DATABASE = {
-    APIKey("api-key-one"): ["test_system"],
-    APIKey("john-doe"): ["test_system", "foo_system"],
-    APIKey("api-test-key"): [
-        "test_system",
-        "foo_system",
-        "x_system_that_does_not_exist",
-    ],
-    APIKey("alice"): ["foo_system"],
-    APIKey("i-do-what-i-want"): ["admin"],
-}
+TEST_USER_DATABASE = UserDatabase(
+    {
+        APIKey("api-key-one"): ["test_system"],
+        APIKey("john-doe"): ["test_system", "foo_system"],
+        APIKey("api-test-key"): [
+            "test_system",
+            "foo_system",
+            "x_system_that_does_not_exist",
+        ],
+        APIKey("alice"): ["foo_system"],
+        APIKey("i-do-what-i-want"): ["admin"],
+    }
+)
 
 
 @pytest.fixture(autouse=True)
