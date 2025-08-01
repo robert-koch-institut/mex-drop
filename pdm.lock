@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:6a87e7720aa3c93486e3f4c2ceb4eae1d0fb6925802675328d3747ed929a90a2"
+content_hash = "sha256:47166805849791561d9e3d68bfecdbe51e2d2328439ec75b2dc18c180e5e99b8"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -267,7 +267,7 @@ version = "0.4.6"
 requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 summary = "Cross-platform colored terminal text."
 groups = ["default", "dev"]
-marker = "sys_platform == \"win32\" or platform_system == \"Windows\" or os_name == \"nt\""
+marker = "platform_system == \"Windows\" or sys_platform == \"win32\" or os_name == \"nt\""
 files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
@@ -943,7 +943,7 @@ files = [
 
 [[package]]
 name = "mex-common"
-version = "0.63.0"
+version = "0.64.0"
 requires_python = "<3.12,>=3.11"
 summary = "Common library for MEx python projects."
 groups = ["default"]
@@ -952,7 +952,7 @@ dependencies = [
     "click<9,>=8",
     "langdetect<2,>=1",
     "ldap3<3,>=2",
-    "mex-model==4.1.0",
+    "mex-model==4.1.1",
     "numpy<3,>=2",
     "pandas<3,>=2",
     "pyarrow<21,>=20",
@@ -962,19 +962,19 @@ dependencies = [
     "requests<3,>=2",
 ]
 files = [
-    {file = "mex_common-0.63.0-py3-none-any.whl", hash = "sha256:1fefb1b62eace93587cfc0d3b20249afaa4cc692362a29a60600f6cd7557c2f6"},
-    {file = "mex_common-0.63.0.tar.gz", hash = "sha256:b3aa98651f754adf9ab146697d00b88381d7114a6d998e661365e41d7b18d4da"},
+    {file = "mex_common-0.64.0-py3-none-any.whl", hash = "sha256:623f1f06132c48809a9b38fa60e8363dd18289e7547766f834965c97080e346e"},
+    {file = "mex_common-0.64.0.tar.gz", hash = "sha256:4d1a70864b3f766ceee2628801ddf93b08a3be30496b4ace3237579b8d080b77"},
 ]
 
 [[package]]
 name = "mex-model"
-version = "4.1.0"
+version = "4.1.1"
 requires_python = ">=3.9"
 summary = "JSON schema files defining the MEx metadata model."
 groups = ["default"]
 files = [
-    {file = "mex_model-4.1.0-py3-none-any.whl", hash = "sha256:f9f4fa08416207e8ccc31c57a846abd50f93bb8fa15de63a5b77524a8b828cf2"},
-    {file = "mex_model-4.1.0.tar.gz", hash = "sha256:76112cc0a2e298da8fadf6b257fc72899f6ae0fb0ca0760448a834278f14953a"},
+    {file = "mex_model-4.1.1-py3-none-any.whl", hash = "sha256:cfe3359ae84c1b747a75f6ca44d1df886c0d66621a8a2c5e8f6d71729ebce19d"},
+    {file = "mex_model-4.1.1.tar.gz", hash = "sha256:702d016d8a96e5aeaa84aaea1ea6203d2648b7cbd1075d88eecb2a91c6fe08e1"},
 ]
 
 [[package]]
