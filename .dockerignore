@@ -123,6 +123,7 @@ dmypy.json
 .cruft.json
 .invenio.private
 .states
+.tmp_dagster_home_*
 .web
 *.ndjson
 assets/external/
@@ -149,7 +150,6 @@ work/
 .bandit
 .isort.cfg
 .mypy.ini
-.pdm-python
 .pre-commit-config.yaml
 .pydocstyle
 Makefile

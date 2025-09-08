@@ -14,10 +14,10 @@ from fastapi import (
     Response,
     UploadFile,
 )
-from pydantic import BaseModel
 from starlette import status
 from starlette.background import BackgroundTask, BackgroundTasks
 
+from mex.common.models import VersionStatus
 from mex.drop.files_io import (
     ALLOWED_CONTENT_TYPES,
     check_duplicate_filenames,
@@ -330,13 +330,6 @@ def list_entity_types(
     }
 
 
-class SystemStatus(BaseModel):
-    """Response model for system status check."""
-
-    status: str
-    version: str
-
-
-def check_system_status() -> SystemStatus:
+def check_system_status() -> VersionStatus:
     """Check that the drop server is healthy and responsive."""
-    return SystemStatus(status="ok", version=version("mex-drop"))
+    return VersionStatus(status="ok", version=version("mex-drop"))
