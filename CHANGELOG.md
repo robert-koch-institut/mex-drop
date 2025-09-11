@@ -11,18 +11,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- update cookiecutter template to e886ec4a4cddc865dedb40f9ead24530884110a8
-- update mex-common to v1.3
-
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
-- fix service readiness checks
-
 ### Security
+
+## [1.0.0] - 2025-09-11
+
+### Changes
+
+- update cookiecutter template to e886ec4a4cddc865dedb40f9ead24530884110a8
+- update mex-common to v1.3
+
+### Fixed
+
+- fix service readiness checks
 
 ## [0.12.2] - 2025-07-22
 
