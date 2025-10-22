@@ -17,6 +17,7 @@ from fastapi import (
 from starlette import status
 from starlette.background import BackgroundTask, BackgroundTasks
 
+from mex.common.connector import CONNECTOR_STORE
 from mex.common.models import VersionStatus
 from mex.drop.files_io import (
     ALLOWED_CONTENT_TYPES,
@@ -328,6 +329,14 @@ def list_entity_types(
             if f.is_file()
         ]
     }
+
+
+def get_prometheus_metrics() -> str:
+    """Get connector metrics for prometheus."""
+    return "\n\n".join(
+        f"# TYPE {key} counter\n{key} {value}"
+        for key, value in CONNECTOR_STORE.metrics().items()
+    )
 
 
 def check_system_status() -> VersionStatus:
