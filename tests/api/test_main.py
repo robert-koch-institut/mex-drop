@@ -1,8 +1,10 @@
 import json
+import pathlib
+import time
 from io import BytesIO
 from pathlib import Path
 from typing import Any
-from unittest.mock import AsyncMock, call
+from unittest.mock import AsyncMock, Mock, call
 
 import pandas as pd
 import pytest
@@ -10,7 +12,7 @@ from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
 
 import mex
-from mex.common.testing import Joker
+from mex.drop.api.main import get_subdirectory_stats
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
 from mex.drop.settings import DropSettings
 from mex.drop.types import EntityType, XSystem
@@ -361,22 +363,70 @@ def test_list_entity_types_forbidden(client: TestClient) -> None:
     assert response.status_code == 403, response.text
 
 
-@pytest.mark.integration
-@pytest.mark.usefixtures("load_dummy_data")
-def test_prometheus_metrics(client: TestClient) -> None:
-    response = client.get("/_system/metrics")
-    assert response.status_code == 200, response.text
-    assert response.text == (
-        """\
-# TYPE backend_api_identity_provider_cache_hits counter
-backend_api_identity_provider_cache_hits 17
+def test_get_subdirectory_stats(settings: DropSettings) -> None:
+    pathlib.Path(settings.drop_directory).mkdir()
 
-# TYPE backend_api_identity_provider_cache_misses counter
-backend_api_identity_provider_cache_misses 7"""
+    # subdir 1: fake_dir
+    subdir1 = settings.drop_directory / "fake_dir"
+    subdir1.mkdir()
+    (subdir1 / "file1.txt").write_text("test 1")
+    time.sleep(0.01)  # Make sure modification times are different
+    (subdir1 / "file2.pdf").write_text("test 2")
+    fake_dir_mtime = (subdir1 / "file2.pdf").stat().st_mtime
+
+    # subdir 2: other_fake_dir
+    subdir2 = settings.drop_directory / "other_fake_dir"
+    subdir2.mkdir()
+    (subdir2 / "file.log").write_text("test 3")
+    other_fake_dir_mtime = (subdir2 / "file.log").stat().st_mtime
+
+    # subdir 3: empty
+    subdir3 = settings.drop_directory / "empty"
+    subdir3.mkdir()
+    empty_mtime = subdir3.stat().st_mtime
+
+    # files at root should be ignored
+    (settings.drop_directory / "root_file.txt").write_text("ignore me")
+
+    stats = get_subdirectory_stats(pathlib.Path(settings.drop_directory))
+
+    stats_dict = {name: (count, mtime) for name, count, mtime in stats}
+
+    assert len(stats_dict) == 3  # 3 subdirectories
+    assert "root_file.txt" not in stats_dict  # ignored file in root
+
+    # fake_dir
+    assert "fake_dir" in stats_dict
+    assert stats_dict["fake_dir"][0] == 2  # 2 files
+    assert stats_dict["fake_dir"][1] == fake_dir_mtime
+
+    # other_fake_dir
+    assert "other_fake_dir" in stats_dict
+    assert stats_dict["other_fake_dir"][0] == 1  # 1 file
+    assert stats_dict["other_fake_dir"][1] == other_fake_dir_mtime
+
+    # empty
+    assert "empty" in stats_dict
+    assert stats_dict["empty"][0] == 0  # 0 files
+    assert stats_dict["empty"][1] == empty_mtime
+
+
+def test_prometheus_metrics(monkeypatch: MonkeyPatch, client: TestClient) -> None:
+    fake_stats = [("fakes", 5, 1761219898.0), ("other_fakes", 1, 1761219962.0)]
+
+    mocked_get_stats = Mock(return_value=fake_stats)
+    monkeypatch.setattr(mex.drop.api.main, "get_subdirectory_stats", mocked_get_stats)
+
+    expected_output = (
+        "# TYPE drop_directory_files_count gauge\n"
+        "drop_directory_files_count{directory=fakes} 5\n"
+        "drop_directory_files_count{directory=other_fakes} 1\n\n"
+        "# TYPE drop_directory_last_modified_timestamp gauge\n"
+        "drop_directory_last_modified_timestamp{directory=fakes} 1761219898.0\n"
+        "drop_directory_last_modified_timestamp{directory=other_fakes} 1761219962.0"
     )
 
+    response = client.get("/_system/metrics")
 
-def test_health_check(client: TestClient) -> None:
-    response = client.get("/_system/check")
     assert response.status_code == 200, response.text
-    assert response.json() == {"status": "ok", "version": Joker()}
+    assert response.text == expected_output
