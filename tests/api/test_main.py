@@ -361,6 +361,8 @@ def test_list_entity_types_forbidden(client: TestClient) -> None:
     assert response.status_code == 403, response.text
 
 
+@pytest.mark.integration
+@pytest.mark.usefixtures("load_dummy_data")
 def test_prometheus_metrics(client: TestClient) -> None:
     response = client.get("/_system/metrics")
     assert response.status_code == 200, response.text
