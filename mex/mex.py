@@ -1,4 +1,5 @@
 import reflex as rx
+from fastapi.responses import PlainTextResponse
 from reflex.app import UnevaluatedPage
 from reflex.components.core.client_side_routing import Default404Page
 from reflex.components.radix import themes
@@ -6,7 +7,7 @@ from reflex.constants import Page404
 from reflex.utils.console import info as log_info
 
 from mex.common.logging import logger
-from mex.drop.api.main import check_system_status, router
+from mex.drop.api.main import check_system_status, get_prometheus_metrics, router
 from mex.drop.exceptions import custom_backend_handler
 from mex.drop.file_history.main import index as file_history_index
 from mex.drop.file_history.state import ListState
@@ -51,6 +52,12 @@ app.unevaluated_pages[Page404.SLUG] = UnevaluatedPage(
 app.api.add_api_route(
     "/_system/check",
     check_system_status,
+    tags=["system"],
+)
+app.api.add_api_route(
+    "/_system/metrics",
+    get_prometheus_metrics,
+    response_class=PlainTextResponse,
     tags=["system"],
 )
 app.api.title = "mex-drop"
