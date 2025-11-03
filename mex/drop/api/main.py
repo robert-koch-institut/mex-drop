@@ -342,7 +342,7 @@ def get_subdirectory_stats(base_path: pathlib.Path) -> list[tuple[str, int, floa
         A list of tuples: (subdir_name, file_count, last_modified_timestamp)
     """
     stats = []
-
+    base_path.mkdir(parents=True, exist_ok=True)
     for subdir in base_path.iterdir():
         if not subdir.is_dir():
             continue  # Skip files in the base directory
