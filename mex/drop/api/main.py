@@ -333,3 +333,63 @@ def list_entity_types(
 def check_system_status() -> VersionStatus:
     """Check that the drop server is healthy and responsive."""
     return VersionStatus(status="ok", version=version("mex-drop"))
+
+
+def get_subdirectory_stats(base_path: pathlib.Path) -> list[tuple[str, int, float]]:
+    """Scans a base path and returns stats for each immediate subdirectory.
+
+    Returns:
+        A list of tuples: (subdir_name, file_count, last_modified_timestamp)
+    """
+    stats = []
+    base_path.mkdir(parents=True, exist_ok=True)
+    for subdir in base_path.iterdir():
+        if not subdir.is_dir():
+            continue  # Skip files in the base directory
+
+        dir_name = subdir.name
+        file_count = 0
+
+        all_mtimes = [subdir.stat().st_mtime]
+
+        for item in subdir.iterdir():
+            if item.is_file():
+                file_count += 1
+                all_mtimes.append(item.stat().st_mtime)
+
+        last_mtime = max(all_mtimes)
+        stats.append((dir_name, file_count, last_mtime))
+
+    return stats
+
+
+def get_prometheus_metrics() -> str:
+    """Get file system metrics for the drop directory."""
+    settings = DropSettings.get()
+    base_path = pathlib.Path(settings.drop_directory)
+    stats = get_subdirectory_stats(base_path)
+
+    file_count_metric = "drop_directory_files_count"
+    last_mod_metric = "drop_directory_last_modified_timestamp"
+
+    file_count_lines: list[str] = []
+    last_mod_lines: list[str] = []
+
+    for dir_name, file_count, last_mtime in stats:
+        label = f"directory={dir_name}"
+
+        file_count_lines.append(f"{file_count_metric}{{{label}}} {file_count}")
+        last_mod_lines.append(f"{last_mod_metric}{{{label}}} {last_mtime}")
+
+    output_blocks: list[str] = []
+
+    if file_count_lines:
+        output_blocks.append(
+            f"# TYPE {file_count_metric} gauge\n" + "\n".join(file_count_lines)
+        )
+    if last_mod_lines:
+        output_blocks.append(
+            f"# TYPE {last_mod_metric} gauge\n" + "\n".join(last_mod_lines)
+        )
+
+    return "\n\n".join(output_blocks)
