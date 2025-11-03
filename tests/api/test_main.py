@@ -12,6 +12,7 @@ from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
 
 import mex
+from mex.common.testing import Joker
 from mex.drop.api.main import get_subdirectory_stats
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
 from mex.drop.settings import DropSettings
@@ -361,6 +362,12 @@ def test_list_entity_types_forbidden(client: TestClient) -> None:
     client.headers.update({"X-API-Key": "alice"})
     response = client.get("/v0/test_system")
     assert response.status_code == 403, response.text
+
+
+def test_health_check(client: TestClient) -> None:
+    response = client.get("/_system/check")
+    assert response.status_code == 200, response.text
+    assert response.json() == {"status": "ok", "version": Joker()}
 
 
 def test_get_subdirectory_stats(settings: DropSettings) -> None:
