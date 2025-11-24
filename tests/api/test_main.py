@@ -426,11 +426,11 @@ def test_prometheus_metrics(monkeypatch: MonkeyPatch, client: TestClient) -> Non
 
     expected_output = (
         "# TYPE drop_directory_files_count gauge\n"
-        "drop_directory_files_count{directory=fakes} 5\n"
-        "drop_directory_files_count{directory=other_fakes} 1\n\n"
+        'drop_directory_files_count{directory="fakes"} 5\n'
+        'drop_directory_files_count{directory="other_fakes"} 1\n\n'
         "# TYPE drop_directory_last_modified_timestamp gauge\n"
-        "drop_directory_last_modified_timestamp{directory=fakes} 1761219898.0\n"
-        "drop_directory_last_modified_timestamp{directory=other_fakes} 1761219962.0"
+        'drop_directory_last_modified_timestamp{directory="fakes"} 1761219898.0\n'
+        'drop_directory_last_modified_timestamp{directory="other_fakes"} 1761219962.0\n'
     )
 
     response = client.get("/_system/metrics")
