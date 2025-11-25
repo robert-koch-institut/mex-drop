@@ -376,7 +376,7 @@ def get_prometheus_metrics() -> str:
     last_mod_lines: list[str] = []
 
     for dir_name, file_count, last_mtime in stats:
-        label = f"directory={dir_name}"
+        label = f'directory="{dir_name}"'
 
         file_count_lines.append(f"{file_count_metric}{{{label}}} {file_count}")
         last_mod_lines.append(f"{last_mod_metric}{{{label}}} {last_mtime}")
@@ -392,4 +392,7 @@ def get_prometheus_metrics() -> str:
             f"# TYPE {last_mod_metric} gauge\n" + "\n".join(last_mod_lines)
         )
 
-    return "\n\n".join(output_blocks)
+    if output_blocks:
+        return "\n\n".join(output_blocks) + "\n"
+
+    return ""
