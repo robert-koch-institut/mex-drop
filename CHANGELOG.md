@@ -10,16 +10,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changes
-- bumped cookiecutter template to https://github.com/robert-koch-institut/mex-template/commit/a67c71
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
-- fix syntax error in prometheus metrics endpoint
 
 ### Security
+
+## [1.1.1] - 2025-11-28
+
+### Changes
+- bumped cookiecutter template to https://github.com/robert-koch-institut/mex-template/commit/a67c71
+
+### Fixed
+- fix syntax error in prometheus metrics endpoint
 
 ## [1.1.0] - 2025-11-18
 
