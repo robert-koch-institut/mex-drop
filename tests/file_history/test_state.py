@@ -23,7 +23,7 @@ def test_refresh_missing_directory(
     mock_toast_error = Mock()
     monkeypatch.setattr("mex.drop.file_history.state.rx.toast.error", mock_toast_error)
 
-    list_state.refresh()
+    list_state.refresh()  # type: ignore[misc]
 
     mock_toast_error.assert_called_once_with(
         "The requested x-system was not found on this server.", close_button=True
@@ -40,7 +40,7 @@ def test_refresh_success(settings: DropSettings, list_state: ListState) -> None:
     mock_file = mock_x_system_dir / "test_file.csv"
     mock_file.touch()
 
-    list_state.refresh()
+    list_state.refresh()  # type: ignore[misc]
 
     expected_file_list = [
         {

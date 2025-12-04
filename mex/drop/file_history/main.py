@@ -52,10 +52,8 @@ def index() -> rx.Component:
             ),
             custom_attrs={"data-testid": "index-card"},
             style=rx.Style(
-                {
-                    "width": "100%",
-                    "minHeight": "calc(480px * var(--scaling))",
-                }
+                width="100%",
+                minHeight="calc(480px * var(--scaling))",
             ),
         ),
     )

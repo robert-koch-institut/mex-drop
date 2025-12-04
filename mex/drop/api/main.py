@@ -7,6 +7,7 @@ from fastapi import (
     APIRouter,
     Body,
     Depends,
+    FastAPI,
     File,
     Header,
     HTTPException,
@@ -14,6 +15,7 @@ from fastapi import (
     Response,
     UploadFile,
 )
+from fastapi.responses import PlainTextResponse
 from starlette import status
 from starlette.background import BackgroundTask, BackgroundTasks
 
@@ -120,7 +122,7 @@ async def drop_data(
             status_code=200, background=BackgroundTask(write_to_file, data, out_file)
         )
     raise HTTPException(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
         detail="Unsupported content type or format.",
     )
 
@@ -330,6 +332,16 @@ def list_entity_types(
     }
 
 
+api = FastAPI(
+    title="mex-editor",
+    version="v0",
+    contact={"name": "MEx Team", "email": "mex@rki.de"},
+    description="Metadata editor web application.",
+)
+api.include_router(router)
+
+
+@api.get("/_system/check", tags=["system"])
 def check_system_status() -> VersionStatus:
     """Check that the drop server is healthy and responsive."""
     return VersionStatus(status="ok", version=version("mex-drop"))
@@ -363,6 +375,7 @@ def get_subdirectory_stats(base_path: pathlib.Path) -> list[tuple[str, int, floa
     return stats
 
 
+@api.get("/_system/metrics", response_class=PlainTextResponse, tags=["system"])
 def get_prometheus_metrics() -> str:
     """Get file system metrics for the drop directory."""
     settings = DropSettings.get()

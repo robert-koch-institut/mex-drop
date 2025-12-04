@@ -4,10 +4,10 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
+from mex.drop.api.main import api
 from mex.drop.settings import DropSettings
 from mex.drop.state import State, User
 from mex.drop.types import APIKey, UserDatabase
-from mex.mex import app
 
 pytest_plugins = ("mex.common.testing.plugin",)
 TESTDATA_DIR = Path(__file__).parent / "test_files"
@@ -40,7 +40,10 @@ def isolate_work_dir(
 
 
 @pytest.fixture(autouse=True)
-def settings(is_integration_test: bool) -> DropSettings:  # noqa: FBT001
+def settings(
+    is_integration_test: bool,  # noqa: FBT001
+    isolate_assets_dir: None,  # noqa: ARG001
+) -> DropSettings:
     """Load the settings for this pytest session."""
     settings = DropSettings.get()
     if not is_integration_test:
@@ -51,7 +54,8 @@ def settings(is_integration_test: bool) -> DropSettings:  # noqa: FBT001
 @pytest.fixture
 def client() -> TestClient:
     """Return a fastAPI test client initialized with our app."""
-    return TestClient(app.api)
+    with TestClient(api, raise_server_exceptions=False) as test_client:
+        return test_client
 
 
 @pytest.fixture
@@ -93,3 +97,9 @@ def clean_test_directory() -> Callable[[], Path]:
 def app_state(get_test_key: Callable[[str], str]) -> State:
     """Fixture to set up a global state with a mock user."""
     return State(user=User(x_system="test_system", api_key=get_test_key("test_system")))
+
+
+@pytest.fixture
+def frontend_url() -> str:
+    """Return the URL of the current local frontend server for testing."""
+    return "http://localhost:3000"
