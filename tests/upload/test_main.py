@@ -15,8 +15,12 @@ def login(page: Page, get_test_key: Callable[[str], str]) -> None:
 
 
 @pytest.mark.integration
-def test_upload(page: Page, get_test_key: Callable[[str], str]) -> None:
-    page.goto("http://localhost:3000")
+def test_upload(
+    page: Page,
+    get_test_key: Callable[[str], str],
+    frontend_url: str,
+) -> None:
+    page.goto(frontend_url)
     login(page, get_test_key)
     with page.expect_file_chooser() as fc_info:
         page.locator("role=button[name='Select Files']").click()
@@ -26,10 +30,10 @@ def test_upload(page: Page, get_test_key: Callable[[str], str]) -> None:
     )
 
     expect(page.get_by_text("test.csv")).to_be_visible()
-    page.screenshot(path="tests_test_main_test_index-after-select.jpeg")
+    page.screenshot(path="tests_test_main_test_index-after-select.png")
 
     page.get_by_text("Submit").click()
-    page.screenshot(path="tests_test_main_test_index-after-submit.jpeg")
+    page.screenshot(path="tests_test_main_test_index-after-submit.png")
 
     expect(page.get_by_text("test.csv")).not_to_be_visible()
 
@@ -39,17 +43,25 @@ def test_upload(page: Page, get_test_key: Callable[[str], str]) -> None:
 
 
 @pytest.mark.integration
-def test_empty_upload(page: Page, get_test_key: Callable[[str], str]) -> None:
-    page.goto("http://localhost:3000")
+def test_empty_upload(
+    page: Page,
+    get_test_key: Callable[[str], str],
+    frontend_url: str,
+) -> None:
+    page.goto(frontend_url)
     login(page, get_test_key)
     page.get_by_text("Submit").click()
-    page.screenshot(path="tests_test_main_test_empty_after-submit.jpeg")
+    page.screenshot(path="tests_test_main_test_empty_after-submit.png")
     expect(page.locator("text=No files to upload.")).to_be_visible()
 
 
 @pytest.mark.integration
-def test_remove_selected_file(page: Page, get_test_key: Callable[[str], str]) -> None:
-    page.goto("http://localhost:3000")
+def test_remove_selected_file(
+    page: Page,
+    get_test_key: Callable[[str], str],
+    frontend_url: str,
+) -> None:
+    page.goto(frontend_url)
     login(page, get_test_key)
     with page.expect_file_chooser() as fc_info:
         page.locator("role=button[name='Select Files']").click()
@@ -59,8 +71,8 @@ def test_remove_selected_file(page: Page, get_test_key: Callable[[str], str]) ->
     )
 
     expect(page.get_by_text("test.xml")).to_be_visible()
-    page.screenshot(path="tests_test_main_test_index-after-select2.jpeg")
+    page.screenshot(path="tests_test_main_test_index-after-select2.png")
     page.get_by_role("button").and_(page.get_by_title("remove file")).click()
-    page.screenshot(path="tests_test_main_test_index-after-delete.jpeg")
+    page.screenshot(path="tests_test_main_test_index-after-delete.png")
 
     expect(page.get_by_text("test.xml")).not_to_be_visible()

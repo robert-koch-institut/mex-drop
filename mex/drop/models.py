@@ -1,5 +1,3 @@
-from typing import Literal
-
 import reflex as rx
 
 
@@ -15,4 +13,4 @@ class NavItem(rx.Base):
 
     title: str = ""
     path: str = "/"
-    underline: Literal["always", "none"] = "none"
+    underline: str = "none"

@@ -11,8 +11,8 @@ import pytest
 from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
 
-import mex
 from mex.common.testing import Joker
+from mex.drop.api import main as api_main
 from mex.drop.api.main import get_subdirectory_stats
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
 from mex.drop.settings import DropSettings
@@ -187,7 +187,7 @@ def test_drop_data(  # noqa: PLR0913
     settings: DropSettings,
 ) -> None:
     mocked_sink = AsyncMock(return_value=None)
-    monkeypatch.setattr(mex.drop.api.main, "json_sink", mocked_sink)
+    monkeypatch.setattr(api_main, "json_sink", mocked_sink)
 
     if api_key:
         client.headers.update({"X-API-Key": api_key})
@@ -422,7 +422,7 @@ def test_prometheus_metrics(monkeypatch: MonkeyPatch, client: TestClient) -> Non
     fake_stats = [("fakes", 5, 1761219898.0), ("other_fakes", 1, 1761219962.0)]
 
     mocked_get_stats = Mock(return_value=fake_stats)
-    monkeypatch.setattr(mex.drop.api.main, "get_subdirectory_stats", mocked_get_stats)
+    monkeypatch.setattr(api_main, "get_subdirectory_stats", mocked_get_stats)
 
     expected_output = (
         "# TYPE drop_directory_files_count gauge\n"
