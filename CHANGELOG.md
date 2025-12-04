@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 - updated template to https://github.com/robert-koch-institut/mex-template/commit/7c3e75
-- opt out of granian usage for local runtime
+- harmonize mex-drop with mex-editor project setup and boilerplate
 - update reflex to 0.7.3 along with fastapi, starlette and uvicorn
 
 ### Deprecated
