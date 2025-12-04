@@ -25,7 +25,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -74,6 +74,6 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: playwright-screenshots-${{ github.run_id }}
-          path: tests_*.jpeg
+          path: tests_*.png
           if-no-files-found: error
           retention-days: 10
