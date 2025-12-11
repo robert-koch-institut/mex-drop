@@ -1,8 +1,9 @@
-import pathlib
+from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import nest_asyncio
 import pytest
+import reflex as rx
 
 from mex.drop.state import State
 from mex.drop.upload.models import TempFile
@@ -25,7 +26,7 @@ def upload_state(app_state: State) -> UploadState:
 def test_cancel_upload(upload_state: UploadState) -> None:
     upload_state.temp_files = [MagicMock(title="file1"), MagicMock(title="file2")]
 
-    upload_state.cancel_upload("file1")
+    upload_state.cancel_upload("file1")  # type: ignore[misc]
 
     assert len(upload_state.temp_files) == 1
     assert upload_state.temp_files[0].title == "file2"
@@ -33,17 +34,17 @@ def test_cancel_upload(upload_state: UploadState) -> None:
 
 @pytest.mark.anyio
 async def test_handle_upload(upload_state: UploadState) -> None:
-    file1 = MagicMock()
-    file1.filename = "file1.csv"
+    file1 = MagicMock(spec=rx.UploadFile)
+    file1.name = "file1.csv"
     file1.content_type = "text/csv"
     file1.read = AsyncMock(return_value=b"content1")
 
-    file2 = MagicMock()
-    file2.filename = "file2.xml"
+    file2 = MagicMock(spec=rx.UploadFile)
+    file2.name = "file2.xml"
     file2.content_type = "application/xml"
     file2.read = AsyncMock(return_value=b"content2")
 
-    await upload_state.handle_upload([file1, file2])
+    await upload_state.handle_upload([file1, file2])  # type: ignore[misc]
 
     assert len(upload_state.temp_files) == 2
     assert upload_state.temp_files[0].title == "file1.csv"
@@ -54,14 +55,14 @@ async def test_handle_upload(upload_state: UploadState) -> None:
 
 @pytest.mark.anyio
 async def test_handle_upload_duplicate(upload_state: UploadState) -> None:
-    file1 = MagicMock()
-    file1.filename = "file1.xml"
+    file1 = MagicMock(spec=rx.UploadFile)
+    file1.name = "file1.xml"
     file1.content_type = "application/xml"
     file1.read = AsyncMock(return_value=b"content1")
 
     upload_state.temp_files.append(TempFile(title="file1.xml", content=b"content1"))
 
-    await upload_state.handle_upload([file1])
+    await upload_state.handle_upload([file1])  # type: ignore[misc]
 
     assert len(upload_state.temp_files) == 1
 
@@ -80,9 +81,9 @@ async def test_submit_data(upload_state: UploadState) -> None:
         ),
         patch("reflex.toast.success") as mock_toast_success,
     ):
-        result = await upload_state.submit_data()
+        result = await upload_state.submit_data()  # type: ignore[misc]
         mock_write_to_file.assert_called_once_with(
-            b"content1", pathlib.Path("/mock/path/test_system/file1.xml")
+            b"content1", Path("/mock/path/test_system/file1.xml")
         )
         assert len(upload_state.temp_files) == 0
         mock_toast_success.assert_called_once_with("File upload successful!")

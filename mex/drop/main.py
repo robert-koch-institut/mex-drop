@@ -76,4 +76,5 @@ def drop_frontend() -> None:  # pragma: no cover
 def main() -> None:  # pragma: no cover
     """Start the drop api together with frontend."""
     environment.REFLEX_USE_NPM.set(True)
+    environment.REFLEX_USE_GRANIAN.set(False)
     typer.run(run)
