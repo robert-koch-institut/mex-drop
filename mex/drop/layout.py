@@ -76,6 +76,7 @@ def nav_bar() -> rx.Component:
                 height="var(--space-6)",
                 width="100%",
                 backdropFilter="var(--backdrop-filter-panel)",
+                backgroundColor="var(--card-background-color)",
             ),
         ),
         rx.card(
@@ -96,7 +97,7 @@ def nav_bar() -> rx.Component:
                         style=rx.Style(marginTop="0"),
                         on_click=rx.toggle_color_mode,
                     ),
-                    style=rx.Style(alignItems="center"),
+                    align="center",
                     spacing="4",
                 ),
                 justify="between",
