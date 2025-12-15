@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 - updated template to https://github.com/robert-koch-institut/mex-template/commit/7c3e75
+- harmonize mex-drop with mex-editor project setup and boilerplate
+- update reflex to 0.7.3 along with fastapi, starlette and uvicorn
 
 ### Deprecated
 
@@ -25,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- bumped cookiecutter template to https://github.com/robert-koch-institut/mex-template/commit/a67c71
+- updated template to https://github.com/robert-koch-institut/mex-template/commit/a67c71
 
 ### Fixed
 
@@ -39,9 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- bumped cookiecutter template to https://github.com/robert-koch-institut/mex-template/commit/6009e2
-- bumped cookiecutter template to https://github.com/robert-koch-institut/mex-template/commit/3c389d
-- bumped cookiecutter template to https://github.com/robert-koch-institut/mex-template/commit/a287d7
+- updated template to https://github.com/robert-koch-institut/mex-template/commit/6009e2
+- updated template to https://github.com/robert-koch-institut/mex-template/commit/3c389d
+- updated template to https://github.com/robert-koch-institut/mex-template/commit/a287d7
 
 ## [1.0.0] - 2025-09-11
 

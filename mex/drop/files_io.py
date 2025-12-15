@@ -1,10 +1,7 @@
 import pathlib
 
 from aiofile import async_open
-from fastapi import (
-    HTTPException,
-    UploadFile,
-)
+from fastapi import HTTPException, UploadFile
 from starlette import status
 
 from mex.common.exceptions import MExError
@@ -44,7 +41,7 @@ async def validate_file_extension(content_type: str | None, filename: str) -> No
     """Validate uploaded file content type and extension."""
     if content_type not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail=(
                 f"Unsupported content type: {content_type}. "
                 f"Allowed types: {', '.join(ALLOWED_CONTENT_TYPES.values())}"
@@ -57,7 +54,7 @@ async def validate_file_extension(content_type: str | None, filename: str) -> No
         "text/csv",
     ):
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail=f"Content type doesn't match extension: "
             f"{content_type} != {filename}",
         )

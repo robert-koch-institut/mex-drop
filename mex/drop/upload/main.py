@@ -1,5 +1,3 @@
-from typing import cast
-
 import reflex as rx
 
 from mex.drop.files_io import ALLOWED_CONTENT_TYPES
@@ -16,7 +14,7 @@ def uploaded_file_display() -> rx.Component:
                 rx.table.row(
                     rx.table.column_header_cell(
                         "Selected File",
-                        style=rx.Style({"width": "80%"}),
+                        style=rx.Style(width="80%"),
                     ),
                     rx.table.column_header_cell(
                         "Action",
@@ -32,12 +30,7 @@ def uploaded_file_display() -> rx.Component:
         ),
         type="hover",
         scrollbars="both",
-        style=rx.Style(
-            {
-                "width": "100%",
-                "height": "100%",
-            }
-        ),
+        style=rx.Style(width="100%", height="100%"),
     )
 
 
@@ -55,11 +48,9 @@ def create_file_row(temp_file: TempFile) -> rx.Component:
                 title="Remove file",
                 color_scheme="tomato",
                 variant="ghost",
-                on_click=lambda: cast("UploadState", UploadState).cancel_upload(
-                    temp_file.title
-                ),
+                on_click=UploadState.cancel_upload(temp_file.title),  # type: ignore[misc]
             ),
-            style=rx.Style({"width": "100%"}),
+            style=rx.Style(width="100%"),
         ),
     )
 
@@ -73,10 +64,7 @@ def create_drag_and_drop() -> rx.Component:
                 size="2",
                 weight="bold",
                 style=rx.Style(
-                    {
-                        "padding": "calc(12px * var(--scaling)) "
-                        "calc(12px * var(--scaling)) 0;"
-                    }
+                    padding="calc(12px * var(--scaling)) calc(12px * var(--scaling)) 0;"
                 ),
             ),
             rx.divider(size="4"),
@@ -105,26 +93,18 @@ def create_drag_and_drop() -> rx.Component:
                 id="file_upload_area",
                 max_files=100,
                 style=rx.Style(
-                    {
-                        "border": "var(--card-border-width) dotted var(--accent-8)",
-                        "borderRadius": "calc(var(--base-card-border-radius) - "
-                        "var(--base-card-border-width))",
-                        "padding": "var(--space-4)",
-                        "margin": "var(--space-8) auto",
-                    }
+                    border="var(--card-border-width) dotted var(--accent-8)",
+                    borderRadius="calc(var(--base-card-border-radius) - var(--base-card-border-width))",  # noqa: E501
+                    padding="var(--space-4)",
+                    margin="var(--space-8) auto",
                 ),
-                on_drop=cast("UploadState", UploadState).handle_upload(
+                on_drop=UploadState.handle_upload(  # type: ignore[misc]
                     rx.upload_files(upload_id="file_upload_area")
                 ),
             ),
             spacing="3",
         ),
-        style=rx.Style(
-            {
-                "width": "100%",
-                "height": "100%",
-            }
-        ),
+        style=rx.Style(width="100%", height="100%"),
     )
 
 
@@ -140,16 +120,11 @@ def create_file_handling_card() -> rx.Component:
                     on_click=UploadState.submit_data,
                     color_scheme="jade",
                 ),
-                style=rx.Style({"width": "100%"}),
+                style=rx.Style(width="100%"),
             ),
-            style=rx.Style({"height": "100%"}),
+            style=rx.Style(height="100%"),
         ),
-        style=rx.Style(
-            {
-                "width": "100%",
-                "height": "100%",
-            }
-        ),
+        style=rx.Style(width="100%", height="100%"),
     )
 
 
@@ -160,11 +135,6 @@ def index() -> rx.Component:
             create_drag_and_drop(),
             create_file_handling_card(),
             spacing="6",
-            style=rx.Style(
-                {
-                    "width": "100%",
-                    "height": "calc(480px * var(--scaling))",
-                }
-            ),
+            style=rx.Style(width="100%", height="calc(480px * var(--scaling))"),
         )
     )

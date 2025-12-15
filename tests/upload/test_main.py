@@ -8,28 +8,32 @@ from mex.drop.settings import DropSettings
 from tests.conftest import TESTDATA_DIR
 
 
-def login(page: Page, get_test_key: Callable[[str], str]) -> None:
+@pytest.fixture
+def upload_page(
+    page: Page,
+    frontend_url: str,
+    get_test_key: Callable[[str], str],
+) -> Page:
+    page.goto(frontend_url)
     page.get_by_placeholder("API Key").fill(get_test_key("test"))
     page.get_by_placeholder("X-System").fill("test")
     page.get_by_test_id("login-button").click()
+    return page
 
 
 @pytest.mark.integration
-def test_upload(page: Page, get_test_key: Callable[[str], str]) -> None:
-    page.goto("http://localhost:3000")
-    login(page, get_test_key)
+def test_upload(upload_page: Page) -> None:
+    page = upload_page
     with page.expect_file_chooser() as fc_info:
         page.locator("role=button[name='Select Files']").click()
     file_chooser = fc_info.value
-    file_chooser.set_files(
-        str(TESTDATA_DIR / "test.csv"),
-    )
+    file_chooser.set_files(str(TESTDATA_DIR / "test.csv"))
 
     expect(page.get_by_text("test.csv")).to_be_visible()
-    page.screenshot(path="tests_test_main_test_index-after-select.jpeg")
+    page.screenshot(path="tests_test_main_test_index-after-select.png")
 
     page.get_by_text("Submit").click()
-    page.screenshot(path="tests_test_main_test_index-after-submit.jpeg")
+    page.screenshot(path="tests_test_main_test_index-after-submit.png")
 
     expect(page.get_by_text("test.csv")).not_to_be_visible()
 
@@ -39,28 +43,24 @@ def test_upload(page: Page, get_test_key: Callable[[str], str]) -> None:
 
 
 @pytest.mark.integration
-def test_empty_upload(page: Page, get_test_key: Callable[[str], str]) -> None:
-    page.goto("http://localhost:3000")
-    login(page, get_test_key)
+def test_empty_upload(upload_page: Page) -> None:
+    page = upload_page
     page.get_by_text("Submit").click()
-    page.screenshot(path="tests_test_main_test_empty_after-submit.jpeg")
+    page.screenshot(path="tests_test_main_test_empty_after-submit.png")
     expect(page.locator("text=No files to upload.")).to_be_visible()
 
 
 @pytest.mark.integration
-def test_remove_selected_file(page: Page, get_test_key: Callable[[str], str]) -> None:
-    page.goto("http://localhost:3000")
-    login(page, get_test_key)
+def test_remove_selected_file(upload_page: Page) -> None:
+    page = upload_page
     with page.expect_file_chooser() as fc_info:
         page.locator("role=button[name='Select Files']").click()
     file_chooser = fc_info.value
-    file_chooser.set_files(
-        str(TESTDATA_DIR / "test.xml"),
-    )
+    file_chooser.set_files(str(TESTDATA_DIR / "test.xml"))
 
     expect(page.get_by_text("test.xml")).to_be_visible()
-    page.screenshot(path="tests_test_main_test_index-after-select2.jpeg")
+    page.screenshot(path="tests_test_main_test_index-after-select2.png")
     page.get_by_role("button").and_(page.get_by_title("remove file")).click()
-    page.screenshot(path="tests_test_main_test_index-after-delete.jpeg")
+    page.screenshot(path="tests_test_main_test_index-after-delete.png")
 
     expect(page.get_by_text("test.xml")).not_to_be_visible()

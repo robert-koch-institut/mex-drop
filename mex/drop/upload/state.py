@@ -32,14 +32,14 @@ class UploadState(State):
                     f"{', '.join(ALLOWED_CONTENT_TYPES.values())}",
                     close_button=True,
                 )
-            if any(item.title == str(file.filename) for item in self.temp_files):
+            if any(item.title == str(file.name) for item in self.temp_files):
                 return rx.toast.error(
                     "Duplicate filename. "
                     "Please make sure "
                     "to not upload the same file twice."
                 )
             content = await file.read()
-            self.temp_files.append(TempFile(title=str(file.filename), content=content))
+            self.temp_files.append(TempFile(title=str(file.name), content=content))
         return None
 
     @rx.event

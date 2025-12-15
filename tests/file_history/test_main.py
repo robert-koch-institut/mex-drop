@@ -28,17 +28,18 @@ def test_upload(
     page: Page,
     get_test_key: Callable[[str], str],
     clean_test_directory: Callable[[], Path],
+    frontend_url: str,
 ) -> None:
-    page.goto("http://localhost:3000")
+    page.goto(frontend_url)
     clean_test_directory()
     login(page, get_test_key)
     upload_file(page)
 
     page.get_by_text("File History").click()
     expect(page.get_by_text("test.csv")).to_be_visible()
-    page.screenshot(path="tests_history_main_test_upload.jpeg")
+    page.screenshot(path="tests_history_main_test_upload.png")
 
     clean_test_directory()
     page.reload()
     expect(page.get_by_text("test.csv")).not_to_be_visible()
-    page.screenshot(path="tests_history_main_test_upload_after_reload.jpeg")
+    page.screenshot(path="tests_history_main_test_upload_after_reload.png")
