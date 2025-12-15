@@ -4,7 +4,6 @@ from typing import Annotated, Any
 
 from aiofile import async_open
 from fastapi import (
-    APIRouter,
     Body,
     Depends,
     FastAPI,
@@ -31,13 +30,18 @@ from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
 from mex.drop.types import PATH_REGEX, EntityType, XSystem
 
-router = APIRouter(prefix="/v0", tags=["api"])
+api = FastAPI(
+    title="mex-drop",
+    version="v0",
+    contact={"name": "MEx Team", "email": "mex@rki.de"},
+    description="Upload and download data for the MEx service.",
+)
 
 
-@router.post(
-    "/{x_system}/{entity_type}",
+@api.post(
+    "/v0/{x_system}/{entity_type}",
     description="Upload arbitrary structured data to MEx.",
-    tags=["API"],
+    tags=["api"],
     status_code=202,
 )
 async def drop_data(
@@ -127,10 +131,10 @@ async def drop_data(
     )
 
 
-@router.post(
-    "/{x_system}",
+@api.post(
+    "/v0/{x_system}",
     description="Upload multipart file to MEx.",
-    tags=["API"],
+    tags=["api"],
     status_code=202,
 )
 async def drop_data_multipart(
@@ -186,10 +190,10 @@ async def drop_data_multipart(
     return Response(status_code=202)
 
 
-@router.get(
-    "/{x_system}/{entity_type}",
+@api.get(
+    "/v0/{x_system}/{entity_type}",
     description="Download data from MEx.",
-    tags=["API"],
+    tags=["api"],
 )
 async def download_data(
     x_system: Annotated[
@@ -241,10 +245,10 @@ async def download_data(
         return Response(content=await f.read())
 
 
-@router.get(
-    "/",
+@api.get(
+    "/v0/",
     description="List x-systems with available data.",
-    tags=["API"],
+    tags=["api"],
 )
 def list_x_systems(
     authorized_x_systems: Annotated[
@@ -277,10 +281,10 @@ def list_x_systems(
     }
 
 
-@router.get(
-    "/{x_system}",
+@api.get(
+    "/v0/{x_system}",
     description="List downloadable entities of an x-system.",
-    tags=["API"],
+    tags=["api"],
 )
 def list_entity_types(
     x_system: Annotated[
@@ -332,16 +336,10 @@ def list_entity_types(
     }
 
 
-api = FastAPI(
-    title="mex-editor",
-    version="v0",
-    contact={"name": "MEx Team", "email": "mex@rki.de"},
-    description="Metadata editor web application.",
+@api.get(
+    "/_system/check",
+    tags=["system"],
 )
-api.include_router(router)
-
-
-@api.get("/_system/check", tags=["system"])
 def check_system_status() -> VersionStatus:
     """Check that the drop server is healthy and responsive."""
     return VersionStatus(status="ok", version=version("mex-drop"))
@@ -375,7 +373,11 @@ def get_subdirectory_stats(base_path: pathlib.Path) -> list[tuple[str, int, floa
     return stats
 
 
-@api.get("/_system/metrics", response_class=PlainTextResponse, tags=["system"])
+@api.get(
+    "/_system/metrics",
+    response_class=PlainTextResponse,
+    tags=["system"],
+)
 def get_prometheus_metrics() -> str:
     """Get file system metrics for the drop directory."""
     settings = DropSettings.get()
