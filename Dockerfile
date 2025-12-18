@@ -1,6 +1,24 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.11 AS base
+FROM python:3-11 AS builder
+
+WORKDIR /build
+
+ENV PIP_DISABLE_PIP_VERSION_CHECK=on
+ENV PIP_NO_INPUT=on
+ENV PIP_PREFER_BINARY=on
+ENV PIP_PROGRESS_BAR=off
+
+COPY . .
+
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pdm export --prod --without-hashes > requirements.lock
+
+RUN pip wheel --no-cache-dir --wheel-dir /build/wheels -r requirements.lock
+RUN pip wheel --no-cache-dir --wheel-dir /build/wheels --no-deps .
+
+
+FROM python:3.11-slim
 
 LABEL org.opencontainers.image.authors="mex@rki.de"
 LABEL org.opencontainers.image.description="Data upload and download service for the MEx project."
@@ -10,11 +28,6 @@ LABEL org.opencontainers.image.vendor="robert-koch-institut"
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONOPTIMIZE=1
-
-ENV PIP_DISABLE_PIP_VERSION_CHECK=on
-ENV PIP_NO_INPUT=on
-ENV PIP_PREFER_BINARY=on
-ENV PIP_PROGRESS_BAR=off
 
 ENV APP_NAME=mex
 ENV FRONTEND_PORT=8020
@@ -27,6 +40,14 @@ ENV REFLEX_DIR=/app/reflex
 
 WORKDIR /app
 
+COPY --from=builder /build/wheels /wheels
+
+RUN pip install --no-cache-dir \
+    --no-index \
+    --find-links=/wheels \
+    /wheels/*.whl \
+    && rm -rf /wheels
+
 RUN adduser \
     --disabled-password \
     --gecos "" \
@@ -37,8 +58,6 @@ RUN adduser \
     chown mex .
 
 COPY --chown=mex . .
-
-RUN --mount=type=cache,target=/root/.cache/pip pip install -r locked-requirements.txt --no-deps
 
 USER mex
 
