@@ -57,7 +57,7 @@ RUN adduser \
     mex && \
     chown mex .
 
-COPY --chown=mex . .
+COPY --chown=mex --exclude=*.lock --exclude=requirements.txt . .
 
 USER mex
 
