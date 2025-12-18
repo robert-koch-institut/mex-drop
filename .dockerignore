@@ -154,8 +154,6 @@ work/
 .pydocstyle
 Makefile
 mex.bat
-*.lock
 Pipfile
 poetry.toml
 pytest.ini
-requirements.txt
