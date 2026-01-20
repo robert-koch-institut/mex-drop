@@ -28,6 +28,9 @@ echo installing package
 uv sync
 exit /b %errorlevel%
 
+@REM use playwright to install firefox
+echo installing firefox
+uv run playwright install firefox
 
 :lint
 @REM run the linter hooks from pre-commit on all files

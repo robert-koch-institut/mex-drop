@@ -19,6 +19,9 @@ install: setup hooks
 	# install packages from lock file in local virtual environment
 	@ echo installing package; \
 	uv sync; \
+	# use playwright to install firefox
+	@echo installing firefox; \
+	uv run playwright install firefox; \
 
 lint:
 	# run the linter hooks from pre-commit on all files
