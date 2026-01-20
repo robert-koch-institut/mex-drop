@@ -33,7 +33,7 @@ unit:
 test:
 	# run the unit and integration test suites
 	@ echo running all tests; \
-	uv run pytest --numprocesses=auto --dist=worksteal; \
+	uv run pytest; \
 
 wheel:
 	# build the python package
