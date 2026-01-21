@@ -68,12 +68,12 @@ jobs:
           SIGNING_PUB: ${{ secrets.SIGNING_PUB }}
         run: |
           eval "$(ssh-agent -s)"
-          pdm setup-commit-signing
+          mex setup-commit-signing
 
       - name: Release new version
         id: release
         run: |
-          pdm release ${{ inputs.version }}
+          mex release ${{ inputs.version }}
           echo "tag=$(git describe --abbrev=0 --tags)" >> "$GITHUB_OUTPUT"
 
   containerize:
@@ -108,7 +108,7 @@ jobs:
 
       - name: Generate locked requirements.txt
         run: |
-          pdm export --self --output locked-requirements.txt --no-hashes --without dev
+          uv export --no-dev --output locked-requirements.txt --no-hashes
 
       - name: Login to container registry
         uses: docker/login-action@v3
@@ -160,7 +160,7 @@ jobs:
           GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
         run: |
           gh release create ${{ needs.release.outputs.tag }} --generate-notes --latest --verify-tag
-          pdm build --dest dist
+          uv build --out-dir dist
           for filename in dist/*; do
             gh release upload ${{ needs.release.outputs.tag }} ${filename};
           done
