@@ -1,4 +1,4 @@
-.PHONY: all test setup hooks install lint unit test wheel image run start docs
+.PHONY: all setup hooks install lint unit test wheel image run start docs
 all: install lint test
 
 LATEST = $(shell git describe --tags $(shell git rev-list --tags --max-count=1))
