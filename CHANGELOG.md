@@ -9,8 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- add cve scanning of frontend dependencies
+
 ### Changes
 - change the docker build to multi-stage build
+
+- switch package manager from pdm to uv
 
 ### Deprecated
 
