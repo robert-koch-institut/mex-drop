@@ -12,7 +12,7 @@ ENV PIP_PROGRESS_BAR=off
 COPY . .
 
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pdm export --prod --without-hashes > requirements.lock
+RUN uv export --no-dev --no-hashes --output-file requirements.lock
 
 RUN pip wheel --no-cache-dir --wheel-dir /build/wheels -r requirements.lock
 RUN pip wheel --no-cache-dir --wheel-dir /build/wheels --no-deps .
@@ -60,6 +60,7 @@ RUN adduser \
     chown mex .
 
 COPY --chown=mex assets assets
+COPY --chown=mex rxconfig.py rxconfig.py
 
 USER mex
 
