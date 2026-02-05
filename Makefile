@@ -46,7 +46,6 @@ wheel:
 image:
 	# build the docker image
 	@ echo building docker image mex-drop:${LATEST}; \
-	export DOCKER_BUILDKIT=1; \
 	docker build \
 		--tag rki/mex-drop:${LATEST} \
 		--tag rki/mex-drop:latest .; \
@@ -54,17 +53,18 @@ image:
 run: image
 	# run the service as a docker container
 	@ echo running docker container mex-drop:${LATEST}; \
+	mkdir --parents --mode 777 $(PWD)/data; \
 	docker run \
+		--env MEX_DROP_DIRECTORY=data \
 		--env MEX_DROP_API_HOST=0.0.0.0 \
+		--env MEX_DROP_USER_DATABASE='{"mex":["mex"]}' \
 		--publish 8020:8020 \
 		--publish 8021:8021 \
 		rki/mex-drop:${LATEST}; \
 
-start: image
+start:
 	# start the service using docker compose
 	@ echo start mex-drop:${LATEST} with compose; \
-	export DOCKER_BUILDKIT=1; \
-	export COMPOSE_DOCKER_CLI_BUILD=1; \
 	docker compose up --remove-orphans; \
 
 docs:

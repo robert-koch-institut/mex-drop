@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 - updated template to https://github.com/robert-koch-institut/mex-template/commit/81bc5b
-
+- change the docker build to multi-stage build
 - updated template to https://github.com/robert-koch-institut/mex-template/commit/ad26e4
 - switch package manager from pdm to uv
 
