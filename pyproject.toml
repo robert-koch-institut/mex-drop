@@ -6,13 +6,14 @@ authors = [{ name = "MEx Team", email = "mex@rki.de" }]
 readme = { file = "README.md", content-type = "text/markdown" }
 license = { file = "LICENSE" }
 urls = { Repository = "https://github.com/robert-koch-institut/mex-drop" }
-requires-python = ">=3.11,<3.12"
+requires-python = ">=3.13,<3.14"
 dependencies = [
     "aiofile>=3",
     "fastapi[standard]>=0.123",
     "mex-common>=1.13,<1.14",
     "pydantic>=2",
     "reflex>=0.7,<0.7.4",
+    "sqlmodel<0.0.30",
     "starlette>=0.50",
     "typer>=0.15",
     "uvicorn>=0.38",
@@ -25,11 +26,12 @@ dev = [
     "nest-asyncio>=1",
     "openpyxl>=3",
     "pandas-stubs",
+    "pytest-cov>=6",
     "pytest-playwright>=0.7",
     "pytest-random-order>=1",
     "pytest>=8",
     "ruff>=0.14",
-    "sphinx>=8",
+    "sphinx>=9",
 ]
 
 [project.scripts]
@@ -45,7 +47,6 @@ skip = ["CHANGELOG.md", "mex", "tests"]
 context = 5
 
 [tool.mypy]
-python_version = "3.11"
 show_error_codes = true
 plugins = ["pydantic.mypy"]
 
@@ -63,11 +64,20 @@ warn_untyped_fields = true
 [tool.pytest.ini_options]
 addopts = [
     "--verbose",
+    "--base-url=http://localhost:3000",
     "--browser=firefox",
+    "--cov",
+    "--no-cov-on-fail",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-fail-under=60",
+    "--cov-branch",
     "--pdbcls=IPython.terminal.debugger:TerminalPdb",
     "--random-order-bucket=global",
 ]
-markers = "integration: mark a test as integration test"
+markers = [
+    "integration: mark a test as integration test",
+    "requires_rki_infrastructure: mark a test as requiring rki infrastructure"
+]
 
 [tool.ruff]
 fix = true

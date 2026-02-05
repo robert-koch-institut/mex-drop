@@ -97,9 +97,3 @@ def clean_test_directory() -> Callable[[], Path]:
 def app_state(get_test_key: Callable[[str], str]) -> State:
     """Fixture to set up a global state with a mock user."""
     return State(user=User(x_system="test_system", api_key=get_test_key("test_system")))
-
-
-@pytest.fixture
-def frontend_url() -> str:
-    """Return the URL of the current local frontend server for testing."""
-    return "http://localhost:3000"
