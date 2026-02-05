@@ -122,6 +122,7 @@ dmypy.json
 .invenio.private
 .states
 .tmp_dagster_home_*
+.nux/
 .web
 *.ndjson
 assets/external/
@@ -150,6 +151,9 @@ work/
 .mypy.ini
 .pre-commit-config.yaml
 .pydocstyle
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+docs/
 Makefile
 mex.bat
 Pipfile

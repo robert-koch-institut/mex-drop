@@ -8,9 +8,9 @@ from playwright.sync_api import Page, expect
 def test_login_page(
     page: Page,
     get_test_key: Callable[[str], str],
-    frontend_url: str,
+    base_url: str,
 ) -> None:
-    page.goto(frontend_url)
+    page.goto(base_url)
     page.get_by_placeholder("X-System").fill("test")
     page.get_by_placeholder("API Key").fill(get_test_key("test"))
     page.screenshot(path="tests_test_login_test_login_page_filled.png")
@@ -29,9 +29,9 @@ def test_login_page(
 def test_login_page_with_enter_key(
     page: Page,
     get_test_key: Callable[[str], str],
-    frontend_url: str,
+    base_url: str,
 ) -> None:
-    page.goto(frontend_url)
+    page.goto(base_url)
     page.get_by_placeholder("X-System").fill("test")
     page.get_by_placeholder("API Key").fill(get_test_key("test"))
     page.screenshot(path="tests_test_login_test_login_page_with_enter_key_filled.png")
