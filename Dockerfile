@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.11-trixie AS builder
+FROM python:3.14-trixie AS builder
 
 WORKDIR /build
 
@@ -18,7 +18,7 @@ RUN pip wheel --no-cache-dir --wheel-dir /build/wheels -r requirements.lock
 RUN pip wheel --no-cache-dir --wheel-dir /build/wheels --no-deps .
 
 
-FROM python:3.11-slim-trixie
+FROM python:3.14-slim-trixie
 
 LABEL org.opencontainers.image.authors="mex@rki.de"
 LABEL org.opencontainers.image.description="Data upload and download service for the MEx project."
