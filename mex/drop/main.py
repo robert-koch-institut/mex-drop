@@ -9,7 +9,7 @@ from reflex.constants import Env
 from reflex.reflex import run
 from reflex.utils.build import setup_frontend_prod
 from reflex.utils.console import set_log_level
-from reflex.utils.exec import get_app_module, run_frontend_prod
+from reflex.utils.exec import get_app_instance, run_frontend_prod
 from reflex.utils.prerequisites import get_compiled_app
 
 from mex.drop.logging import UVICORN_LOGGING_CONFIG
@@ -33,7 +33,7 @@ def drop_api() -> None:  # pragma: no cover
 
     # Run the api.
     uvicorn.run(
-        get_app_module(),
+        get_app_instance(),  # type: ignore[no-untyped-call]
         host=settings.drop_api_host,
         port=settings.drop_api_port,
         root_path=settings.drop_api_root_path,
