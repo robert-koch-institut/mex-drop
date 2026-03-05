@@ -4,7 +4,7 @@ import typer
 import uvicorn
 from reflex import constants
 from reflex.config import environment, get_config
-from reflex.reflex import _init, run
+from reflex.reflex import run
 from reflex.state import reset_disk_state_manager
 from reflex.utils.build import setup_frontend_prod
 from reflex.utils.console import set_log_level
@@ -55,9 +55,6 @@ def drop_frontend() -> None:  # pragma: no cover
 
     # Set env mode in the environment.
     environment.REFLEX_ENV_MODE.set(constants.Env.PROD)
-
-    # Initialize the app in the current directory.
-    _init(name="mex", loglevel=constants.LogLevel.INFO)
 
     # Get the app module.
     get_compiled_app()

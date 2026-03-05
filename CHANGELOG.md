@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - include all api routes in reflex fastapi instance
+- stop calling init for frontend-only entrypoint
 
 ### Security
 
