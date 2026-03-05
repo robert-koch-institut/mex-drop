@@ -1,8 +1,6 @@
 import reflex as rx
 from reflex.components.radix import themes
-from reflex.utils.console import info as log_info
 
-from mex.common.logging import logger
 from mex.drop.api.main import api as drop_api
 from mex.drop.file_history.main import index as file_history_index
 from mex.drop.file_history.state import ListState
@@ -14,36 +12,35 @@ from mex.drop.utils import load_settings
 app = rx.App(
     html_lang="en",
     theme=themes.theme(accent_color="blue", has_background=False),
-    style={">a": {"opacity": "0"}},
+    style={
+        ">a": {"opacity": "0"},
+    },
+    api_transformer=drop_api,
 )
 app.add_page(
     upload_index,
     route="/",
     title="MEx Drop | Upload",
-    on_load=[State.check_login, State.load_nav],
+    on_load=[
+        State.check_login,
+        State.load_nav,
+    ],
 )
 app.add_page(
     file_history_index,
     route="/file-history",
     title="MEx Drop | File History",
-    on_load=[State.check_login, State.load_nav, ListState.refresh],
+    on_load=[
+        State.check_login,
+        State.load_nav,
+        ListState.refresh,
+    ],
 )
 app.add_page(
     login_index,
     route="/login",
     title="MEx Drop | Login",
 )
-if app.api:  # stopgap reflex 0.7.4
-    app.api.routes.extend(drop_api.router.routes)
-    app.api.title = drop_api.title
-    app.api.version = drop_api.version
-    app.api.contact = drop_api.contact
-    app.api.description = drop_api.description
-
 app.register_lifespan_task(
-    lambda: logger.info(load_settings().text()),
-)
-app.register_lifespan_task(
-    log_info,
-    msg="MEx Drop is running, shut it down using CTRL+C",
+    load_settings,
 )

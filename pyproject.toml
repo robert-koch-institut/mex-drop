@@ -11,12 +11,11 @@ dependencies = [
     "aiofile>=3",
     "fastapi[standard]>=0.128",
     "mex-common>=1.16,<1.17",
-    "pydantic>=2",
-    "reflex>=0.7,<0.7.4",
-    "sqlmodel<0.0.30",
-    "starlette>=0.50",
-    "typer>=0.15",
-    "uvicorn>=0.38",
+    "pydantic>=2.9,<3",
+    "reflex==0.8.15",
+    "starlette>=0.52,<0.53",
+    "typer>=0.23,<0.24",
+    "uvicorn>=0.40,<0.41",
 ]
 
 [dependency-groups]

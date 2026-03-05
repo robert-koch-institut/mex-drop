@@ -26,7 +26,7 @@ def upload_state(app_state: State) -> UploadState:
 def test_cancel_upload(upload_state: UploadState) -> None:
     upload_state.temp_files = [MagicMock(title="file1"), MagicMock(title="file2")]
 
-    upload_state.cancel_upload("file1")  # type: ignore[misc]
+    upload_state.cancel_upload("file1")  # type: ignore[operator]
 
     assert len(upload_state.temp_files) == 1
     assert upload_state.temp_files[0].title == "file2"
@@ -44,7 +44,7 @@ async def test_handle_upload(upload_state: UploadState) -> None:
     file2.content_type = "application/xml"
     file2.read = AsyncMock(return_value=b"content2")
 
-    await upload_state.handle_upload([file1, file2])  # type: ignore[misc]
+    await upload_state.handle_upload([file1, file2])  # type: ignore[operator]
 
     assert len(upload_state.temp_files) == 2
     assert upload_state.temp_files[0].title == "file1.csv"
@@ -62,7 +62,7 @@ async def test_handle_upload_duplicate(upload_state: UploadState) -> None:
 
     upload_state.temp_files.append(TempFile(title="file1.xml", content=b"content1"))
 
-    await upload_state.handle_upload([file1])  # type: ignore[misc]
+    await upload_state.handle_upload([file1])  # type: ignore[operator]
 
     assert len(upload_state.temp_files) == 1
 
@@ -81,7 +81,7 @@ async def test_submit_data(upload_state: UploadState) -> None:
         ),
         patch("reflex.toast.success") as mock_toast_success,
     ):
-        result = await upload_state.submit_data()  # type: ignore[misc]
+        result = await upload_state.submit_data()  # type: ignore[operator]
         mock_write_to_file.assert_called_once_with(
             b"content1", Path("/mock/path/test_system/file1.xml")
         )

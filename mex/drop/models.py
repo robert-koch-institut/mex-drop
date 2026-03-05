@@ -1,14 +1,14 @@
-import reflex as rx
+from pydantic import BaseModel
 
 
-class User(rx.Base):
+class User(BaseModel):
     """Info on the currently logged-in user."""
 
     x_system: str
     api_key: str
 
 
-class NavItem(rx.Base):
+class NavItem(BaseModel):
     """Model for one navigation bar item."""
 
     title: str = ""
