@@ -4,6 +4,7 @@ from unittest.mock import Mock
 import pytest
 from pytest import MonkeyPatch
 
+from mex.drop.file_history.models import FileDetails
 from mex.drop.file_history.state import ListState
 from mex.drop.settings import DropSettings
 from mex.drop.state import State
@@ -43,14 +44,14 @@ def test_refresh_success(settings: DropSettings, list_state: ListState) -> None:
     list_state.refresh()  # type: ignore[operator]
 
     expected_file_list = [
-        {
-            "name": "test_file.csv",
-            "created": datetime.fromtimestamp(
-                mock_file.stat().st_ctime, tz=UTC
-            ).strftime("%d-%m-%Y %H:%M:%S"),
-            "modified": datetime.fromtimestamp(
-                mock_file.stat().st_mtime, tz=UTC
-            ).strftime("%d-%m-%Y %H:%M:%S"),
-        }
+        FileDetails(
+            name="test_file.csv",
+            created=datetime.fromtimestamp(mock_file.stat().st_ctime, tz=UTC).strftime(
+                "%d-%m-%Y %H:%M:%S"
+            ),
+            modified=datetime.fromtimestamp(mock_file.stat().st_mtime, tz=UTC).strftime(
+                "%d-%m-%Y %H:%M:%S"
+            ),
+        )
     ]
     assert list_state.file_list == expected_file_list

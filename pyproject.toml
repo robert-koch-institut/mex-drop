@@ -22,7 +22,6 @@ dependencies = [
 dev = [
     "ipdb>=0.13",
     "mypy>=1",
-    "nest-asyncio>=1",
     "openpyxl>=3",
     "pandas-stubs",
     "pytest-cov>=6",
@@ -50,10 +49,6 @@ show_error_codes = true
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = "nest_asyncio.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
 module = "reflex.*"
 ignore_missing_imports = true
 
@@ -68,7 +63,7 @@ addopts = [
     "--cov",
     "--no-cov-on-fail",
     "--cov-report=term-missing:skip-covered",
-    "--cov-fail-under=60",
+    "--cov-fail-under=90",
     "--cov-branch",
     "--pdbcls=IPython.terminal.debugger:TerminalPdb",
     "--random-order-bucket=global",

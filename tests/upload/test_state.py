@@ -1,7 +1,9 @@
+import asyncio
+import concurrent.futures
+from collections.abc import Coroutine
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import nest_asyncio
 import pytest
 import reflex as rx
 
@@ -9,12 +11,11 @@ from mex.drop.state import State
 from mex.drop.upload.models import TempFile
 from mex.drop.upload.state import UploadState
 
-nest_asyncio.apply()
 
-
-@pytest.fixture
-def anyio_backend() -> str:
-    return "asyncio"
+def run_async[T](coro: Coroutine[object, object, T]) -> T:
+    """Run a coroutine in a separate thread with a fresh event loop."""
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+        return pool.submit(asyncio.run, coro).result()
 
 
 @pytest.fixture
@@ -32,8 +33,7 @@ def test_cancel_upload(upload_state: UploadState) -> None:
     assert upload_state.temp_files[0].title == "file2"
 
 
-@pytest.mark.anyio
-async def test_handle_upload(upload_state: UploadState) -> None:
+def test_handle_upload(upload_state: UploadState) -> None:
     file1 = MagicMock(spec=rx.UploadFile)
     file1.name = "file1.csv"
     file1.content_type = "text/csv"
@@ -44,7 +44,7 @@ async def test_handle_upload(upload_state: UploadState) -> None:
     file2.content_type = "application/xml"
     file2.read = AsyncMock(return_value=b"content2")
 
-    await upload_state.handle_upload([file1, file2])  # type: ignore[operator]
+    run_async(upload_state.handle_upload([file1, file2]))  # type: ignore[operator]
 
     assert len(upload_state.temp_files) == 2
     assert upload_state.temp_files[0].title == "file1.csv"
@@ -53,8 +53,7 @@ async def test_handle_upload(upload_state: UploadState) -> None:
     assert upload_state.temp_files[1].content == b"content2"
 
 
-@pytest.mark.anyio
-async def test_handle_upload_duplicate(upload_state: UploadState) -> None:
+def test_handle_upload_duplicate(upload_state: UploadState) -> None:
     file1 = MagicMock(spec=rx.UploadFile)
     file1.name = "file1.xml"
     file1.content_type = "application/xml"
@@ -62,13 +61,12 @@ async def test_handle_upload_duplicate(upload_state: UploadState) -> None:
 
     upload_state.temp_files.append(TempFile(title="file1.xml", content=b"content1"))
 
-    await upload_state.handle_upload([file1])  # type: ignore[operator]
+    run_async(upload_state.handle_upload([file1]))  # type: ignore[operator]
 
     assert len(upload_state.temp_files) == 1
 
 
-@pytest.mark.anyio
-async def test_submit_data(upload_state: UploadState) -> None:
+def test_submit_data(upload_state: UploadState) -> None:
     upload_state.temp_files = [TempFile(title="file1.xml", content=b"content1")]
 
     with (
@@ -81,7 +79,7 @@ async def test_submit_data(upload_state: UploadState) -> None:
         ),
         patch("reflex.toast.success") as mock_toast_success,
     ):
-        result = await upload_state.submit_data()  # type: ignore[operator]
+        result = run_async(upload_state.submit_data())  # type: ignore[operator]
         mock_write_to_file.assert_called_once_with(
             b"content1", Path("/mock/path/test_system/file1.xml")
         )
