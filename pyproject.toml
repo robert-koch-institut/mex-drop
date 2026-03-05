@@ -9,7 +9,7 @@ urls = { Repository = "https://github.com/robert-koch-institut/mex-drop" }
 requires-python = ">=3.14,<3.15"
 dependencies = [
     "aiofile>=3",
-    "fastapi[standard]>=0.123",
+    "fastapi[standard]>=0.128",
     "mex-common>=1.16,<1.17",
     "pydantic>=2",
     "reflex>=0.7,<0.7.4",
@@ -29,8 +29,8 @@ dev = [
     "pytest-cov>=6",
     "pytest-playwright>=0.7",
     "pytest-random-order>=1",
-    "pytest>=8",
-    "ruff>=0.14",
+    "pytest>=9",
+    "ruff>=0.15",
     "sphinx>=9",
 ]
 
@@ -104,6 +104,9 @@ ignore = [
     "N815",    # Allow mixedCase variables in class scope (model compat)
     "RUF012",  # Allow mutable class attributes (pydantic compat)
     "SIM108",  # Allow explicit if-else instead of ternary (easier to read)
+    "TC001",   # Allow typing-only first party imports for state modules
+    "TC002",   # Allow typing-only third party imports for state modules
+    "TC003",   # Allow typing-only standard library imports for state modules
     "TD003",   # Allow TODOs without ticket link (don't punish TODO writers)
     "TRY003",  # Allow long exception message at the raise site (for pydantic)
 ]

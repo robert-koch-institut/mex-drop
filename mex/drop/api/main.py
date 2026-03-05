@@ -236,7 +236,7 @@ async def download_data(
         )
     settings = DropSettings.get()
     out_file = pathlib.Path(settings.drop_directory, x_system, entity_type)
-    if not out_file.is_file():
+    if not out_file.is_file():  # noqa: ASYNC240
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="The requested data was not found on this server.",
