@@ -778,7 +778,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.128" },
     { name = "mex-common", specifier = ">=1.16,<1.17" },
     { name = "pydantic", specifier = ">=2.9,<3" },
-    { name = "reflex", specifier = "==0.8.15" },
+    { name = "reflex", specifier = "==0.8.27" },
     { name = "starlette", specifier = ">=0.52,<0.53" },
     { name = "typer", specifier = ">=0.23,<0.24" },
     { name = "uvicorn", specifier = ">=0.40,<0.41" },
@@ -1379,7 +1379,7 @@ wheels = [
 
 [[package]]
 name = "reflex"
-version = "0.8.15"
+version = "0.8.27"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "alembic" },
@@ -1400,9 +1400,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "wrapt" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/bc/a4/226e57c78586ee0e46bc1f4c037b5de7cb775d2bc9699d9ca3fa1e6a86d9/reflex-0.8.15.tar.gz", hash = "sha256:de81f95d82f338ed8bc9b6cbc8b0d34f20aba400b50e954ddf599f3fedb02b00", size = 607909, upload-time = "2025-10-15T02:30:40.52Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e3/51/f6dd657f04a097aa7b02fb6ab08b24f3a4fe676378af5b9e6dff2d92c64b/reflex-0.8.27.tar.gz", hash = "sha256:c90cca51d77955e0162baf4384b843e4350c75afa656589e484470222b48368f", size = 572762, upload-time = "2026-02-17T19:23:37.574Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/42/6f/9defcf596847c6fc2787191c56ae3d27ee86d9a58ee3c32fe6ab2095aae7/reflex-0.8.15-py3-none-any.whl", hash = "sha256:f705839c844301452cc8c63cbb17af2dc6c2e2a742511c2d3932b2d08cb00f98", size = 900352, upload-time = "2025-10-15T02:30:38.219Z" },
+    { url = "https://files.pythonhosted.org/packages/4d/03/abdfa493299dd63ecb3f046755a71748a259c7535f58c8d9203eced73262/reflex-0.8.27-py3-none-any.whl", hash = "sha256:1ddd492542d39735f2d1a002549025698022a130b6fa2af1cea33af516058ac6", size = 815640, upload-time = "2026-02-17T19:23:35.897Z" },
 ]
 
 [[package]]

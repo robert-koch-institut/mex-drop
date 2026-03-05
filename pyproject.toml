@@ -12,7 +12,7 @@ dependencies = [
     "fastapi[standard]>=0.128",
     "mex-common>=1.16,<1.17",
     "pydantic>=2.9,<3",
-    "reflex==0.8.15",
+    "reflex==0.8.27",
     "starlette>=0.52,<0.53",
     "typer>=0.23,<0.24",
     "uvicorn>=0.40,<0.41",
