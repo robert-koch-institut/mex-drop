@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- stop calling init for frontend-only entrypoint
+
 ### Security
 
 ## [1.2.1] - 2025-12-15
