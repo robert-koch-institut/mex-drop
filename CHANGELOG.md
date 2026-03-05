@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+- upgrade python to 3.14
+- upgrade reflex to 0.8.15
+- updated template to https://github.com/robert-koch-institut/mex-template/commit/0c16a6
+
 ### Deprecated
 
 ### Removed

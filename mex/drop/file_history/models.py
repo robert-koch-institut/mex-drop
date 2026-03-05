@@ -1,7 +1,7 @@
-import reflex as rx
+from pydantic import BaseModel
 
 
-class FileDetails(rx.Base):
+class FileDetails(BaseModel):
     """Class to describe file details."""
 
     name: str

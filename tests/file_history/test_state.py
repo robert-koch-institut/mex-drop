@@ -4,6 +4,7 @@ from unittest.mock import Mock
 import pytest
 from pytest import MonkeyPatch
 
+from mex.drop.file_history.models import FileDetails
 from mex.drop.file_history.state import ListState
 from mex.drop.settings import DropSettings
 from mex.drop.state import State
@@ -23,7 +24,7 @@ def test_refresh_missing_directory(
     mock_toast_error = Mock()
     monkeypatch.setattr("mex.drop.file_history.state.rx.toast.error", mock_toast_error)
 
-    list_state.refresh()  # type: ignore[misc]
+    list_state.refresh()  # type: ignore[operator]
 
     mock_toast_error.assert_called_once_with(
         "The requested x-system was not found on this server.", close_button=True
@@ -40,17 +41,17 @@ def test_refresh_success(settings: DropSettings, list_state: ListState) -> None:
     mock_file = mock_x_system_dir / "test_file.csv"
     mock_file.touch()
 
-    list_state.refresh()  # type: ignore[misc]
+    list_state.refresh()  # type: ignore[operator]
 
     expected_file_list = [
-        {
-            "name": "test_file.csv",
-            "created": datetime.fromtimestamp(
-                mock_file.stat().st_ctime, tz=UTC
-            ).strftime("%d-%m-%Y %H:%M:%S"),
-            "modified": datetime.fromtimestamp(
-                mock_file.stat().st_mtime, tz=UTC
-            ).strftime("%d-%m-%Y %H:%M:%S"),
-        }
+        FileDetails(
+            name="test_file.csv",
+            created=datetime.fromtimestamp(mock_file.stat().st_ctime, tz=UTC).strftime(
+                "%d-%m-%Y %H:%M:%S"
+            ),
+            modified=datetime.fromtimestamp(mock_file.stat().st_mtime, tz=UTC).strftime(
+                "%d-%m-%Y %H:%M:%S"
+            ),
+        )
     ]
     assert list_state.file_list == expected_file_list

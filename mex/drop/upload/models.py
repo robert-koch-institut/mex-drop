@@ -1,7 +1,7 @@
-import reflex as rx
+from pydantic import BaseModel
 
 
-class TempFile(rx.Base):
+class TempFile(BaseModel):
     """Helper class to handle temporarily uploaded files."""
 
     title: str
