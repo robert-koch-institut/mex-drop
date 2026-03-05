@@ -11,10 +11,10 @@ from tests.conftest import TESTDATA_DIR
 @pytest.fixture
 def upload_page(
     page: Page,
-    frontend_url: str,
+    base_url: str,
     get_test_key: Callable[[str], str],
 ) -> Page:
-    page.goto(frontend_url)
+    page.goto(base_url)
     page.get_by_placeholder("API Key").fill(get_test_key("test"))
     page.get_by_placeholder("X-System").fill("test")
     page.get_by_test_id("login-button").click()

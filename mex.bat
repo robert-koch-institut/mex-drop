@@ -25,9 +25,12 @@ if "%CI%"=="" (
 
 @REM install packages from lock file in local virtual environment
 echo installing package
-pdm install-all
+uv sync
 exit /b %errorlevel%
 
+@REM use playwright to install firefox
+echo installing firefox
+uv run playwright install firefox
 
 :lint
 @REM run the linter hooks from pre-commit on all files
@@ -39,19 +42,20 @@ exit /b %errorlevel%
 :unit
 @REM run the test suite with all unit tests
 echo running unit tests
-pdm run pytest -m "not integration"
+uv run pytest -m "not integration"
 exit /b %errorlevel%
 
 
 :test
 @REM run the unit and integration test suites
 echo running all tests
-pdm run pytest
+uv run pytest
 exit /b %errorlevel%
 
 
 :docs
 @REM use sphinx to auto-generate html docs from code
 echo generating docs
-pdm doc
+uv run sphinx-apidoc -f -o docs/source mex
+uv run sphinx-build -aE -b dirhtml docs docs/dist
 exit /b %errorlevel%

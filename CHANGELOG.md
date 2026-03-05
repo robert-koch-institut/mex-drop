@@ -9,7 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- add cve scanning of frontend dependencies
+
 ### Changes
+
+- updated template to https://github.com/robert-koch-institut/mex-template/commit/81bc5b
+- change the docker build to multi-stage build
+- updated template to https://github.com/robert-koch-institut/mex-template/commit/ad26e4
+- switch package manager from pdm to uv
 
 ### Deprecated
 
@@ -21,6 +28,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - stop calling init for frontend-only entrypoint
 
 ### Security
+
+## [1.2.1] - 2025-12-15
+
+### Fixed
+
+- include all api routes in reflex fastapi instance
 
 ## [1.2.0] - 2025-12-15
 

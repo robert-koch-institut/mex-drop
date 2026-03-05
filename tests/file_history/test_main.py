@@ -28,9 +28,9 @@ def test_upload(
     page: Page,
     get_test_key: Callable[[str], str],
     clean_test_directory: Callable[[], Path],
-    frontend_url: str,
+    base_url: str,
 ) -> None:
-    page.goto(frontend_url)
+    page.goto(base_url)
     clean_test_directory()
     login(page, get_test_key)
     upload_file(page)

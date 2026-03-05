@@ -33,7 +33,7 @@ jobs:
           fetch-depth: 1
 
       - name: Cache requirements
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: cache-requirements
         with:
@@ -43,7 +43,7 @@ jobs:
             ${{ env.cache-name }}-
 
       - name: Cache environment
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: cache-environment
         with:
@@ -55,7 +55,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v6
         with:
-          python-version: 3.11
+          python-version: 3.13
 
       - name: Install requirements
         run: make install
@@ -64,14 +64,14 @@ jobs:
         env:
           MEX_DROP_API_KEY_DATABASE: ${{ secrets.MEX_DROP_API_KEY_DATABASE }}
         run: |
-          pdm run drop &
+          uv run drop &
           echo `date -Iseconds` INFO checking service readiness &&
           curl --connect-timeout 10 --retry 10 --retry-delay 10 --retry-all-errors http://localhost:8000/_system/check &&
           make test
 
       - name: Upload screenshots
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-screenshots-${{ github.run_id }}
           path: tests_*.png
