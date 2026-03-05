@@ -14,7 +14,7 @@ dependencies = [
     "pydantic>=2.9,<3",
     "reflex==0.8.15",
     "starlette>=0.52,<0.53",
-    "typer>=0.23,<0.24",
+    "typer>=0.24,<0.25",
     "uvicorn>=0.40,<0.41",
 ]
 
