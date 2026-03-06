@@ -11,17 +11,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- upgrade reflex to 0.8.27
-
 ### Deprecated
 
 ### Removed
 
-- disable reflex ssr
-
 ### Fixed
 
 ### Security
+
+## [1.5.0] - 2026-03-06
+
+### Changes
+
+- upgrade reflex to 0.8.27
+
+### Removed
+
+- disable reflex ssr
 
 ## [1.4.0] - 2026-03-05
 
