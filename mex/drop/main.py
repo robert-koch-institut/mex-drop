@@ -72,8 +72,9 @@ def main() -> None:  # pragma: no cover
     """Start the drop api together with frontend."""
     # Set environment variables.
     environment.REFLEX_USE_GRANIAN.set(False)
-    environment.REFLEX_HOT_RELOAD_EXCLUDE_PATHS.set([Path("tests")])
     environment.REFLEX_SSR.set(False)
+    if (tests := Path("tests")).exists():
+        environment.REFLEX_HOT_RELOAD_EXCLUDE_PATHS.set([tests])
 
     if "win32" in sys.platform:
         # bun cache is not working correctly on windows
