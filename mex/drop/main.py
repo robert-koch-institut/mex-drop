@@ -3,9 +3,8 @@ import sys
 from pathlib import Path
 
 import uvicorn
-from reflex import constants
 from reflex.config import environment, get_config
-from reflex.constants import Env
+from reflex.constants import Env, LogLevel
 from reflex.reflex import run
 from reflex.utils.build import setup_frontend_prod
 from reflex.utils.console import set_log_level
@@ -21,12 +20,13 @@ def drop_api() -> None:  # pragma: no cover
     settings = DropSettings.get()
 
     # Set the log level.
-    set_log_level(constants.LogLevel.INFO)
+    set_log_level(LogLevel.INFO)
 
     # Set environment variables.
     environment.REFLEX_ENV_MODE.set(Env.PROD)
     environment.REFLEX_SKIP_COMPILE.set(True)
     environment.REFLEX_USE_GRANIAN.set(False)
+    environment.REFLEX_SSR.set(False)
 
     # Reload the config to make sure the env vars are persistent.
     get_config(reload=True)
@@ -47,11 +47,12 @@ def drop_frontend() -> None:  # pragma: no cover
     settings = DropSettings.get()
 
     # Set the log level.
-    set_log_level(constants.LogLevel.INFO)
+    set_log_level(LogLevel.INFO)
 
     # Configure the environment.
     environment.REFLEX_ENV_MODE.set(Env.PROD)
     environment.REFLEX_CHECK_LATEST_VERSION.set(False)
+    environment.REFLEX_SSR.set(False)
 
     # Get the app module.
     get_compiled_app()
@@ -72,6 +73,7 @@ def main() -> None:  # pragma: no cover
     # Set environment variables.
     environment.REFLEX_USE_GRANIAN.set(False)
     environment.REFLEX_HOT_RELOAD_EXCLUDE_PATHS.set([Path("tests")])
+    environment.REFLEX_SSR.set(False)
 
     if "win32" in sys.platform:
         # bun cache is not working correctly on windows
