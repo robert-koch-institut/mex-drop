@@ -8,11 +8,11 @@ license = { file = "LICENSE" }
 urls = { Repository = "https://github.com/robert-koch-institut/mex-drop" }
 requires-python = ">=3.14,<3.15"
 dependencies = [
-    "aiofile>=3",
-    "fastapi[standard]>=0.128",
+    "aiofile>=3,<4",
+    "fastapi[standard]>=0.135",
     "mex-common>=1.16,<1.17",
-    "pydantic>=2.9,<3",
-    "reflex==0.8.15",
+    "pydantic>=2.12,<3",
+    "reflex>=0.8,<9",
     "starlette>=0.52,<0.53",
     "typer>=0.24,<0.25",
     "uvicorn>=0.41,<0.42",
