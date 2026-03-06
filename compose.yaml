@@ -8,7 +8,7 @@ services:
     environment:
       - MEX_DROP_DIRECTORY=data
       - MEX_DROP_API_HOST=0.0.0.0
-      - MEX_DROP_USER_DATABASE={"mex":["mex"]}
+      - MEX_DROP_API_KEY_DATABASE={"mex":["mex"]}
     healthcheck:
       test: [ "CMD", "curl", "http://0.0.0.0:8021/_system/check" ]
       interval: 60s
