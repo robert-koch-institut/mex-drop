@@ -1,20 +1,36 @@
 services:
-  mex-drop:
+  mex-drop-frontend:
     build:
       context: .
     ports:
       - 8020:8020
+    healthcheck:
+      test: [ "CMD", "curl", "http://mex-drop-frontend:8030" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    entrypoint: drop-frontend
+    depends_on:
+      mex-drop-api:
+        condition: service_healthy
+  mex-drop-api:
+    build:
+      context: .
+    ports:
       - 8021:8021
     environment:
       - MEX_DROP_DIRECTORY=data
       - MEX_DROP_API_HOST=0.0.0.0
       - MEX_DROP_API_KEY_DATABASE={"mex":["mex"]}
     healthcheck:
-      test: [ "CMD", "curl", "http://0.0.0.0:8021/_system/check" ]
-      interval: 60s
+      test: [ "CMD", "curl", "http://mex-drop-api:8021/_system/check" ]
+      interval: 30s
       timeout: 5s
       retries: 5
+      start_period: 10s
+    entrypoint: drop-api
     volumes:
-      - data:/app/data
+      - drop_data:/app/data
 volumes:
-  data:
+  drop_data:

@@ -6,10 +6,14 @@ import uvicorn
 from reflex.config import environment, get_config
 from reflex.constants import Env, LogLevel
 from reflex.reflex import run
+from reflex.state import reset_disk_state_manager
 from reflex.utils.build import setup_frontend_prod
 from reflex.utils.console import set_log_level
 from reflex.utils.exec import get_app_instance, run_frontend_prod
-from reflex.utils.prerequisites import get_compiled_app
+from reflex.utils.prerequisites import (
+    get_compiled_app,
+    initialize_frontend_dependencies,
+)
 
 from mex.drop.logging import UVICORN_LOGGING_CONFIG
 from mex.drop.settings import DropSettings
@@ -27,6 +31,9 @@ def drop_api() -> None:  # pragma: no cover
     environment.REFLEX_SKIP_COMPILE.set(True)
     environment.REFLEX_USE_GRANIAN.set(False)
     environment.REFLEX_SSR.set(False)
+
+    # Delete the states folder if it exists.
+    reset_disk_state_manager()
 
     # Reload the config to make sure the env vars are persistent.
     get_config(reload=True)
@@ -53,6 +60,9 @@ def drop_frontend() -> None:  # pragma: no cover
     environment.REFLEX_ENV_MODE.set(Env.PROD)
     environment.REFLEX_CHECK_LATEST_VERSION.set(False)
     environment.REFLEX_SSR.set(False)
+
+    # Check that the app is initialized.
+    initialize_frontend_dependencies()
 
     # Get the app module.
     get_compiled_app()
