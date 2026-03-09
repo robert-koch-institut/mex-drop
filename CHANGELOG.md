@@ -11,11 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+- update lock file
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+- fix env vars in docker file
 
 ### Security
 
