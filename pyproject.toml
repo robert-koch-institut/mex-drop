@@ -15,7 +15,7 @@ dependencies = [
     "reflex>=0.8,<9",
     "starlette>=0.52,<0.53",
     "typer>=0.24,<0.25",
-    "uvicorn>=0.41,<0.42",
+    "uvicorn>=0.42,<0.43",
 ]
 
 [dependency-groups]
