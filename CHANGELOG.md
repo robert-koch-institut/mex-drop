@@ -11,12 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- Update dependency uv to v0.10.11
-- Update dependency mex-common to >=1.17,<1.18
-- Update dependency uvicorn to >=0.42,<0.43
-- Update github-action action to v46.1.4
-- Update docker/login-action action to v4
-
 ### Deprecated
 
 ### Removed
@@ -24,6 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [1.5.3] - 2026-03-25
+
+### Changes
+
+- Update dependency uv to v0.10.11
+- Update dependency mex-common to >=1.17,<1.18
+- Update dependency uvicorn to >=0.42,<0.43
+- Update github-action action to v46.1.4
+- Update docker/login-action action to v4
 
 ## [1.5.2] - 2026-03-09
 
