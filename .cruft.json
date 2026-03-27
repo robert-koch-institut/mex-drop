@@ -1,13 +1,13 @@
 {
   "checkout": null,
-  "commit": "491e2def91056e66b37a02f9bda6177f79b2912e",
+  "commit": "172aac4cddf8ce8f9c90d2490af8284d5b994d01",
   "context": {
     "cookiecutter": {
       "project_name": "drop",
       "short_summary": "Data upload and download service for the MEx project.",
       "long_summary": "The `mex-drop` package provides an API for uploading data to and downloading data from the MEx project. Request payloads need to be JSON-formatted but can have arbitrary structures. Accepted data will be ingested and processed asynchronously.",
       "_template": "https://github.com/robert-koch-institut/mex-template",
-      "_commit": "491e2def91056e66b37a02f9bda6177f79b2912e"
+      "_commit": "172aac4cddf8ce8f9c90d2490af8284d5b994d01"
     }
   },
   "directory": null,
