@@ -13,7 +13,7 @@ dependencies = [
     "mex-common>=1.17,<1.18",
     "pydantic>=2.12,<3",
     "reflex>=0.8,<9",
-    "starlette>=0.52,<0.53",
+    "starlette>=1,<1.1",
     "typer>=0.24,<0.25",
     "uvicorn>=0.42,<0.43",
 ]
