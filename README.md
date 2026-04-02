@@ -96,6 +96,6 @@ components of the MEx project are open-sourced under the same license as well.
 - run `uv run {command} --help` to print instructions
 - run `uv run {command} --debug` for interactive debugging
 
-### Drop
+### drop
 
-- `uv run drop` starts the drop service
+- `drop` starts the drop service

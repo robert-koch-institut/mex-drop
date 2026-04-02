@@ -1,7 +1,7 @@
 Documentation
 =============
 
-Data upload and download API for the MEx project.
+Data upload and download service for the MEx project.
 
 .. toctree::
     :maxdepth: 2
