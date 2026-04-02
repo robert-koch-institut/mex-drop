@@ -1,10 +1,8 @@
 name: Documentation
 
 on:
-  workflow_run:
-    workflows: [Release]
-    types:
-      - completed
+  push:
+    tags: ["**"]
   workflow_dispatch:
 
 env:
@@ -14,11 +12,6 @@ env:
   PIP_PREFER_BINARY: on
   PY_COLORS: "1"
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
@@ -27,14 +20,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 1
 
       - name: Cache requirements
-        uses: actions/cache@v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         env:
           cache-name: cache-requirements
         with:
@@ -44,7 +40,7 @@ jobs:
             ${{ env.cache-name }}-
 
       - name: Cache environment
-        uses: actions/cache@v5
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         env:
           cache-name: cache-environment
         with:
@@ -68,7 +64,7 @@ jobs:
         run: make docs
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
           path: ./docs/dist
 
