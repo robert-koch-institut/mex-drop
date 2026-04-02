@@ -11,10 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- upgrade to starlette 1.0
-- updated template to https://github.com/robert-koch-institut/mex-template/commit/43f715
-- updated template to https://github.com/robert-koch-institut/mex-template/commit/491e2d
-
 ### Deprecated
 
 ### Removed
@@ -22,6 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Security
+
+## [1.5.4] - 2026-04-02
+
+### Changes
+
+- upgrade to starlette 1.0
+- updated template to https://github.com/robert-koch-institut/mex-template/commit/43f715
+- updated template to https://github.com/robert-koch-institut/mex-template/commit/491e2d
 
 ## [1.5.3] - 2026-03-25
 
