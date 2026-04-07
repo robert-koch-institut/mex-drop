@@ -65,7 +65,7 @@ jobs:
 
       - name: Run test suite
         env:
-          MEX_DROP_API_KEY_DATABASE: ${{ secrets.MEX_DROP_API_KEY_DATABASE }}
+          MEX_DROP_API_KEY_DATABASE: '{"mex":["mex"],"test":["test"]]}'
         run: |
           uv run drop &
           echo `date -Iseconds` INFO checking service readiness &&
