@@ -6,7 +6,7 @@ Data upload and download service for the MEx project.
 [![cve-scan](https://github.com/robert-koch-institut/mex-drop/actions/workflows/cve-scan.yml/badge.svg)](https://github.com/robert-koch-institut/mex-drop/actions/workflows/cve-scan.yml)
 [![documentation](https://github.com/robert-koch-institut/mex-drop/actions/workflows/documentation.yml/badge.svg)](https://robert-koch-institut.github.io/mex-drop)
 [![linting](https://github.com/robert-koch-institut/mex-drop/actions/workflows/linting.yml/badge.svg)](https://github.com/robert-koch-institut/mex-drop/actions/workflows/linting.yml)
-[![open-code](https://github.com/robert-koch-institut/mex-drop/actions/workflows/open-code.yml/badge.svg)](https://gitlab.opencode.de/robert-koch-institut/mex/mex-drop)
+[![opencode](https://github.com/robert-koch-institut/mex-drop/actions/workflows/opencode.yml/badge.svg)](https://gitlab.opencode.de/robert-koch-institut/mex/mex-drop)
 [![testing](https://github.com/robert-koch-institut/mex-drop/actions/workflows/testing.yml/badge.svg)](https://github.com/robert-koch-institut/mex-drop/actions/workflows/testing.yml)
 
 ## Project
@@ -96,6 +96,6 @@ components of the MEx project are open-sourced under the same license as well.
 - run `uv run {command} --help` to print instructions
 - run `uv run {command} --debug` for interactive debugging
 
-### Drop
+### drop
 
-- `uv run drop` starts the drop service
+- `drop` starts the drop service
