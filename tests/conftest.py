@@ -42,7 +42,6 @@ def isolate_work_dir(
 @pytest.fixture(autouse=True)
 def settings(
     is_integration_test: bool,  # noqa: FBT001
-    isolate_assets_dir: None,  # noqa: ARG001
 ) -> DropSettings:
     """Load the settings for this pytest session."""
     settings = DropSettings.get()

@@ -740,7 +740,7 @@ wheels = [
 
 [[package]]
 name = "mex-common"
-version = "1.18.1"
+version = "1.19.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "backoff" },
@@ -758,9 +758,9 @@ dependencies = [
     { name = "requests" },
     { name = "tabulate" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/8b/e4/4b32833c3d997ae3d85ea25f55665f785ef28b23729994d98743ff7f6333/mex_common-1.18.1.tar.gz", hash = "sha256:518a1f6aa2aa6090b1e52ddcadd0cd37f5f7586de9f544390316c86e96f358b6", size = 90024, upload-time = "2026-04-01T08:20:56.459Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/08/4e/8fe74a2e803c135f8e3f6ad842f906493c43d25dcad132d3f2efe8dfd475/mex_common-1.19.0.tar.gz", hash = "sha256:5426ffd6e0fbfcb15dac851c6704372d903fd231c5e2ee8cffe9b607741a6197", size = 90249, upload-time = "2026-04-17T11:59:45.04Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d1/70/bf588b43e02e0194e169467ce5effeddf2771dc5efe151a6e20535f9651b/mex_common-1.18.1-py3-none-any.whl", hash = "sha256:6e500df4df7c26b2c2f9442ed800d7dc9ba399145d5c84fb7c6b0bb60080b4ce", size = 137119, upload-time = "2026-04-01T08:20:54.652Z" },
+    { url = "https://files.pythonhosted.org/packages/85/d8/1b446e3e3f85f48cc6e19936878c2583d7d0d1f607e448e5eb6bee1fed81/mex_common-1.19.0-py3-none-any.whl", hash = "sha256:f895ea3a7ba4b2760b603fdb6f159385cf3f8da8d080b8d344e9aabd37f57b39", size = 137345, upload-time = "2026-04-17T11:59:43.581Z" },
 ]
 
 [[package]]
@@ -796,7 +796,7 @@ dev = [
 requires-dist = [
     { name = "aiofile", specifier = ">=3,<4" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.135" },
-    { name = "mex-common", specifier = ">=1.18,<1.19" },
+    { name = "mex-common", specifier = ">=1.19,<1.20" },
     { name = "pydantic", specifier = ">=2.12,<3" },
     { name = "reflex", specifier = ">=0.8,<9" },
     { name = "starlette", specifier = ">=1,<2" },
