@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- fix cookiecutter permissions
+
 ### Security
 
 ## [1.5.4] - 2026-04-02
