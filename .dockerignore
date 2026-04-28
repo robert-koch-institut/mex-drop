@@ -113,6 +113,19 @@ dmypy.json
 .history/
 *.code-workspace
 
+# Node and Angular
+.angular/
+.nodeenv
+.sass-cache/
+connect.lock
+coverage
+libpeerconnection.log
+node_modules
+npm-debug.log
+out-tsc
+testem.log
+typings
+
 # SQLite databases
 *.db
 
