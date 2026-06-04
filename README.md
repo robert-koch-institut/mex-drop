@@ -91,6 +91,23 @@ components of the MEx project are open-sourced under the same license as well.
 - run directly using docker `make run`
 - start with docker compose `make start`
 
+### Container verification
+
+Images released to GHCR are signed using [cosign](https://github.com/sigstore/cosign).
+
+Verification is handled by our deployment using the organization's public key.
+To verify an image manually:
+1. install `cosign` on your system
+2. obtain the organization's public key
+3. run the following command:
+   ```bash
+   cosign verify --key cosign.pub ghcr.io/robert-koch-institut/mex-drop:<TAG>
+   ```
+
+To set up signing for a new project:
+1. ensure the organization-wide private key is available in a GitHub Secret named `MEX_SIGNING_KEY`
+2. ensure the organization-wide public key is available in a GitHub Variable named `MEX_SIGNING_PUB`
+
 ## Commands
 
 - run `uv run {command} --help` to print instructions

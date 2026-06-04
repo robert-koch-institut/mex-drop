@@ -102,15 +102,48 @@ jobs:
           password: ${{secrets.GITHUB_TOKEN}}
 
       - name: Build, tag and push docker image
+        id: push_step
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v.7.1.0
         env:
           IMAGE: ghcr.io/${{ github.repository }}
           TAG: ${{ needs.release.outputs.tag }}
+        with:
+          push: true
+          tags: |
+            ${IMAGE}:latest
+            ${IMAGE}:${{ github.sha }}
+            ${IMAGE}:${TAG}
+          outputs: type=image,oci-mediatypes=true
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: 'v2.4.1'
+
+      - name: Sign docker images
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}
+          DIGEST: ${{ steps.push_step.outputs.digest }}
+          BASE64_PRIV_KEY: ${{ secrets.MEX_SIGNING_KEY }}
+          COSIGN_PASSWORD: ""
+          BASE64_PUB_KEY: ${{ vars.MEX_SIGNING_PUB }}
+          COSIGN_DOCKER_MEDIA_TYPES: 1
         run: |
-          docker build . \
-          --tag ${IMAGE}:latest \
-          --tag ${IMAGE}:${{ github.sha }} \
-          --tag ${IMAGE}:${TAG}
-          docker push --all-tags ${IMAGE}
+          set -e # exit on first error
+
+          # signing
+          echo "Signing Image: ${IMAGE}@${DIGEST}"
+          export COSIGN_PRIVATE_KEY=$(echo "$BASE64_PRIV_KEY" | base64 --decode)
+          cosign sign --yes --registry-referrers-mode=legacy --key env://COSIGN_PRIVATE_KEY ${IMAGE}@${DIGEST}
+          echo "Signature generated successfully"
+
+          # smoke test
+          echo "Verifying signature"
+          trap 'rm -f temp_ssh_id.pub cosign.pub' EXIT
+          echo "$BASE64_PUB_KEY" | base64 --decode > temp_ssh_id.pub
+          ssh-keygen -e -m PKCS8 -f temp_ssh_id.pub > cosign.pub
+          cosign verify --key cosign.pub "${IMAGE}@${DIGEST}"
+          echo "Signature verified successfully"
 
   distribute:
     runs-on: ubuntu-latest
