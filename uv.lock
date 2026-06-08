@@ -29,20 +29,6 @@ wheels = [
 ]
 
 [[package]]
-name = "alembic"
-version = "1.18.4"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "mako" },
-    { name = "sqlalchemy" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/94/13/8b084e0f2efb0275a1d534838844926f798bd766566b1375174e2448cd31/alembic-1.18.4.tar.gz", hash = "sha256:cb6e1fd84b6174ab8dbb2329f86d631ba9559dd78df550b57804d607672cedbc", size = 2056725, upload-time = "2026-02-10T16:00:47.195Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d2/29/6533c317b74f707ea28f8d633734dbda2119bbadfc61b2f3640ba835d0f7/alembic-1.18.4-py3-none-any.whl", hash = "sha256:a5ed4adcf6d8a4cb575f3d759f071b03cd6e5c7618eb796cb52497be25bfe19a", size = 263893, upload-time = "2026-02-10T16:00:49.997Z" },
-]
-
-[[package]]
 name = "annotated-doc"
 version = "0.0.4"
 source = { registry = "https://pypi.org/simple" }
@@ -666,18 +652,6 @@ wheels = [
 ]
 
 [[package]]
-name = "mako"
-version = "1.3.12"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "markupsafe" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/00/62/791b31e69ae182791ec67f04850f2f062716bbd205483d63a215f3e062d3/mako-1.3.12.tar.gz", hash = "sha256:9f778e93289bd410bb35daadeb4fc66d95a746f0b75777b942088b7fd7af550a", size = 400219, upload-time = "2026-04-28T19:01:08.512Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/bc/b1/a0ec7a5a9db730a08daef1fdfb8090435b82465abbf758a596f0ea88727e/mako-1.3.12-py3-none-any.whl", hash = "sha256:8f61569480282dbf557145ce441e4ba888be453c30989f879f0d652e39f53ea9", size = 78521, upload-time = "2026-04-28T19:01:10.393Z" },
-]
-
-[[package]]
 name = "markdown-it-py"
 version = "4.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -800,7 +774,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.135" },
     { name = "mex-common", specifier = ">=1.19,<1.20" },
     { name = "pydantic", specifier = ">=2.12,<3" },
-    { name = "reflex", specifier = ">=0.8,<0.9" },
+    { name = "reflex", specifier = ">=0.9,<0.10" },
     { name = "starlette", specifier = ">=1,<2" },
     { name = "typer", specifier = ">=0.24,<0.25" },
     { name = "uvicorn", specifier = ">=0.42,<0.43" },
@@ -1409,35 +1383,221 @@ wheels = [
 
 [[package]]
 name = "reflex"
-version = "0.8.28.post1"
+version = "0.9.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "alembic" },
     { name = "click" },
     { name = "granian", extra = ["reload"] },
     { name = "httpx" },
     { name = "packaging" },
-    { name = "platformdirs" },
     { name = "psutil", marker = "sys_platform == 'win32'" },
-    { name = "pydantic" },
     { name = "python-multipart" },
     { name = "python-socketio" },
     { name = "redis" },
+    { name = "reflex-base" },
+    { name = "reflex-components-code" },
+    { name = "reflex-components-core" },
+    { name = "reflex-components-dataeditor" },
+    { name = "reflex-components-gridjs" },
+    { name = "reflex-components-lucide" },
+    { name = "reflex-components-markdown" },
+    { name = "reflex-components-moment" },
+    { name = "reflex-components-plotly" },
+    { name = "reflex-components-radix" },
+    { name = "reflex-components-react-player" },
+    { name = "reflex-components-recharts" },
+    { name = "reflex-components-sonner" },
     { name = "reflex-hosting-cli" },
     { name = "rich" },
-    { name = "sqlmodel" },
     { name = "starlette" },
     { name = "typing-extensions" },
     { name = "wrapt" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4a/28/1e7f2f8a1f6147a47c7b7f27d550311f18e0f6f85b8de9e3c5190dec6efd/reflex-0.8.28.post1.tar.gz", hash = "sha256:bf6f5bbb40c2cebc14bc774dfc10fa7cb99d65bc7fbf2383528b6a0e9e786d3f", size = 574699, upload-time = "2026-03-19T19:23:38.087Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/6b/e8/57e45c858883a2a2be07bb7f211c0a6f3635bb1fad3b05a063e4e50f948a/reflex-0.9.4.tar.gz", hash = "sha256:b76fd6a57aa0828c6ed352bc0dda825e30e8708f490127ff5ad83d60d5208360", size = 383584, upload-time = "2026-06-04T01:44:22.468Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1b/a1/20f699d5c2f25fc8994ad055779b46e917b2fe9122ac7cebf5e7dbf5d759/reflex-0.8.28.post1-py3-none-any.whl", hash = "sha256:9c251802042964eec9378ee7bdd785376ad89e3f6be7fa2ac074b55901694999", size = 817935, upload-time = "2026-03-19T19:23:36.201Z" },
+    { url = "https://files.pythonhosted.org/packages/c9/e2/b0044ba53a2a33498c15c90e1085410656d71fd2bf16a3be0217ae16d347/reflex-0.9.4-py3-none-any.whl", hash = "sha256:510ffb3fc1ecf14024add567c97ff600d8aca9e5d28bc6ec2802b4b34a085b5b", size = 638383, upload-time = "2026-06-04T01:44:23.999Z" },
+]
+
+[[package]]
+name = "reflex-base"
+version = "0.9.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+    { name = "platformdirs" },
+    { name = "pydantic" },
+    { name = "rich" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/02/6d/995b428c33bfa62e33d22e3a8058cb5991b332988b6adcca273d32cc3217/reflex_base-0.9.4.tar.gz", hash = "sha256:a54ba3d319136fded095b099a0c5074b5913db274ac1a74757ad9e4cd7d0788c", size = 243482, upload-time = "2026-06-04T01:44:10.11Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/34/bb/66f48b3ef07b7bf758ffcf6f40bc1347a822e91ce27acd80a797d42e1522/reflex_base-0.9.4-py3-none-any.whl", hash = "sha256:1450ce2d24e19d978003ad8938c1eb1deea5951da5e3f166906b416a90c64d71", size = 286422, upload-time = "2026-06-04T01:44:08.649Z" },
+]
+
+[[package]]
+name = "reflex-components-code"
+version = "0.9.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex-base" },
+    { name = "reflex-components-core" },
+    { name = "reflex-components-lucide" },
+    { name = "reflex-components-radix" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/90/ba/f7af890a5038820147db2b63ee2d50bc5b53942dfd5754bc6ea9194a6253/reflex_components_code-0.9.2.tar.gz", hash = "sha256:64dca4dea7321d6563b362d49dbb7a6be003de641326e4760da577f376f2e659", size = 19342, upload-time = "2026-05-06T23:55:17.071Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/7c/0f/bae3f52c3eea4a3fa2418d43c6adbbd76cce3964b9d0da32d1631f215be8/reflex_components_code-0.9.2-py3-none-any.whl", hash = "sha256:62fd923e340f702387f98c5fbfb72672fe89c222ec12ab513b4a4e3accea98ac", size = 24156, upload-time = "2026-05-06T23:55:18.054Z" },
+]
+
+[[package]]
+name = "reflex-components-core"
+version = "0.9.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "python-multipart" },
+    { name = "reflex-base" },
+    { name = "reflex-components-lucide" },
+    { name = "reflex-components-sonner" },
+    { name = "starlette" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7a/cf/5b0896e5929df1619c0119c5c56f0cf548df33585b7ad3db78dd886230d4/reflex_components_core-0.9.4.tar.gz", hash = "sha256:5973ca0520510246f613d12ed8ff99998323da23d88e5240b5c873fac696a041", size = 104166, upload-time = "2026-06-04T01:44:16.252Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/76/f2/f8936a7ca2a4efea48c3e5fc938138ca0f093ea88b6ea9908431eb96ec46/reflex_components_core-0.9.4-py3-none-any.whl", hash = "sha256:111bdc2ed0a1f60cd22f2cf0300daca5987031e1446d2caf784be63a6fe0e5a4", size = 173818, upload-time = "2026-06-04T01:44:17.318Z" },
+]
+
+[[package]]
+name = "reflex-components-dataeditor"
+version = "0.9.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex-base" },
+    { name = "reflex-components-core" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/40/13/a0cbecb1ea03d79b3943dcb236e07778da7b83917ad34149aa43e8b20480/reflex_components_dataeditor-0.9.1.tar.gz", hash = "sha256:eedb9a0807286f4c870bea92a0e94cac10e2c6decc6f495600810bfeb1b0c329", size = 8219, upload-time = "2026-04-27T20:56:49.894Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f0/dc/c7e5ac166f23a10899e44d4133f260a0be906279b1698dd63846a21d3324/reflex_components_dataeditor-0.9.1-py3-none-any.whl", hash = "sha256:8d2dec22fe0c227c44f45226624ffa87227e8ab81acab1f5f17c6dd1efee9372", size = 10776, upload-time = "2026-04-27T20:56:50.576Z" },
+]
+
+[[package]]
+name = "reflex-components-gridjs"
+version = "0.9.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex-base" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/71/ec/785dec6e349525596ffe2a0cdc2c866c4dd7586aaffe5a90b4ef72829267/reflex_components_gridjs-0.9.1.tar.gz", hash = "sha256:78f9aa0a63b06dc919b4e7b3cb23764558199aeefd3aa59fa556c6430ead9a64", size = 3226, upload-time = "2026-04-27T20:56:39.165Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c1/08/fac0660cc51a705552e91270c3df39e3a4292ce570e10f64cf39a1bed960/reflex_components_gridjs-0.9.1-py3-none-any.whl", hash = "sha256:02582137af88ce7c3983a3fc494b746cfb9fee5bc69a96ae03027c8a102a4b13", size = 4303, upload-time = "2026-04-27T20:56:40.302Z" },
+]
+
+[[package]]
+name = "reflex-components-lucide"
+version = "1.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex-base" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/75/42/8b5dfffc051f918ab973a0873097ead2c57a145def602e5ec5b1d108e464/reflex_components_lucide-1.0.1.tar.gz", hash = "sha256:67790905c6fd903db15bfdfd89d40a4c1b2d540ffb610f02efeaa10b1748520e", size = 18625, upload-time = "2026-05-23T00:35:39.321Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/48/56/e2c55c54faf9d520560fef77bec91ce088c1ffe288094d192375ef97207d/reflex_components_lucide-1.0.1-py3-none-any.whl", hash = "sha256:fbaaf45c40dabe025b36d0727b832b3c9670a4ffa93798fd7554440ac134371b", size = 19393, upload-time = "2026-05-23T00:35:37.941Z" },
+]
+
+[[package]]
+name = "reflex-components-markdown"
+version = "0.9.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex-base" },
+    { name = "reflex-components-code" },
+    { name = "reflex-components-core" },
+    { name = "reflex-components-radix" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a3/86/28ccdc6ba418b48539257bf794932711ccd37b4d911ea420dfc018d2a564/reflex_components_markdown-0.9.3.tar.gz", hash = "sha256:cec631217e893b21a202cb86734d204a9a268d4f5cac8c6711c19d90e09b62be", size = 8089, upload-time = "2026-06-04T01:44:13.45Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/79/c7/72720fb15d02681466b56c5af7ca6b84831cea8f776446bfbf95af7feb9b/reflex_components_markdown-0.9.3-py3-none-any.whl", hash = "sha256:4bd8a6d0be5c4b715e855936e49ca513caf7ba470d2b07d87f60d11c53edde1d", size = 9795, upload-time = "2026-06-04T01:44:12.692Z" },
+]
+
+[[package]]
+name = "reflex-components-moment"
+version = "0.9.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex-base" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/01/1c/75df09620c187c40c849772975c8e1cae92d7ae94c0d2b9c11886e03982d/reflex_components_moment-0.9.1.tar.gz", hash = "sha256:4041e66b7358e49b66cad3e2521673d8399c693800c0df867b3dac7ca37ff501", size = 3798, upload-time = "2026-04-27T20:56:45.8Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d1/24/0b5cad68ce9b798b6de8ac9b85ae901a0855f09a96d0a788e9ee8c13f845/reflex_components_moment-0.9.1-py3-none-any.whl", hash = "sha256:9e864240532715da1f176a6083dd09d5baf99f8fa9bc95d57cdafcfebd9355fc", size = 5254, upload-time = "2026-04-27T20:56:44.553Z" },
+]
+
+[[package]]
+name = "reflex-components-plotly"
+version = "0.9.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex-base" },
+    { name = "reflex-components-core" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ae/d4/f3d47d774fe4a4628b4ed1a134bedfaa0b764819a8f4dc9c33ab095e46c2/reflex_components_plotly-0.9.2.tar.gz", hash = "sha256:8f4f52b5a0da1296974d05291b517e016d9fabc04897831003e13e88a67a726f", size = 6238, upload-time = "2026-05-23T00:35:40.627Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f1/b7/417f9b492bc4160aca3f0637d4e56d6b2cadab5e47c34755fb2d5d3c5aca/reflex_components_plotly-0.9.2-py3-none-any.whl", hash = "sha256:8df1f53626e9beae3529f92f0ac854854d05fde7ff12bf2241121310d4eedb47", size = 7722, upload-time = "2026-05-23T00:35:41.847Z" },
+]
+
+[[package]]
+name = "reflex-components-radix"
+version = "0.9.4"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex-base" },
+    { name = "reflex-components-core" },
+    { name = "reflex-components-lucide" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/78/f9/c1e79f1f042bb3e10cdb0d8efab84a826c630c3feb246baf5431408394dd/reflex_components_radix-0.9.4.tar.gz", hash = "sha256:cba2355b786a6cf33457c9f505a8de614adf637411c9e23fd323e04b89e09bac", size = 113880, upload-time = "2026-06-04T01:44:14.993Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9a/8a/bcdd5b1f9a81bc145aa8d36c751f1597e1148dbad7c0aa04bf599389e600/reflex_components_radix-0.9.4-py3-none-any.whl", hash = "sha256:713e5968b6fcc09f363b45820c067c4b7e452990667b7649373a9c3455ffe742", size = 271527, upload-time = "2026-06-04T01:44:13.658Z" },
+]
+
+[[package]]
+name = "reflex-components-react-player"
+version = "0.9.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex-base" },
+    { name = "reflex-components-core" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/80/6c/d8baefacba10e2a91f13eadc027e17ba38a7b6d2ed083e121f5dde4e8e59/reflex_components_react_player-0.9.1.tar.gz", hash = "sha256:5ba227e1c8601cf206923d4095ad4f241fcc176937dc627e1c2deaced3803199", size = 5004, upload-time = "2026-04-27T20:56:48.576Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/48/96/cc6c29bc4e85c3de8915c2a2469d8b82e463f4e311486f7fded5a7399ac6/reflex_components_react_player-0.9.1-py3-none-any.whl", hash = "sha256:f9c3e4f9d8bd7e3cf56a18d9e8d83bd2980d9c57db81e7325ef1f0654a8c1847", size = 11276, upload-time = "2026-04-27T20:56:47.721Z" },
+]
+
+[[package]]
+name = "reflex-components-recharts"
+version = "0.9.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex-base" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6b/d5/ef1e1453cb4a09b183ca3875f721777cb26535275e1b27e585a0eee0f9c7/reflex_components_recharts-0.9.1.tar.gz", hash = "sha256:21346b1e65cddfaad0c7d61800e86df38013757eb2481f0105b76cb09c34e747", size = 31614, upload-time = "2026-04-27T20:56:42.207Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d5/9e/30f21320732b4ac87fcee44266ffa11c68d2c5f5136c5d3905c22f569dcf/reflex_components_recharts-0.9.1-py3-none-any.whl", hash = "sha256:943291e27d2378a58c49431633b2bb3f6ca45cb4f5d55814fd33c5883af95ca1", size = 43477, upload-time = "2026-04-27T20:56:43.475Z" },
+]
+
+[[package]]
+name = "reflex-components-sonner"
+version = "0.9.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "reflex-base" },
+    { name = "reflex-components-lucide" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/45/e8/831fc0ad0074df749642da94c8baa02e47719110bdbf862a9c44fbd3c016/reflex_components_sonner-0.9.1.tar.gz", hash = "sha256:1c8a45db24a1beced3d4d90048c415811022bfae6a3b95dc8925e064edfaf1cc", size = 5628, upload-time = "2026-04-27T20:56:43.453Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/73/a6/9cb6672f7cf6d0d21d803ee6f22446cc5e3ab01448d01e42b7b42023dcb0/reflex_components_sonner-0.9.1-py3-none-any.whl", hash = "sha256:a6051e0f178fe5e644f936e55833bb9149126e08c6f41550b1f488ece68d794e", size = 7433, upload-time = "2026-04-27T20:56:42.148Z" },
 ]
 
 [[package]]
 name = "reflex-hosting-cli"
-version = "0.1.63"
+version = "0.1.66"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -1446,9 +1606,9 @@ dependencies = [
     { name = "platformdirs" },
     { name = "rich" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6f/ac/cc9abd6b03f42aa9054d964eb181c4872c2fbe8ce5f7fade9ae168afdbf5/reflex_hosting_cli-0.1.63.tar.gz", hash = "sha256:d3a140466eb0d398ff643fe008e48c1e357f51a779840ac3a9921ec50851683b", size = 31327, upload-time = "2026-04-23T17:45:39.928Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/34/02/e00c9237f592666beae06fc656130bb49ab9fc42c57be838b28b31fb814a/reflex_hosting_cli-0.1.66.tar.gz", hash = "sha256:0f55b089abed5d7fa0d106f55b05db9d14523c92b9dddc9b9ab4c3aff0262497", size = 37637, upload-time = "2026-05-22T00:03:09.32Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ae/a0/c90623900fd9e4c11f6554dd23886ee32cb1128b002441fde92e2ac1e20d/reflex_hosting_cli-0.1.63-py3-none-any.whl", hash = "sha256:3be41543962884b134b485541478104329e86524fbd73ebdf30d0d7f9e448fb1", size = 40676, upload-time = "2026-04-23T17:45:38.932Z" },
+    { url = "https://files.pythonhosted.org/packages/ab/59/9944e84336f149b48c694c28f35eb78322d1cf488843dabd75abbdd9bba6/reflex_hosting_cli-0.1.66-py3-none-any.whl", hash = "sha256:b14addbd4ca118dc91155c12b7d8db3550d3d9cdb42279159702bc5771c0a979", size = 47333, upload-time = "2026-05-22T00:03:08.15Z" },
 ]
 
 [[package]]
@@ -1697,46 +1857,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/3b/44/6716b257b0aa6bfd51a1b31665d1c205fb12cb5ad56de752dfa15657de2f/sphinxcontrib_serializinghtml-2.0.0.tar.gz", hash = "sha256:e9d912827f872c029017a53f0ef2180b327c3f7fd23c87229f7a8e8b70031d4d", size = 16080, upload-time = "2024-07-29T01:10:09.332Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/52/a7/d2782e4e3f77c8450f727ba74a8f12756d5ba823d81b941f1b04da9d033a/sphinxcontrib_serializinghtml-2.0.0-py3-none-any.whl", hash = "sha256:6e2cb0eef194e10c27ec0023bfeb25badbbb5868244cf5bc5bdc04e4464bf331", size = 92072, upload-time = "2024-07-29T01:10:08.203Z" },
-]
-
-[[package]]
-name = "sqlalchemy"
-version = "2.0.49"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "greenlet", marker = "platform_machine == 'AMD64' or platform_machine == 'WIN32' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'ppc64le' or platform_machine == 'win32' or platform_machine == 'x86_64'" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/09/45/461788f35e0364a8da7bda51a1fe1b09762d0c32f12f63727998d85a873b/sqlalchemy-2.0.49.tar.gz", hash = "sha256:d15950a57a210e36dd4cec1aac22787e2a4d57ba9318233e2ef8b2daf9ff2d5f", size = 9898221, upload-time = "2026-04-03T16:38:11.704Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/55/33/bf28f618c0a9597d14e0b9ee7d1e0622faff738d44fe986ee287cdf1b8d0/sqlalchemy-2.0.49-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:233088b4b99ebcbc5258c755a097aa52fbf90727a03a5a80781c4b9c54347a2e", size = 2156356, upload-time = "2026-04-03T16:53:09.914Z" },
-    { url = "https://files.pythonhosted.org/packages/d1/a7/5f476227576cb8644650eff68cc35fa837d3802b997465c96b8340ced1e2/sqlalchemy-2.0.49-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:57ca426a48eb2c682dae8204cd89ea8ab7031e2675120a47924fabc7caacbc2a", size = 3276486, upload-time = "2026-04-03T17:07:46.9Z" },
-    { url = "https://files.pythonhosted.org/packages/2e/84/efc7c0bf3a1c5eef81d397f6fddac855becdbb11cb38ff957888603014a7/sqlalchemy-2.0.49-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:685e93e9c8f399b0c96a624799820176312f5ceef958c0f88215af4013d29066", size = 3281479, upload-time = "2026-04-03T17:12:32.226Z" },
-    { url = "https://files.pythonhosted.org/packages/91/68/bb406fa4257099c67bd75f3f2261b129c63204b9155de0d450b37f004698/sqlalchemy-2.0.49-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:9e0400fa22f79acc334d9a6b185dc00a44a8e6578aa7e12d0ddcd8434152b187", size = 3226269, upload-time = "2026-04-03T17:07:48.678Z" },
-    { url = "https://files.pythonhosted.org/packages/67/84/acb56c00cca9f251f437cb49e718e14f7687505749ea9255d7bd8158a6df/sqlalchemy-2.0.49-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:a05977bffe9bffd2229f477fa75eabe3192b1b05f408961d1bebff8d1cd4d401", size = 3248260, upload-time = "2026-04-03T17:12:34.381Z" },
-    { url = "https://files.pythonhosted.org/packages/56/19/6a20ea25606d1efd7bd1862149bb2a22d1451c3f851d23d887969201633f/sqlalchemy-2.0.49-cp314-cp314-win32.whl", hash = "sha256:0f2fa354ba106eafff2c14b0cc51f22801d1e8b2e4149342023bd6f0955de5f5", size = 2118463, upload-time = "2026-04-03T17:05:47.093Z" },
-    { url = "https://files.pythonhosted.org/packages/cf/4f/8297e4ed88e80baa1f5aa3c484a0ee29ef3c69c7582f206c916973b75057/sqlalchemy-2.0.49-cp314-cp314-win_amd64.whl", hash = "sha256:77641d299179c37b89cf2343ca9972c88bb6eef0d5fc504a2f86afd15cd5adf5", size = 2144204, upload-time = "2026-04-03T17:05:48.694Z" },
-    { url = "https://files.pythonhosted.org/packages/1f/33/95e7216df810c706e0cd3655a778604bbd319ed4f43333127d465a46862d/sqlalchemy-2.0.49-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:c1dc3368794d522f43914e03312202523cc89692f5389c32bea0233924f8d977", size = 3565474, upload-time = "2026-04-03T16:58:35.128Z" },
-    { url = "https://files.pythonhosted.org/packages/0c/a4/ed7b18d8ccf7f954a83af6bb73866f5bc6f5636f44c7731fbb741f72cc4f/sqlalchemy-2.0.49-cp314-cp314t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:7c821c47ecfe05cc32140dcf8dc6fd5d21971c86dbd56eabfe5ba07a64910c01", size = 3530567, upload-time = "2026-04-03T17:06:04.587Z" },
-    { url = "https://files.pythonhosted.org/packages/73/a3/20faa869c7e21a827c4a2a42b41353a54b0f9f5e96df5087629c306df71e/sqlalchemy-2.0.49-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:9c04bff9a5335eb95c6ecf1c117576a0aa560def274876fd156cfe5510fccc61", size = 3474282, upload-time = "2026-04-03T16:58:37.131Z" },
-    { url = "https://files.pythonhosted.org/packages/b7/50/276b9a007aa0764304ad467eceb70b04822dc32092492ee5f322d559a4dc/sqlalchemy-2.0.49-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:7f605a456948c35260e7b2a39f8952a26f077fd25653c37740ed186b90aaa68a", size = 3480406, upload-time = "2026-04-03T17:06:07.176Z" },
-    { url = "https://files.pythonhosted.org/packages/e5/c3/c80fcdb41905a2df650c2a3e0337198b6848876e63d66fe9188ef9003d24/sqlalchemy-2.0.49-cp314-cp314t-win32.whl", hash = "sha256:6270d717b11c5476b0cbb21eedc8d4dbb7d1a956fd6c15a23e96f197a6193158", size = 2149151, upload-time = "2026-04-03T17:02:07.281Z" },
-    { url = "https://files.pythonhosted.org/packages/05/52/9f1a62feab6ed368aff068524ff414f26a6daebc7361861035ae00b05530/sqlalchemy-2.0.49-cp314-cp314t-win_amd64.whl", hash = "sha256:275424295f4256fd301744b8f335cff367825d270f155d522b30c7bf49903ee7", size = 2184178, upload-time = "2026-04-03T17:02:08.623Z" },
-    { url = "https://files.pythonhosted.org/packages/e5/30/8519fdde58a7bdf155b714359791ad1dc018b47d60269d5d160d311fdc36/sqlalchemy-2.0.49-py3-none-any.whl", hash = "sha256:ec44cfa7ef1a728e88ad41674de50f6db8cfdb3e2af84af86e0041aaf02d43d0", size = 1942158, upload-time = "2026-04-03T16:53:44.135Z" },
-]
-
-[[package]]
-name = "sqlmodel"
-version = "0.0.38"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "pydantic" },
-    { name = "sqlalchemy" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/64/0d/26ec1329960ea9430131fe63f63a95ea4cb8971d49c891ff7e1f3255421c/sqlmodel-0.0.38.tar.gz", hash = "sha256:d583ec237b14103809f74e8630032bc40ab68cd6b754a610f0813c56911a547b", size = 86710, upload-time = "2026-04-02T21:03:55.571Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/72/c7/10c60af0607ab6fa136264f7f39d205932218516226d38585324ffda705d/sqlmodel-0.0.38-py3-none-any.whl", hash = "sha256:84e3fa990a77395461ded72a6c73173438ce8449d5c1c4d97fbff1b1df692649", size = 27294, upload-time = "2026-04-02T21:03:56.406Z" },
 ]
 
 [[package]]
