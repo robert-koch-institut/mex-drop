@@ -85,6 +85,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write  # Required for cosign signing
 
     steps:
       - name: Checkout repo
@@ -102,15 +103,29 @@ jobs:
           password: ${{secrets.GITHUB_TOKEN}}
 
       - name: Build, tag and push docker image
+        id: push_step
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v.7.1.0
         env:
           IMAGE: ghcr.io/${{ github.repository }}
           TAG: ${{ needs.release.outputs.tag }}
+        with:
+          push: true
+          tags: |
+            ${IMAGE}:latest
+            ${IMAGE}:${{ github.sha }}
+            ${IMAGE}:${TAG}
+          outputs: type=image,oci-mediatypes=true
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        with:
+          cosign-release: 'v2.4.1'
+
+      - name: Sign Docker image keyless
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}@${{ steps.push_step.outputs.digest }}
         run: |
-          docker build . \
-          --tag ${IMAGE}:latest \
-          --tag ${IMAGE}:${{ github.sha }} \
-          --tag ${IMAGE}:${TAG}
-          docker push --all-tags ${IMAGE}
+          cosign sign --yes "$IMAGE"
 
   distribute:
     runs-on: ubuntu-latest
