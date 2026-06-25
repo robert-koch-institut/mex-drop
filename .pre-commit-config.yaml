@@ -1,7 +1,11 @@
 fail_fast: false
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
+<<<<<<< ours
     rev: v0.15.17
+=======
+    rev: v0.15.16
+>>>>>>> theirs
     hooks:
       - id: ruff-check
         name: ruff-check
@@ -25,7 +29,11 @@ repos:
       - id: fix-byte-order-marker
         name: byte-order
   - repo: https://github.com/astral-sh/uv-pre-commit
+<<<<<<< ours
     rev: 0.11.21
+=======
+    rev: 0.11.20
+>>>>>>> theirs
     hooks:
       - id: uv-lock
         name: uv

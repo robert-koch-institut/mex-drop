@@ -111,9 +111,9 @@ jobs:
         with:
           push: true
           tags: |
-            ${IMAGE}:latest
-            ${IMAGE}:${{ github.sha }}
-            ${IMAGE}:${TAG}
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.IMAGE }}:${{ env.TAG }}
           outputs: type=image,oci-mediatypes=true
 
       - name: Install cosign
