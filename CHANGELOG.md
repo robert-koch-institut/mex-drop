@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+- updated template to https://github.com/robert-koch-institut/mex-template/commit/11612b
 - updated template to https://github.com/robert-koch-institut/mex-template/commit/1d816d
 - updated template to https://github.com/robert-koch-institut/mex-template/commit/dd987e
 - update mex-release to 1.3.3
