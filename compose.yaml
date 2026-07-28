@@ -13,7 +13,7 @@ services:
       start_interval: 5s
       timeout: 5s
       retries: 3
-      start_period: 600s
+      start_period: 360s
     entrypoint: drop-frontend
     depends_on:
       mex-drop-api:

@@ -57,9 +57,9 @@ ignore_missing_imports = true
 warn_untyped_fields = true
 
 [tool.pytest.ini_options]
-base_url = "http://localhost:8020"
 addopts = [
     "--verbose",
+    "--base-url=http://localhost:8020",
     "--browser=firefox",
     "--cov",
     "--no-cov-on-fail",

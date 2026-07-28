@@ -11,9 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
-- use docker-compose for starting services in CI testing
-- run the dev server on ports 8020/8021, just like the containerized service
-- assert uploaded files via the drop api instead of the local file system
+- use docker-compose for CI testing
+- run the dev server on ports 8020/8021
+- assert uploaded files via the drop api
 
 ### Deprecated
 
@@ -21,11 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- point `REFLEX_API_URL` and `REFLEX_DEPLOY_URL` at `localhost` instead of `0.0.0.0`,
-  which browsers do not accept as a client url
-- fix the frontend healthcheck in `compose.yaml` targeting the wrong port
-- create the drop directory in the image, so a volume mounted there is owned by the
-  `mex` user instead of `root`, which made all uploads fail with a `PermissionError`
+- point reflex api and deploy urls at `localhost` instead of `0.0.0.0`
+- fix frontend healthcheck port in `compose.yaml`
+- create the drop directory in the image, so mounted volumes are owned by `mex`
 
 ### Security
 
