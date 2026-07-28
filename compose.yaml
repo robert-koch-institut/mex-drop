@@ -2,14 +2,18 @@ services:
   mex-drop-frontend:
     build:
       context: .
+    image: mex-drop:local
     ports:
       - 8020:8020
     healthcheck:
-      test: [ "CMD", "curl", "http://mex-drop-frontend:8030" ]
-      interval: 10s
+      # the entrypoint downloads bun, installs the npm packages and runs a
+      # production build before serving, hence the long start period
+      test: [ "CMD", "curl", "--fail", "http://localhost:8020" ]
+      interval: 30s
+      start_interval: 5s
       timeout: 5s
-      retries: 5
-      start_period: 30s
+      retries: 3
+      start_period: 600s
     entrypoint: drop-frontend
     depends_on:
       mex-drop-api:
@@ -17,18 +21,21 @@ services:
   mex-drop-api:
     build:
       context: .
+    image: mex-drop:local
     ports:
       - 8021:8021
     environment:
       - MEX_DROP_DIRECTORY=data
       - MEX_DROP_API_HOST=0.0.0.0
-      - MEX_DROP_API_KEY_DATABASE={"mex":["mex"]}
+      # keep in sync with .github/workflows/testing.yml
+      - MEX_DROP_API_KEY_DATABASE={"mex":["mex"],"test":["test"],"other":["other"]}
     healthcheck:
-      test: [ "CMD", "curl", "http://mex-drop-api:8021/_system/check" ]
+      test: [ "CMD", "curl", "--fail", "http://localhost:8021/_system/check" ]
       interval: 30s
+      start_interval: 2s
       timeout: 5s
-      retries: 5
-      start_period: 10s
+      retries: 3
+      start_period: 30s
     entrypoint: drop-api
     volumes:
       - drop_data:/app/data

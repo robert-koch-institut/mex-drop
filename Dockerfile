@@ -31,9 +31,9 @@ ENV PYTHONOPTIMIZE=1
 
 ENV REFLEX_APP_NAME=mex
 ENV REFLEX_FRONTEND_PORT=8020
-ENV REFLEX_DEPLOY_URL=http://0.0.0.0:8020
+ENV REFLEX_DEPLOY_URL=http://localhost:8020
 ENV REFLEX_BACKEND_PORT=8021
-ENV REFLEX_API_URL=http://0.0.0.0:8021
+ENV REFLEX_API_URL=http://localhost:8021
 ENV REFLEX_TELEMETRY_ENABLED=False
 ENV REFLEX_ENV_MODE=prod
 ENV REFLEX_DIR=/app/reflex
@@ -59,6 +59,10 @@ RUN adduser \
     mex
 
 RUN chown mex:mex /app
+
+# create the drop directory in the image, so that a volume mounted here
+# inherits its ownership instead of being created as root
+RUN mkdir --parents /app/data && chown mex:mex /app/data
 
 COPY --chown=mex assets assets
 COPY --chown=mex rxconfig.py rxconfig.py

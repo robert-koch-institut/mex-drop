@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    timeout-minutes: 15
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repo
@@ -60,23 +60,35 @@ jobs:
         with:
           python-version: 3.14
 
+      - name: Start containers
+        run: docker compose up --build --detach
+
       - name: Install requirements
         run: make install
 
+      - name: Await service readiness
+        run: docker compose up --wait --wait-timeout 600
+
       - name: Run test suite
+        id: test
         env:
-          MEX_DROP_API_KEY_DATABASE: '{"mex":["mex"],"test":["test"]}'
-        run: |
-          uv run drop &
-          echo `date -Iseconds` INFO checking service readiness &&
-          curl --connect-timeout 10 --retry 10 --retry-delay 10 --retry-all-errors http://localhost:8000/_system/check &&
-          make test
+          # keep in sync with MEX_DROP_API_KEY_DATABASE in compose.yaml
+          MEX_DROP_API_KEY_DATABASE: '{"mex":["mex"],"test":["test"],"other":["other"]}'
+        run: make test
+
+      - name: Show container logs
+        if: failure()
+        run: docker compose logs --no-color --timestamps
 
       - name: Upload screenshots
-        if: always()
+        if: always() && steps.test.outcome != 'skipped'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: playwright-screenshots-${{ github.run_id }}
           path: tests_*.png
           if-no-files-found: error
           retention-days: 10
+
+      - name: Cleanup containers
+        if: always()
+        run: docker compose down --volumes --remove-orphans
