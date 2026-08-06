@@ -175,7 +175,7 @@ def dropped_data(settings: DropSettings) -> dict[str, Any]:
         ),
     ],
 )
-def test_drop_data(  # noqa: PLR0913
+def test_drop_data(  # noqa: PLR0913, PLR0917
     client: TestClient,
     api_key: str | None,
     x_system: XSystem,
@@ -295,7 +295,7 @@ def test_drop_data(  # noqa: PLR0913
         ),
     ],
 )
-def test_drop_multiple_files(  # noqa: PLR0913
+def test_drop_multiple_files(  # noqa: PLR0913, PLR0917
     client: TestClient,
     api_key: str | None,
     x_system: XSystem,
