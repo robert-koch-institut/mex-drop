@@ -51,6 +51,12 @@ def settings(
 
 
 @pytest.fixture
+def api_url(settings: DropSettings) -> str:
+    """Return the base url of the running drop api."""
+    return f"http://{settings.drop_api_host}:{settings.drop_api_port}"
+
+
+@pytest.fixture
 def client() -> TestClient:
     """Return a fastAPI test client initialized with our app."""
     with TestClient(api, raise_server_exceptions=False) as test_client:
@@ -72,24 +78,6 @@ def get_test_key() -> Callable[[str], str]:
         return secret_key[0].get_secret_value()
 
     return _get_test_key
-
-
-@pytest.fixture
-def clean_test_directory() -> Callable[[], Path]:
-    def _clean_test_directory() -> Path:
-        """Fixture to clean a directory before a test."""
-        settings = DropSettings.get()
-        test_dir = Path(settings.drop_directory, "test")
-
-        test_dir.mkdir(parents=True, exist_ok=True)
-
-        for item in test_dir.iterdir():
-            if item.is_file():
-                item.unlink()
-
-        return test_dir
-
-    return _clean_test_directory
 
 
 @pytest.fixture

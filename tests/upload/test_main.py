@@ -1,10 +1,9 @@
-import pathlib
 from collections.abc import Callable
 
+import httpx
 import pytest
 from playwright.sync_api import Page, expect
 
-from mex.drop.settings import DropSettings
 from tests.conftest import TESTDATA_DIR
 
 
@@ -22,7 +21,11 @@ def upload_page(
 
 
 @pytest.mark.integration
-def test_upload(upload_page: Page) -> None:
+def test_upload(
+    upload_page: Page,
+    api_url: str,
+    get_test_key: Callable[[str], str],
+) -> None:
     page = upload_page
     with page.expect_file_chooser() as fc_info:
         page.locator("role=button[name='Select Files']").click()
@@ -37,9 +40,12 @@ def test_upload(upload_page: Page) -> None:
 
     expect(page.get_by_text("test.csv")).not_to_be_visible()
 
-    settings = DropSettings.get()
-    expected_file = pathlib.Path(settings.drop_directory, "test", "test.csv")
-    assert expected_file.read_text() == (TESTDATA_DIR / "test.csv").read_text()
+    response = httpx.get(
+        f"{api_url}/v0/test/test.csv",
+        headers={"X-API-Key": get_test_key("test")},
+    )
+    assert response.status_code == 200
+    assert response.text == (TESTDATA_DIR / "test.csv").read_text()
 
 
 @pytest.mark.integration

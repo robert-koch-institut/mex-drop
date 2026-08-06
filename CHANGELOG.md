@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+- use docker-compose for CI testing
+- run the dev server on ports 8020/8021
+- assert uploaded files via the drop api
+
 ### Deprecated
 
 ### Removed
@@ -18,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - version hover card on the app logo
 
 ### Fixed
+
+- point reflex api and deploy urls at `localhost` instead of `0.0.0.0`
+- fix frontend healthcheck port in `compose.yaml`
+- create the drop directory in the image, so mounted volumes are owned by `mex`
 
 ### Security
 
