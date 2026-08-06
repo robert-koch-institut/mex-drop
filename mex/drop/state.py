@@ -1,5 +1,3 @@
-from importlib.metadata import version
-
 import reflex as rx
 from reflex.event import EventSpec
 
@@ -42,8 +40,3 @@ class State(rx.State):
                 nav_item.underline = "always"
             else:
                 nav_item.underline = "none"
-
-    @rx.var(cache=True)
-    def drop_version(self) -> str:
-        """Return the version of mex-drop."""
-        return version("mex-drop")

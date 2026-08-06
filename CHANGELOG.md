@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+- version hover card on the app logo
+
 ### Fixed
 
 - point reflex api and deploy urls at `localhost` instead of `0.0.0.0`
