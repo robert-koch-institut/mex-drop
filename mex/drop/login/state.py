@@ -32,4 +32,4 @@ class LoginState(State):
             )
             self.reset()  # reset api_key/x_system
             return rx.redirect("/")
-        return rx.window_alert("Invalid credentials.")
+        return rx.toast.error("Invalid credentials.")

@@ -14,8 +14,8 @@ def upload_page(
     get_test_key: Callable[[str], str],
 ) -> Page:
     page.goto(base_url)
-    page.get_by_placeholder("API Key").fill(get_test_key("test"))
-    page.get_by_placeholder("X-System").fill("test")
+    page.get_by_test_id("input-api-key").fill(get_test_key("test"))
+    page.get_by_test_id("input-x-system").fill("test")
     page.get_by_test_id("login-button").click()
     return page
 

@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 import pytest
 from fastapi.testclient import TestClient
@@ -26,6 +27,20 @@ TEST_USER_DATABASE = UserDatabase(
         APIKey("i-do-what-i-want"): ["admin"],
     }
 )
+
+
+@pytest.fixture(scope="session")
+def browser_context_args(
+    browser_context_args: dict[str, Any],
+) -> dict[str, Any]:
+    """Run the playwright test browser in a larger resolution than its default."""
+    return {
+        **browser_context_args,
+        "viewport": {
+            "width": 1600,
+            "height": 900,
+        },
+    }
 
 
 @pytest.fixture(autouse=True)

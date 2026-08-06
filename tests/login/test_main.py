@@ -11,8 +11,8 @@ def test_login_page(
     base_url: str,
 ) -> None:
     page.goto(base_url)
-    page.get_by_placeholder("X-System").fill("test")
-    page.get_by_placeholder("API Key").fill(get_test_key("test"))
+    page.get_by_test_id("input-x-system").fill("test")
+    page.get_by_test_id("input-api-key").fill(get_test_key("test"))
     page.screenshot(path="tests_test_login_test_login_page_filled.png")
 
     page.get_by_test_id("login-button").click()
@@ -32,8 +32,8 @@ def test_login_page_with_enter_key(
     base_url: str,
 ) -> None:
     page.goto(base_url)
-    page.get_by_placeholder("X-System").fill("test")
-    page.get_by_placeholder("API Key").fill(get_test_key("test"))
+    page.get_by_test_id("input-x-system").fill("test")
+    page.get_by_test_id("input-api-key").fill(get_test_key("test"))
     page.screenshot(path="tests_test_login_test_login_page_with_enter_key_filled.png")
 
     page.get_by_test_id("login-button").click()
