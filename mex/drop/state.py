@@ -11,11 +11,13 @@ class State(rx.State):
     nav_items: list[NavItem] = [
         NavItem(
             title="Upload",
-            path="/",
+            route_ids=["/", "/index"],
+            raw_path="/",
         ),
         NavItem(
             title="File History",
-            path="/file-history",
+            route_ids=["/file-history"],
+            raw_path="/file-history",
         ),
     ]
 
@@ -36,7 +38,4 @@ class State(rx.State):
     def load_nav(self) -> None:
         """Event hook for updating the navigation on page loads."""
         for nav_item in self.nav_items:
-            if self.router.page.path == nav_item.path:
-                nav_item.underline = "always"
-            else:
-                nav_item.underline = "none"
+            nav_item.active = self.router.route_id in nav_item.route_ids

@@ -39,9 +39,10 @@ def nav_link(item: NavItem) -> rx.Component:
     """Return a link component for the given navigation item."""
     return rx.link(
         rx.text(item.title, size="4", weight="medium"),
-        href=item.path,
-        underline=item.underline,  # type: ignore[arg-type]
-        class_name="nav-item",
+        href=item.raw_path,
+        underline=rx.cond(item.active, "always", "none"),
+        class_name=rx.cond(item.active, "nav-item nav-item-active", "nav-item"),
+        custom_attrs={"data-testid": f"nav-item-{item.route_ids[0]}"},
     )
 
 
@@ -66,7 +67,6 @@ def nav_bar() -> rx.Component:
                 height="var(--space-6)",
                 width="100%",
                 backdropFilter="var(--backdrop-filter-panel)",
-                backgroundColor="var(--card-background-color)",
             ),
         ),
         rx.card(
@@ -136,6 +136,7 @@ def page(*children: rx.Component) -> rx.Component:
                 {
                     "--app-max-width": "calc(1480px * var(--scaling))",
                     "--app-min-width": "calc(800px * var(--scaling))",
+                    "width": "100%",
                 }
             ),
         ),

@@ -9,13 +9,14 @@ def login_x_system() -> rx.Component:
     return rx.vstack(
         rx.text("X-System"),
         rx.input(
-            autofocus=True,
+            auto_focus=True,
             name="x_system",
             on_change=LoginState.set_x_system,
             placeholder="X-System",
             size="3",
             tab_index=1,
             style=rx.Style(width="100%"),
+            custom_attrs={"data-testid": "input-x-system"},
         ),
         style=rx.Style(width="100%"),
     )
@@ -33,6 +34,7 @@ def login_api_key() -> rx.Component:
             tab_index=2,
             type="password",
             style=rx.Style(width="100%"),
+            custom_attrs={"data-testid": "input-api-key"},
         ),
         style=rx.Style(width="100%"),
     )

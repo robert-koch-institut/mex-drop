@@ -17,8 +17,8 @@ def upload_file(page: Page) -> None:
 
 
 def login(page: Page, api_key: str, x_system: str) -> None:
-    page.get_by_placeholder("API Key").fill(api_key)
-    page.get_by_placeholder("X-System").fill(x_system)
+    page.get_by_test_id("input-api-key").fill(api_key)
+    page.get_by_test_id("input-x-system").fill(x_system)
     page.get_by_test_id("login-button").click()
 
 
@@ -37,13 +37,13 @@ def test_upload(
     login(page, get_test_key("test"), "test")
     upload_file(page)
 
-    page.get_by_text("File History").click()
+    page.get_by_test_id("nav-item-/file-history").click()
     expect(page.get_by_text("test.csv")).to_be_visible()
     page.screenshot(path="tests_history_main_test_upload.png")
 
     # the file history is scoped to the x-system of the logged-in user
     logout(page)
     login(page, get_test_key("other"), "other")
-    page.get_by_text("File History").click()
+    page.get_by_test_id("nav-item-/file-history").click()
     expect(page.get_by_text("test.csv")).not_to_be_visible()
     page.screenshot(path="tests_history_main_test_upload_after_reload.png")

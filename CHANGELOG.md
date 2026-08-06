@@ -14,18 +14,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - use docker-compose for CI testing
 - run the dev server on ports 8020/8021
 - assert uploaded files via the drop api
+- align `NavItem` with mex-admin: match on `router.route_id` via `route_ids`
+  instead of comparing `router.page.path`, and track `active` instead of `underline`
+- show a toast instead of a native browser alert on failed login
+- add `data-testid` to the login inputs and nav bar links
+- run the playwright test browser at 1600x900, like mex-admin
 
 ### Deprecated
 
 ### Removed
 
 - version hover card on the app logo
+- `html_lang` from the reflex app config
+- background color of the nav bar spacer, leaving the backdrop filter
 
 ### Fixed
 
 - point reflex api and deploy urls at `localhost` instead of `0.0.0.0`
 - fix frontend healthcheck port in `compose.yaml`
 - create the drop directory in the image, so mounted volumes are owned by `mex`
+- focus the x-system input on the login page (`autofocus` was not a reflex prop)
+- register `custom_backend_handler`, so backend errors surface as toasts
+- pass the sitemap plugin class to `disable_plugins`, silencing a reflex 0.9 deprecation
+- set `width: 100%` on the page container, matching mex-admin
 
 ### Security
 
