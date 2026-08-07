@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.6.0] - 2026-08-07
+
+### Changes
+
 - new template https://github.com/robert-koch-institut/mex-template/releases/tag/1.5.0
 - new template https://github.com/robert-koch-institut/mex-template/releases/tag/1.4.0
 - use docker-compose for CI testing
@@ -21,8 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - show a toast instead of a native browser alert on failed login
 - add `data-testid` to the login inputs and nav bar links
 - run the playwright test browser at 1600x900, like mex-admin
-
-### Deprecated
 
 ### Removed
 
@@ -39,8 +49,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - register `custom_backend_handler`, so backend errors surface as toasts
 - pass the sitemap plugin class to `disable_plugins`, silencing a reflex 0.9 deprecation
 - set `width: 100%` on the page container, matching mex-admin
-
-### Security
 
 ## [1.5.6] - 2026-07-01
 
