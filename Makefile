@@ -59,6 +59,7 @@ run: image
 	mkdir --parents --mode 777 $(PWD)/data; \
 	docker run \
 		--env MEX_DROP_DIRECTORY=data \
+		--env MEX_DROP_API_HOST=0.0.0.0 \
 		--env MEX_DROP_API_KEY_DATABASE='{"mex":["mex"],"test":["test"],"other":["other"]}' \
 		--publish 8020:8020 \
 		--publish 8021:8021 \
