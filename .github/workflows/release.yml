@@ -56,7 +56,7 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: 3.14
+          python-version: "3.14"
 
       - name: Install requirements
         run: make setup
@@ -104,7 +104,7 @@ jobs:
 
       - name: Build, tag and push docker image
         id: push_step
-        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # v.7.1.0
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         env:
           IMAGE: ghcr.io/${{ github.repository }}
           TAG: ${{ needs.release.outputs.tag }}
@@ -132,8 +132,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: release
+    environment:
+      name: pypi
+      url: https://pypi.org/p/mex-drop
     permissions:
       contents: write
+      id-token: write # Required for python release signing and trusted publishing
 
     steps:
       - name: Checkout repo
@@ -156,15 +160,26 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: 3.14
+          python-version: "3.14"
 
       - name: Install requirements
         run: make setup
 
-      - name: Build wheel and sdist distros and create a github release
+      - name: Build wheel and sdist distros
+        run: |
+          uv build --out-dir dist
+
+      - name: Publish distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+
+      - name: Sign Python release artifacts
+        uses: sigstore/gh-action-sigstore-python@790bc6befb9d733738f18d8f895854b453640ec9 # v3.5.0
+        with:
+          inputs: ./dist/*
+
+      - name: Create a github release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          uv build --out-dir dist
           gh release create ${{ needs.release.outputs.tag }} \
           --generate-notes --latest --verify-tag dist/*
