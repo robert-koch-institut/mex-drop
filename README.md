@@ -98,6 +98,30 @@ Images released to GHCR are signed using [cosign](https://github.com/sigstore/co
 To verify an image manually:
 `cosign verify --certificate-identity-regexp "https://github.com/robert-koch-institut/mex-drop/.github/workflows/release.yml@refs/heads/main" --certificate-oidc-issuer "https://token.actions.githubusercontent.com" ghcr.io/robert-koch-institut/mex-drop:<tag>`
 
+### Python release verification
+
+Python release artifacts (source distributions and wheels) published to GitHub Releases are signed keyless using [sigstore](https://github.com/sigstore/gh-action-sigstore-python).
+
+To verify a release artifact manually, download the artifact (e.g. `mex_drop-<tag>-py3-none-any.whl`) and its Sigstore bundle (`mex_drop-<tag>-py3-none-any.whl.sigstore.json`), then run either:
+
+**Using `sigstore`**:
+```bash
+sigstore verify identity \
+  --bundle <path-to-bundle> \
+  --cert-identity "https://github.com/robert-koch-institut/mex-drop/.github/workflows/release.yml@refs/heads/main" \
+  --cert-oidc-issuer "https://token.actions.githubusercontent.com" \
+  <path-to-artifact>
+```
+
+**Using `cosign`**:
+```bash
+cosign verify-blob \
+  --bundle <path-to-bundle> \
+  --certificate-identity "https://github.com/robert-koch-institut/mex-drop/.github/workflows/release.yml@refs/heads/main" \
+  --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+  <path-to-artifact>
+```
+
 ## Commands
 
 - run `uv run {command} --help` to print instructions

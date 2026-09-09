@@ -1,8 +1,9 @@
 import reflex as rx
 from reflex.event import EventSpec
 
+from mex.drop.models import User
 from mex.drop.security import get_current_authorized_x_systems, is_authorized
-from mex.drop.state import State, User
+from mex.drop.state import State
 
 
 class LoginState(State):
@@ -30,6 +31,7 @@ class LoginState(State):
                 api_key=self.api_key,
                 x_system=self.x_system,
             )
-            self.reset()  # reset api_key/x_system
+            # reset api_key/x_system
+            self.reset()  # type: ignore[no-untyped-call]
             return rx.redirect("/")
         return rx.toast.error("Invalid credentials.")

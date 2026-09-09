@@ -1,6 +1,9 @@
 .PHONY: all setup hooks install lint unit test wheel image run start docs
 all: install lint test
 
+SHELL := /bin/bash
+.SHELLFLAGS := -ec
+
 LATEST = $(shell git describe --tags $(shell git rev-list --tags --max-count=1))
 PWD = $(shell pwd)
 
@@ -57,7 +60,7 @@ run: image
 	docker run \
 		--env MEX_DROP_DIRECTORY=data \
 		--env MEX_DROP_API_HOST=0.0.0.0 \
-		--env MEX_DROP_API_KEY_DATABASE='{"mex":["mex"]}' \
+		--env MEX_DROP_API_KEY_DATABASE='{"mex":["mex"],"test":["test"],"other":["other"]}' \
 		--publish 8020:8020 \
 		--publish 8021:8021 \
 		rki/mex-drop:${LATEST}; \
