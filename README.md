@@ -100,7 +100,7 @@ To verify an image manually:
 
 ### Python release verification
 
-Python release artifacts (source distributions and wheels) published to GitHub Releases are signed keyless using [sigstore](https://github.com/sigstore/gh-action-sigstore-python).
+Python release artifacts (source distributions and wheels) published to GitHub Releases are signed keyless using [sigstore](https://github.com/sigstore/sigstore-python).
 
 To verify a release artifact manually, download the artifact (e.g. `mex_drop-<tag>-py3-none-any.whl`) and its Sigstore bundle (`mex_drop-<tag>-py3-none-any.whl.sigstore.json`), then run either:
 
