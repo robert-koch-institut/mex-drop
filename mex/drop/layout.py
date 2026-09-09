@@ -79,17 +79,7 @@ def nav_bar() -> rx.Component:
                     spacing="4",
                 ),
                 rx.spacer(),
-                rx.hstack(
-                    user_menu(),
-                    rx.button(
-                        rx.icon("sun_moon"),
-                        variant="ghost",
-                        style=rx.Style(marginTop="0"),
-                        on_click=rx.toggle_color_mode,
-                    ),
-                    align="center",
-                    spacing="4",
-                ),
+                user_menu(),
                 justify="between",
                 align_items="center",
             ),
