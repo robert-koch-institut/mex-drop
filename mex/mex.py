@@ -11,7 +11,11 @@ from mex.drop.upload.main import index as upload_index
 from mex.drop.utils import load_settings
 
 app = rx.App(
-    theme=themes.theme(accent_color="blue", has_background=False),
+    theme=themes.theme(
+        accent_color="blue",
+        has_background=False,
+        appearance="light",
+    ),
     style={
         ">a": {"opacity": "0"},
     },
