@@ -33,7 +33,7 @@ def drop_api() -> None:  # pragma: no cover
     environment.REFLEX_SSR.set(False)
 
     # Delete the states folder if it exists.
-    reset_disk_state_manager()
+    reset_disk_state_manager()  # type: ignore[no-untyped-call]
 
     # Reload the config to make sure the env vars are persistent.
     get_config(reload=True)
@@ -62,7 +62,7 @@ def drop_frontend() -> None:  # pragma: no cover
     environment.REFLEX_SSR.set(False)
 
     # Check that the app is initialized.
-    initialize_frontend_dependencies()
+    initialize_frontend_dependencies()  # type: ignore[no-untyped-call]
 
     # Get the app module.
     get_compiled_app()

@@ -6,8 +6,9 @@ import pytest
 from fastapi.testclient import TestClient
 
 from mex.drop.api.main import api
+from mex.drop.models import User
 from mex.drop.settings import DropSettings
-from mex.drop.state import State, User
+from mex.drop.state import State
 from mex.drop.types import APIKey, UserDatabase
 
 pytest_plugins = ("mex.common.testing.plugin",)

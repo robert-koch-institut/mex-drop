@@ -24,7 +24,7 @@ class State(rx.State):
     @rx.event
     def logout(self) -> EventSpec:
         """Log out the user."""
-        self.reset()
+        self.reset()  # type: ignore[no-untyped-call]
         return rx.redirect("/")
 
     @rx.event
