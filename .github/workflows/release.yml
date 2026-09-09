@@ -38,7 +38,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
           persist-credentials: false
@@ -89,7 +89,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
           ref: ${{ needs.release.outputs.tag }}
@@ -132,16 +132,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: release
-    environment:
-      name: pypi
-      url: https://pypi.org/p/mex-drop
     permissions:
       contents: write
-      id-token: write # Required for python release signing and trusted publishing
+      id-token: write # Required for python release signing
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
           ref: ${{ needs.release.outputs.tag }}
@@ -168,9 +165,6 @@ jobs:
       - name: Build wheel and sdist distros
         run: |
           uv build --out-dir dist
-
-      - name: Publish distribution to PyPI
-        uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
 
       - name: Sign Python release artifacts
         uses: sigstore/gh-action-sigstore-python@790bc6befb9d733738f18d8f895854b453640ec9 # v3.5.0

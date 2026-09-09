@@ -25,13 +25,16 @@ concurrency:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.14" ]
     timeout-minutes: 10
     permissions:
       contents: read
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
 
@@ -68,10 +71,12 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: 3.14
+          python-version: "3.14"
 
       - name: Install requirements
-        run: make install
+        run: |
+          echo ${{ matrix.python-version }} > .python-version
+          make install
 
       - name: Run linters
         run: make lint

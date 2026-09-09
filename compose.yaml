@@ -26,7 +26,6 @@ services:
       - 8021:8021
     environment:
       - MEX_DROP_DIRECTORY=data
-      - MEX_DROP_API_HOST=0.0.0.0
       # keep in sync with .github/workflows/testing.yml
       - MEX_DROP_API_KEY_DATABASE={"mex":["mex"],"test":["test"],"other":["other"]}
     healthcheck:
