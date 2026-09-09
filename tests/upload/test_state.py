@@ -7,6 +7,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 import reflex as rx
 
+from mex.drop.locale_service import LocaleService
 from mex.drop.state import State
 from mex.drop.upload.models import TempFile
 from mex.drop.upload.state import UploadState
@@ -84,5 +85,7 @@ def test_submit_data(upload_state: UploadState) -> None:
             b"content1", Path("/mock/path/test_system/file1.xml")
         )
         assert len(upload_state.temp_files) == 0
-        mock_toast_success.assert_called_once_with("File upload successful!")
+        mock_toast_success.assert_called_once_with(
+            LocaleService.get().get_ui_label("de", "upload.upload_successful")
+        )
         assert result == mock_toast_success.return_value

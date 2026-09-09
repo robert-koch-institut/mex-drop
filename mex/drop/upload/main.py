@@ -1,6 +1,5 @@
 import reflex as rx
 
-from mex.drop.files_io import ALLOWED_CONTENT_TYPES
 from mex.drop.layout import page
 from mex.drop.upload.models import TempFile
 from mex.drop.upload.state import UploadState
@@ -13,11 +12,11 @@ def uploaded_file_display() -> rx.Component:
             rx.table.header(
                 rx.table.row(
                     rx.table.column_header_cell(
-                        "Selected File",
+                        UploadState.label_file_table_selected_file_column,
                         style=rx.Style(width="80%"),
                     ),
                     rx.table.column_header_cell(
-                        "Action",
+                        UploadState.label_file_table_action_column,
                     ),
                 ),
             ),
@@ -45,9 +44,10 @@ def create_file_row(temp_file: TempFile) -> rx.Component:
         rx.table.cell(
             rx.button(
                 rx.icon(tag="trash-2"),
-                title="Remove file",
+                title=UploadState.label_file_table_remove_button,
                 color_scheme="tomato",
                 variant="ghost",
+                custom_attrs={"data-testid": "remove-file-button"},
                 on_click=UploadState.cancel_upload(temp_file.title),  # type: ignore[operator]
             ),
             style=rx.Style(width="100%"),
@@ -60,7 +60,7 @@ def create_drag_and_drop() -> rx.Component:
     return rx.card(
         rx.vstack(
             rx.text(
-                "File Upload",
+                UploadState.label_drag_and_drop_title,
                 size="2",
                 weight="bold",
                 style=rx.Style(
@@ -75,18 +75,18 @@ def create_drag_and_drop() -> rx.Component:
                         size=28,
                     ),
                     rx.text(
-                        "Drag and drop or click to select files",
+                        UploadState.label_drag_and_drop_hint,
                         size="1",
                     ),
                     rx.text(
-                        f"Supported formats: "
-                        f"{', '.join(ALLOWED_CONTENT_TYPES.values())}",
+                        UploadState.label_drag_and_drop_supported_formats_format,
                         size="1",
                         color_scheme="gray",
                     ),
                     rx.button(
-                        "Select Files",
+                        UploadState.label_drag_and_drop_select_button,
                         variant="surface",
+                        custom_attrs={"data-testid": "select-files-button"},
                     ),
                     align="center",
                 ),
@@ -116,9 +116,10 @@ def create_file_handling_card() -> rx.Component:
             rx.hstack(
                 rx.spacer(spacing="3"),
                 rx.button(
-                    "Submit",
+                    UploadState.label_submit_button,
                     on_click=UploadState.submit_data,
                     color_scheme="jade",
+                    custom_attrs={"data-testid": "submit-button"},
                 ),
                 style=rx.Style(width="100%"),
             ),
