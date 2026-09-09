@@ -167,9 +167,8 @@ jobs:
           uv build --out-dir dist
 
       - name: Sign Python release artifacts
-        uses: sigstore/gh-action-sigstore-python@790bc6befb9d733738f18d8f895854b453640ec9 # v3.5.0
-        with:
-          inputs: ./dist/*
+        run: |
+          sigstore sign dist/*
 
       - name: Create a github release
         env:
