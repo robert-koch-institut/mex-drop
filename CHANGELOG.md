@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changes
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.7.0] - 2026-09-09
+
+### Added
+
 - german and english translations for all UI labels and language switcher like mex-admin
 
 ### Changes
@@ -17,15 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - new template https://github.com/robert-koch-institut/mex-template/releases/tag/2.0.0
 - rename the file history page, module and route to `browse`
 
-### Deprecated
-
 ### Removed
 
 - color mode toggle button from the nav bar and the login card
-
-### Fixed
-
-### Security
 
 ## [1.6.0] - 2026-08-07
 
