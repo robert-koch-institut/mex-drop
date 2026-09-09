@@ -66,13 +66,6 @@ def index() -> rx.Component:
             rx.vstack(
                 rx.hstack(
                     app_logo(),
-                    rx.spacer(spacing="4"),
-                    rx.button(
-                        rx.icon("sun_moon"),
-                        variant="ghost",
-                        style=rx.Style(marginTop="0"),
-                        on_click=rx.toggle_color_mode,
-                    ),
                     style=rx.Style(width="100%"),
                 ),
                 rx.divider(size="4"),
