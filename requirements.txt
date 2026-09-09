@@ -1,4 +1,8 @@
 cruft==2.16.0
 mex-release==1.4.0
+<<<<<<< ours
+=======
+sigstore==4.5.0
+>>>>>>> theirs
 uv==0.12.9
 pre-commit==4.6.2
