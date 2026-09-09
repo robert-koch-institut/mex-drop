@@ -25,11 +25,7 @@ repos:
       - id: fix-byte-order-marker
         name: byte-order
   - repo: https://github.com/renovatebot/pre-commit-hooks
-<<<<<<< ours
-    rev: 44.57.0
-=======
     rev: 44.57.2
->>>>>>> theirs
     hooks:
       - id: renovate-config-validator
         name: renovate
