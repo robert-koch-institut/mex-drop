@@ -2,8 +2,11 @@ from typing import cast
 
 import reflex as rx
 
+from mex.drop.locale_service import LocaleService, MExLocale
 from mex.drop.models import NavItem, User
 from mex.drop.state import State
+
+locale_service = LocaleService.get()
 
 
 def user_button() -> rx.Component:
@@ -26,12 +29,60 @@ def user_menu() -> rx.Component:
             rx.menu.item(cast("User", State.user).x_system, disabled=True),
             rx.menu.separator(),
             rx.menu.item(
-                "Logout",
+                State.label_nav_bar_logout_button,
                 on_select=State.logout,
                 custom_attrs={"data-testid": "logout-button"},
             ),
             align="end",
         ),
+    )
+
+
+def language_switcher_segment(locale: MExLocale) -> rx.Component:
+    """Return one segment of the language switcher for the given locale."""
+    is_current = State.current_locale == locale.id
+    return rx.button(
+        locale.code,
+        on_click=State.change_locale(locale.id),  # type: ignore[operator]
+        title=locale.label,
+        variant="ghost",
+        radius="none",
+        style=rx.Style(
+            margin="0",
+            paddingLeft="var(--space-3)",
+            paddingRight="var(--space-3)",
+            fontWeight="var(--font-weight-bold)",
+            backgroundColor=rx.cond(is_current, "var(--accent-11)", "transparent"),
+            # gray-1 inverts with the color mode, staying readable on the accent fill
+            color=rx.cond(is_current, "var(--gray-1)", "var(--accent-11)"),
+        ),
+        _hover={
+            "backgroundColor": rx.cond(
+                is_current, "var(--accent-11)", rx.color("accent", 4)
+            ),
+        },
+        custom_attrs={
+            "data-testid": f"language-switcher-{locale.id}",
+            "aria-pressed": is_current,
+        },
+    )
+
+
+def language_switcher() -> rx.Component:
+    """Return a language switcher with one button segment per available locale."""
+    return rx.hstack(
+        rx.foreach(
+            locale_service.get_available_locales(),
+            language_switcher_segment,
+        ),
+        spacing="0",
+        style=rx.Style(
+            alignItems="stretch",
+            border=f"1px solid {rx.color('accent', 8)}",
+            borderRadius="var(--radius-3)",
+            overflow="hidden",
+        ),
+        custom_attrs={"data-testid": "language-switcher"},
     )
 
 
@@ -74,12 +125,17 @@ def nav_bar() -> rx.Component:
                 app_logo(),
                 rx.divider(orientation="vertical", size="2"),
                 rx.hstack(
-                    rx.foreach(State.nav_items, nav_link),
+                    rx.foreach(State.nav_items_translated, nav_link),
                     justify="start",
                     spacing="4",
                 ),
                 rx.spacer(),
-                user_menu(),
+                rx.hstack(
+                    language_switcher(),
+                    user_menu(),
+                    align="center",
+                    spacing="4",
+                ),
                 justify="between",
                 align_items="center",
             ),

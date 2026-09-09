@@ -1,0 +1,87 @@
+msgid ""
+msgstr ""
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "layout.nav_bar.upload_navitem"
+msgstr "Hochladen"
+
+msgid "layout.nav_bar.browse_navitem"
+msgstr "Durchsuchen"
+
+msgid "layout.nav_bar.logout_button"
+msgstr "Abmelden"
+
+msgid "login.x_system"
+msgstr "X-System"
+
+msgid "login.api_key"
+msgstr "API-Schlüssel"
+
+msgid "login.button_login"
+msgstr "Anmelden"
+
+msgid "login.missing_api_key"
+msgstr "Bitte geben Sie Ihren API-Schlüssel ein."
+
+msgid "login.unknown_api_key"
+msgstr "Ungültiger API-Schlüssel."
+
+msgid "login.invalid_credentials"
+msgstr "Ungültige Zugangsdaten."
+
+msgid "upload.drag_and_drop.title"
+msgstr "Datei-Upload"
+
+msgid "upload.drag_and_drop.hint"
+msgstr "Dateien hierher ziehen oder zum Auswählen klicken"
+
+msgid "upload.drag_and_drop.supported_formats.format"
+msgstr "Unterstützte Formate: {0}"
+
+msgid "upload.drag_and_drop.select_button"
+msgstr "Dateien auswählen"
+
+msgid "upload.file_table.selected_file_column"
+msgstr "Ausgewählte Datei"
+
+msgid "upload.file_table.action_column"
+msgstr "Aktion"
+
+msgid "upload.file_table.remove_button"
+msgstr "Datei entfernen"
+
+msgid "upload.submit_button"
+msgstr "Absenden"
+
+msgid "upload.unsupported_format.format"
+msgstr "Dateiformat nicht unterstützt. Zulässige Formate: {0}"
+
+msgid "upload.duplicate_filename"
+msgstr "Doppelter Dateiname. Bitte laden Sie dieselbe Datei nicht zweimal hoch."
+
+msgid "upload.no_files_to_upload"
+msgstr "Keine Dateien zum Hochladen."
+
+msgid "upload.no_user_logged_in"
+msgstr "Kein Benutzer angemeldet."
+
+msgid "upload.upload_successful"
+msgstr "Datei-Upload erfolgreich!"
+
+msgid "upload.file_removed.format"
+msgstr "Datei {0} aus dem Upload entfernt."
+
+msgid "browse.file_table.name_column"
+msgstr "Dateiname"
+
+msgid "browse.file_table.created_column"
+msgstr "Erstellt"
+
+msgid "browse.file_table.modified_column"
+msgstr "Geändert"
+
+msgid "browse.x_system_not_found"
+msgstr "Das angeforderte X-System wurde auf diesem Server nicht gefunden."

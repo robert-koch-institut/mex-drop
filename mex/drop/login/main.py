@@ -7,12 +7,12 @@ from mex.drop.login.state import LoginState
 def login_x_system() -> rx.Component:
     """Return a form field for the X-System."""
     return rx.vstack(
-        rx.text("X-System"),
+        rx.text(LoginState.label_x_system),
         rx.input(
             auto_focus=True,
             name="x_system",
             on_change=LoginState.set_x_system,
-            placeholder="X-System",
+            placeholder=LoginState.label_x_system,
             size="3",
             tab_index=1,
             style=rx.Style(width="100%"),
@@ -25,11 +25,11 @@ def login_x_system() -> rx.Component:
 def login_api_key() -> rx.Component:
     """Return a form field for the API key."""
     return rx.vstack(
-        rx.text("API Key"),
+        rx.text(LoginState.label_api_key),
         rx.input(
             on_change=LoginState.set_api_key,
             name="api_key",
-            placeholder="API Key",
+            placeholder=LoginState.label_api_key,
             size="3",
             tab_index=2,
             type="password",
@@ -45,7 +45,7 @@ def login_button() -> rx.Component:
     return rx.hstack(
         rx.spacer(),
         rx.button(
-            "Login",
+            LoginState.label_button_login,
             size="3",
             tab_index=3,
             style=rx.Style(

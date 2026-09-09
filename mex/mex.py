@@ -2,9 +2,9 @@ import reflex as rx
 from reflex.components.radix import themes
 
 from mex.drop.api.main import api as drop_api
+from mex.drop.browse.main import index as browse_index
+from mex.drop.browse.state import BrowseState
 from mex.drop.exceptions import custom_backend_handler
-from mex.drop.file_history.main import index as file_history_index
-from mex.drop.file_history.state import ListState
 from mex.drop.login.main import index as login_index
 from mex.drop.state import State
 from mex.drop.upload.main import index as upload_index
@@ -28,13 +28,13 @@ app.add_page(
     ],
 )
 app.add_page(
-    file_history_index,
-    route="/file-history",
-    title="MEx Drop | File History",
+    browse_index,
+    route="/browse",
+    title="MEx Drop | Browse",
     on_load=[
         State.check_login,
         State.load_nav,
-        ListState.refresh,
+        BrowseState.refresh,
     ],
 )
 app.add_page(

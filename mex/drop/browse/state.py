@@ -4,15 +4,28 @@ from datetime import UTC, datetime
 import reflex as rx
 from reflex.event import EventSpec
 
-from mex.drop.file_history.models import FileDetails
+from mex.drop.browse.models import FileDetails
+from mex.drop.label_var import label_var
 from mex.drop.settings import DropSettings
 from mex.drop.state import State
 
 
-class ListState(State):
-    """The state for the file history page."""
+class BrowseState(State):
+    """The state for the browse page."""
 
     file_list: list[FileDetails] = []
+
+    @label_var(label_id="browse.file_table.name_column")
+    def label_file_table_name_column(self) -> None:
+        """Label for file_table.name_column."""
+
+    @label_var(label_id="browse.file_table.created_column")
+    def label_file_table_created_column(self) -> None:
+        """Label for file_table.created_column."""
+
+    @label_var(label_id="browse.file_table.modified_column")
+    def label_file_table_modified_column(self) -> None:
+        """Label for file_table.modified_column."""
 
     @rx.event
     def refresh(self) -> EventSpec | None:
@@ -42,6 +55,8 @@ class ListState(State):
                     )
             return None
         return rx.toast.error(
-            "The requested x-system was not found on this server.",
+            self._locale_service.get_ui_label(
+                self.current_locale, "browse.x_system_not_found"
+            ),
             close_button=True,
         )

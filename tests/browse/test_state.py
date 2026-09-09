@@ -4,36 +4,38 @@ from unittest.mock import Mock
 import pytest
 from pytest import MonkeyPatch
 
-from mex.drop.file_history.models import FileDetails
-from mex.drop.file_history.state import ListState
+from mex.drop.browse.models import FileDetails
+from mex.drop.browse.state import BrowseState
+from mex.drop.locale_service import LocaleService
 from mex.drop.settings import DropSettings
 from mex.drop.state import State
 
 
 @pytest.fixture
-def list_state(app_state: State) -> ListState:
-    """Fixture to set up ListState with a mock user."""
-    return ListState(parent_state=app_state)
+def browse_state(app_state: State) -> BrowseState:
+    """Fixture to set up BrowseState with a mock user."""
+    return BrowseState(parent_state=app_state)
 
 
 def test_refresh_missing_directory(
-    list_state: ListState,
+    browse_state: BrowseState,
     monkeypatch: MonkeyPatch,
 ) -> None:
     """Test the case where the x-system directory does not exist."""
     mock_toast_error = Mock()
-    monkeypatch.setattr("mex.drop.file_history.state.rx.toast.error", mock_toast_error)
+    monkeypatch.setattr("mex.drop.browse.state.rx.toast.error", mock_toast_error)
 
-    list_state.refresh()  # type: ignore[operator]
+    browse_state.refresh()  # type: ignore[operator]
 
     mock_toast_error.assert_called_once_with(
-        "The requested x-system was not found on this server.", close_button=True
+        LocaleService.get().get_ui_label("de", "browse.x_system_not_found"),
+        close_button=True,
     )
 
-    assert list_state.file_list == []
+    assert browse_state.file_list == []
 
 
-def test_refresh_success(settings: DropSettings, list_state: ListState) -> None:
+def test_refresh_success(settings: DropSettings, browse_state: BrowseState) -> None:
     """Test successful retrieval of uploaded files."""
     mock_x_system_dir = settings.drop_directory / "test_system"
     mock_x_system_dir.mkdir(parents=True)
@@ -41,7 +43,7 @@ def test_refresh_success(settings: DropSettings, list_state: ListState) -> None:
     mock_file = mock_x_system_dir / "test_file.csv"
     mock_file.touch()
 
-    list_state.refresh()  # type: ignore[operator]
+    browse_state.refresh()  # type: ignore[operator]
 
     expected_file_list = [
         FileDetails(
@@ -54,4 +56,4 @@ def test_refresh_success(settings: DropSettings, list_state: ListState) -> None:
             ),
         )
     ]
-    assert list_state.file_list == expected_file_list
+    assert browse_state.file_list == expected_file_list

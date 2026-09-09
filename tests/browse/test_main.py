@@ -8,12 +8,12 @@ from tests.conftest import TESTDATA_DIR
 
 def upload_file(page: Page) -> None:
     with page.expect_file_chooser() as fc_info:
-        page.locator("role=button[name='Select Files']").click()
+        page.get_by_test_id("select-files-button").click()
     file_chooser = fc_info.value
     file_chooser.set_files(
         str(TESTDATA_DIR / "test.csv"),
     )
-    page.get_by_text("Submit").click()
+    page.get_by_test_id("submit-button").click()
 
 
 def login(page: Page, api_key: str, x_system: str) -> None:
@@ -37,13 +37,13 @@ def test_upload(
     login(page, get_test_key("test"), "test")
     upload_file(page)
 
-    page.get_by_test_id("nav-item-/file-history").click()
+    page.get_by_test_id("nav-item-/browse").click()
     expect(page.get_by_text("test.csv")).to_be_visible()
-    page.screenshot(path="tests_history_main_test_upload.png")
+    page.screenshot(path="tests_browse_main_test_upload.png")
 
     # the file history is scoped to the x-system of the logged-in user
     logout(page)
     login(page, get_test_key("other"), "other")
-    page.get_by_test_id("nav-item-/file-history").click()
+    page.get_by_test_id("nav-item-/browse").click()
     expect(page.get_by_text("test.csv")).not_to_be_visible()
-    page.screenshot(path="tests_history_main_test_upload_after_reload.png")
+    page.screenshot(path="tests_browse_main_test_upload_after_reload.png")

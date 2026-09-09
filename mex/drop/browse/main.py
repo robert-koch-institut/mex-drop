@@ -1,12 +1,12 @@
 import reflex as rx
 
-from mex.drop.file_history.models import FileDetails
-from mex.drop.file_history.state import ListState
+from mex.drop.browse.models import FileDetails
+from mex.drop.browse.state import BrowseState
 from mex.drop.layout import page
 
 
 def render_file_row(file: FileDetails) -> rx.Component:
-    """Render a row for the file history display."""
+    """Render a row for the browse display."""
     return rx.table.row(
         rx.table.row_header_cell(file.name),
         rx.table.cell(f"{file.created}"),
@@ -20,14 +20,20 @@ def uploaded_files_display() -> rx.Component:
         rx.table.root(
             rx.table.header(
                 rx.table.row(
-                    rx.table.column_header_cell("File Name"),
-                    rx.table.column_header_cell("Created"),
-                    rx.table.column_header_cell("Modified"),
+                    rx.table.column_header_cell(
+                        BrowseState.label_file_table_name_column
+                    ),
+                    rx.table.column_header_cell(
+                        BrowseState.label_file_table_created_column
+                    ),
+                    rx.table.column_header_cell(
+                        BrowseState.label_file_table_modified_column
+                    ),
                 ),
             ),
             rx.table.body(
                 rx.foreach(
-                    ListState.file_list,
+                    BrowseState.file_list,
                     render_file_row,
                 ),
             ),
@@ -38,7 +44,7 @@ def uploaded_files_display() -> rx.Component:
 
 
 def index() -> rx.Component:
-    """Return the index for the file history component."""
+    """Return the index for the browse component."""
     return page(
         rx.card(
             rx.vstack(

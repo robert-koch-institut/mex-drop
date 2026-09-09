@@ -1,11 +1,15 @@
+import re
 from collections.abc import Callable
 from pathlib import Path
-from typing import Any
+from re import Pattern
+from typing import Any, cast
 
 import pytest
+import reflex as rx
 from fastapi.testclient import TestClient
 
 from mex.drop.api.main import api
+from mex.drop.locale_service import LocaleService
 from mex.drop.models import User
 from mex.drop.settings import DropSettings
 from mex.drop.state import State
@@ -100,3 +104,24 @@ def get_test_key() -> Callable[[str], str]:
 def app_state(get_test_key: Callable[[str], str]) -> State:
     """Fixture to set up a global state with a mock user."""
     return State(user=User(x_system="test_system", api_key=get_test_key("test_system")))
+
+
+@pytest.fixture
+def drop_state() -> State:
+    """Return a drop state that is properly mounted below the reflex root state.
+
+    Unlike `app_state`, this state is reachable from the reflex root, so reflex can
+    resolve substate paths when a var on it is assigned or reset.
+    """
+    root_state = rx.State()
+    return cast("State", root_state.get_substate(State.get_full_name().split(".")))
+
+
+def build_ui_label_regex(label_id: str) -> Pattern[str]:
+    """Match the label for the given label_id in any of the available locales."""
+    service = LocaleService.get()
+    ui_labels = (
+        re.escape(service.get_ui_label(locale.id, label_id))
+        for locale in service.get_available_locales()
+    )
+    return re.compile(f"({'|'.join(ui_labels)})")
