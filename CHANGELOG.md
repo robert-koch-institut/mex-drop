@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+- flatten the user menu dropdown into an inline x-system name and logout button
+- render the nav bar as a solid accent surface with the MEx wordmark logo
+
 ### Deprecated
 
 ### Removed

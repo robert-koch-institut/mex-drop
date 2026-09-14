@@ -23,7 +23,7 @@ def login(page: Page, api_key: str, x_system: str) -> None:
 
 
 def logout(page: Page) -> None:
-    page.get_by_test_id("user-menu").click()
+    expect(page.get_by_test_id("user-menu")).to_be_visible()
     page.get_by_test_id("logout-button").click()
 
 

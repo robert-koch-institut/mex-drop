@@ -8,33 +8,49 @@ from mex.drop.state import State
 
 locale_service = LocaleService.get()
 
+# The nav bar is a solid accent surface, so its children cannot rely on the
+# theme's default foreground colors. These vars are declared on the nav bar and
+# inherited by everything inside it.
+NAV_BAR_PALETTE = {
+    "--nav-bar-bg": "var(--accent-11)",
+    "--nav-bar-fg": "var(--accent-contrast)",
+    "--nav-bar-button-bg": "var(--accent-12)",
+    "--nav-bar-button-bg-hover": (
+        "color-mix(in srgb, var(--accent-12) 70%, var(--accent-11))"
+    ),
+}
 
-def user_button() -> rx.Component:
-    """Return a user button with an icon that indicates their access rights."""
+
+def logout_button() -> rx.Component:
+    """Return a logout button with a trailing arrow icon."""
     return rx.button(
-        rx.icon("user_round_cog"),
-        variant="ghost",
-        style=rx.Style(marginTop="0"),
+        State.label_nav_bar_logout_button,
+        rx.icon("arrow-right", size=18),
+        on_click=State.logout,
+        variant="solid",
+        style=rx.Style(
+            margin="0",
+            # fixed width, so translating the label does not shift the nav bar
+            width="calc(140px * var(--scaling))",
+            backgroundColor="var(--nav-bar-button-bg)",
+            color="var(--nav-bar-fg)",
+        ),
+        _hover={"backgroundColor": "var(--nav-bar-button-bg-hover)"},
+        custom_attrs={"data-testid": "logout-button"},
     )
 
 
 def user_menu() -> rx.Component:
-    """Return a user menu with a trigger, the current X-System and a logout button."""
-    return rx.menu.root(
-        rx.menu.trigger(
-            user_button(),
-            custom_attrs={"data-testid": "user-menu"},
+    """Return a flat user menu with the current X-System and a logout button."""
+    return rx.hstack(
+        rx.text(
+            cast("User", State.user).x_system,
+            style=rx.Style(userSelect="none", whiteSpace="nowrap"),
         ),
-        rx.menu.content(
-            rx.menu.item(cast("User", State.user).x_system, disabled=True),
-            rx.menu.separator(),
-            rx.menu.item(
-                State.label_nav_bar_logout_button,
-                on_select=State.logout,
-                custom_attrs={"data-testid": "logout-button"},
-            ),
-            align="end",
-        ),
+        logout_button(),
+        spacing="3",
+        style=rx.Style(alignItems="center"),
+        custom_attrs={"data-testid": "user-menu"},
     )
 
 
@@ -52,15 +68,12 @@ def language_switcher_segment(locale: MExLocale) -> rx.Component:
             paddingLeft="var(--space-3)",
             paddingRight="var(--space-3)",
             fontWeight="var(--font-weight-bold)",
-            backgroundColor=rx.cond(is_current, "var(--accent-11)", "transparent"),
-            # gray-1 inverts with the color mode, staying readable on the accent fill
-            color=rx.cond(is_current, "var(--gray-1)", "var(--accent-11)"),
-        ),
-        _hover={
-            "backgroundColor": rx.cond(
-                is_current, "var(--accent-11)", rx.color("accent", 4)
+            backgroundColor=rx.cond(
+                is_current, "var(--nav-bar-button-bg)", "transparent"
             ),
-        },
+            color="var(--nav-bar-fg)",
+        ),
+        _hover={"backgroundColor": "var(--nav-bar-button-bg-hover)"},
         custom_attrs={
             "data-testid": f"language-switcher-{locale.id}",
             "aria-pressed": is_current,
@@ -78,7 +91,7 @@ def language_switcher() -> rx.Component:
         spacing="0",
         style=rx.Style(
             alignItems="stretch",
-            border=f"1px solid {rx.color('accent', 8)}",
+            border="1px solid var(--nav-bar-button-bg)",
             borderRadius="var(--radius-3)",
             overflow="hidden",
         ),
@@ -93,19 +106,60 @@ def nav_link(item: NavItem) -> rx.Component:
         href=item.raw_path,
         underline=rx.cond(item.active, "always", "none"),
         class_name=rx.cond(item.active, "nav-item nav-item-active", "nav-item"),
+        # radix links are accent colored, which is unreadable on the accent fill
+        style=rx.Style(
+            color="var(--nav-bar-fg)",
+            # `underline` only sets the line, leaving radix's near transparent
+            # accent-a5 decoration color, which vanishes on the accent fill
+            textDecorationColor="var(--nav-bar-fg)",
+            # 1px matches the nav bar divider, so the two lines agree
+            textDecorationThickness="1px",
+            textUnderlineOffset="6px",
+        ),
         custom_attrs={"data-testid": f"nav-item-{item.route_ids[0]}"},
     )
 
 
+def mex_wordmark() -> rx.Component:
+    """Return the MEx wordmark, tinted with the surrounding text color.
+
+    The svg is used as a mask rather than an image, so that the same asset works
+    on the light login card and on the solid accent nav bar.
+    """
+    return rx.box(
+        style=rx.Style(
+            {
+                # the intrinsic size of assets/mex-logo.svg is 66x25
+                "height": "calc(25px * var(--scaling))",
+                "width": "calc(66px * var(--scaling))",
+                "flexShrink": "0",
+                "backgroundColor": "currentColor",
+                "maskImage": "url(/mex-logo.svg)",
+                "maskRepeat": "no-repeat",
+                "maskSize": "contain",
+                "maskPosition": "center",
+                "WebkitMaskImage": "url(/mex-logo.svg)",
+                "WebkitMaskRepeat": "no-repeat",
+                "WebkitMaskSize": "contain",
+                "WebkitMaskPosition": "center",
+            }
+        ),
+        role="img",
+        aria_label="MEx",
+    )
+
+
 def app_logo() -> rx.Component:
-    """Return the app logo with icon and label."""
+    """Return the app logo with the MEx wordmark and the app name."""
     return rx.hstack(
-        rx.icon("droplets", size=28),
+        mex_wordmark(),
         rx.heading(
-            "MEx Drop",
+            "Drop",
             weight="medium",
             style=rx.Style(userSelect="none"),
         ),
+        spacing="3",
+        align="center",
         custom_attrs={"data-testid": "app-logo"},
     )
 
@@ -123,7 +177,6 @@ def nav_bar() -> rx.Component:
         rx.card(
             rx.hstack(
                 app_logo(),
-                rx.divider(orientation="vertical", size="2"),
                 rx.hstack(
                     rx.foreach(State.nav_items_translated, nav_link),
                     justify="start",
@@ -134,16 +187,26 @@ def nav_bar() -> rx.Component:
                     language_switcher(),
                     user_menu(),
                     align="center",
-                    spacing="4",
+                    spacing="7",
                 ),
                 justify="between",
                 align_items="center",
+                # the gaps next to the spacer collapse into it, so this only
+                # separates the logo from the nav items, matching the spacing
+                # between the language switcher and the user menu
+                spacing="7",
             ),
             size="2",
             custom_attrs={"data-testid": "nav-bar"},
             style=rx.Style(
-                width="100%",
-                marginTop="calc(-1 * var(--base-card-border-width))",
+                {
+                    **NAV_BAR_PALETTE,
+                    # radix paints the card surface on a ::before pseudo element
+                    "--card-background-color": "var(--nav-bar-bg)",
+                    "color": "var(--nav-bar-fg)",
+                    "width": "100%",
+                    "marginTop": "calc(-1 * var(--base-card-border-width))",
+                }
             ),
         ),
         spacing="0",
