@@ -22,7 +22,7 @@ def test_login_page(
     expect(page.get_by_test_id("nav-bar")).to_be_visible()
     page.screenshot(path="tests_test_login_test_login_page_after.png")
 
-    page.get_by_test_id("user-menu").click()
+    expect(page.get_by_test_id("user-menu")).to_be_visible()
     logout_button = page.get_by_test_id("logout-button")
     expect(logout_button).to_have_text(
         build_ui_label_regex("layout.nav_bar.logout_button")
@@ -46,7 +46,7 @@ def test_login_page_with_enter_key(
     expect(page.get_by_test_id("nav-bar")).to_be_visible()
     page.screenshot(path="tests_test_login_test_login_page_with_enter_key_after.png")
 
-    page.get_by_test_id("user-menu").click()
+    expect(page.get_by_test_id("user-menu")).to_be_visible()
     logout_button = page.get_by_test_id("logout-button")
     expect(logout_button).to_have_text(
         build_ui_label_regex("layout.nav_bar.logout_button")
@@ -94,7 +94,7 @@ def test_language_switcher_translates_nav_bar(
 
     # the login page has no switcher, so the locale is asserted via the login
     # button, which is already rendered in the locale picked before the logout
-    page.get_by_test_id("user-menu").click()
+    expect(page.get_by_test_id("user-menu")).to_be_visible()
     page.get_by_test_id("logout-button").click()
     expect(page.get_by_test_id("login-button")).to_have_text(
         expected_login_button_label
