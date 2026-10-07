@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pydantic import Field, field_validator
 
 from mex.common.settings import BaseSettings
@@ -28,6 +30,19 @@ class DropSettings(BaseSettings):
         lt=65536,
         description="Port that the drop frontend should serve on.",
         validation_alias="MEX_DROP_FRONTEND_PORT",
+    )
+    drop_frontend_host: str = Field(
+        "localhost",
+        min_length=1,
+        max_length=250,
+        description="Host that the drop frontend will run on.",
+        validation_alias="MEX_DROP_FRONTEND_HOST",
+    )
+    drop_frontend_directory: Path = Field(
+        Path("dist"),
+        description="Directory containing the pre-built frontends, one subdirectory "
+        "per frontend path, i.e. `root` for `/` and `drop` for `/drop`.",
+        validation_alias="MEX_DROP_FRONTEND_DIRECTORY",
     )
     drop_api_root_path: str = Field(
         "",
