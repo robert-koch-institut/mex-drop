@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- added missing greenlet dependency via `sqlalchemy[asyncio]`
+
 ### Security
 
 ## [1.8.1] - 2026-09-14
