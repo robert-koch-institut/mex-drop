@@ -54,15 +54,11 @@ image:
 		--tag rki/mex-drop:latest .; \
 
 run: image
-	# run the service as a docker container
+	# run the frontend as a docker container
 	@ echo running docker container mex-drop:${LATEST}; \
-	mkdir --parents --mode 777 $(PWD)/data; \
 	docker run \
-		--env MEX_DROP_DIRECTORY=data \
-		--env MEX_DROP_API_HOST=0.0.0.0 \
-		--env MEX_DROP_API_KEY_DATABASE='{"mex":["mex"],"test":["test"],"other":["other"]}' \
+		--env MEX_DROP_FRONTEND_HOST=0.0.0.0 \
 		--publish 8020:8020 \
-		--publish 8021:8021 \
 		rki/mex-drop:${LATEST}; \
 
 start:

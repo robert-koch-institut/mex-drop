@@ -9,11 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- add `MEX_DROP_FRONTEND_HOST` to set the host for `drop-frontend`
+- add `MEX_DROP_FRONTEND_DIRECTORY` to set the directory of the pre-built frontends
+
 ### Changes
+
+- BREAKING: pre-build the frontend for `/` and `/drop` while building the docker image
+  and serve it from python, so `drop-frontend` no longer installs bun or npm packages
+  at runtime and `REFLEX_FRONTEND_PATH` must be one of `/` or `/drop`
 
 ### Deprecated
 
 ### Removed
+
+- remove curl and unzip from the docker image
+- BREAKING: remove the combined `drop` entrypoint from the docker image, the image
+  now starts `drop-frontend` by default (also used by `make run`)
 
 ### Fixed
 
