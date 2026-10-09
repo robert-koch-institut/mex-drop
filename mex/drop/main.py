@@ -3,10 +3,10 @@ import sys
 from pathlib import Path
 
 import uvicorn
-from reflex.config import environment, get_config
+from reflex.config import environment, get_config, reload_config
 from reflex.constants import Env, LogLevel
+from reflex.istate.manager import reset_disk_state_manager
 from reflex.reflex import run
-from reflex.state import reset_disk_state_manager
 from reflex.utils.console import set_log_level
 from reflex.utils.exec import get_app_instance
 
@@ -32,7 +32,7 @@ def drop_api() -> None:  # pragma: no cover
     reset_disk_state_manager()  # type: ignore[no-untyped-call]
 
     # Reload the config to make sure the env vars are persistent.
-    get_config(reload=True)
+    reload_config()
 
     # Run the api.
     uvicorn.run(
