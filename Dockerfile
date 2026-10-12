@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
 
-FROM python:3.14@sha256:1eb6b7d4b76454b1de8317863ac3213b678c337b27e604a4e3fb70bddbb2bad7 AS builder
+FROM python:3.14@sha256:b9767f56a1cc620aa72d38cc3557d26412e38a4597c92953476136b78894ccbd AS builder
 
 WORKDIR /build
 
@@ -25,7 +25,7 @@ RUN REFLEX_FRONTEND_PATH=/drop reflex export --frontend-only --no-zip --no-ssr \
     && mv .web/build/client dist/drop \
     && rm -rf .web
 
-FROM python:3.14-slim@sha256:f85c5697265c178cc6887276c55fe16cf3d14ca35c3df6a5eab3b360534a55d2
+FROM python:3.14-slim@sha256:a2b82f3c48559aa0a8446d9af49826b6e2b2016f4cd2afabfe6013ec53729170
 
 LABEL org.opencontainers.image.authors="mex@rki.de"
 LABEL org.opencontainers.image.description="Data upload and download service for the MEx project."
