@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changes
 
+- update reflex to `>=0.9.12,<0.10`
+
 ### Deprecated
 
 ### Removed
