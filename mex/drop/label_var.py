@@ -1,4 +1,4 @@
-import datetime
+import datetime as dt
 from collections.abc import Callable, Iterable
 from functools import wraps
 from typing import TYPE_CHECKING, Any, overload
@@ -19,7 +19,7 @@ def label_var[StateT: "State", ReturnT](
     initial_value: Any | types.Unset = types.Unset(),  # noqa: ANN401, B008
     cache: bool = True,  # noqa: FBT001, FBT002
     deps: list[str | Var[str]] | None = None,
-    interval: datetime.timedelta | int | None = None,
+    interval: dt.timedelta | int | None = None,
     backend: bool | None = None,  # noqa: FBT001
     **kwargs: Any,  # noqa: ANN401
 ) -> Callable[[Callable[[StateT], ReturnT]], ComputedVar[str]]: ...
@@ -32,7 +32,7 @@ def label_var[StateT: "State", ReturnT](
     initial_value: ReturnT | types.Unset = types.Unset(),  # noqa: B008
     cache: bool = True,  # noqa: FBT001, FBT002
     deps: list[str | Var[str]] | None = None,
-    interval: datetime.timedelta | int | None = None,
+    interval: dt.timedelta | int | None = None,
     backend: bool | None = None,  # noqa: FBT001
     **kwargs: Any,  # noqa: ANN401
 ) -> ComputedVar[str]: ...
@@ -44,7 +44,7 @@ def label_var[StateT: "State"](  # noqa: PLR0913, PLR0917
     initial_value: Any | types.Unset = types.Unset(),  # noqa: B008
     cache: bool = True,  # noqa: FBT001, FBT002
     deps: list[str | Var[str]] | None = None,
-    interval: datetime.timedelta | int | None = None,
+    interval: dt.timedelta | int | None = None,
     backend: bool | None = None,  # noqa: FBT001
     **kwargs: Any,
 ) -> ComputedVar[str] | Callable[[Callable[[StateT], Any]], ComputedVar[str]]:
