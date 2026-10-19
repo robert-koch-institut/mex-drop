@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
 
-FROM python:3.14@sha256:12d187a59ecdeb95df0a78cd6107a84398455365a66cc2183db2be42b6067d33 AS builder
+FROM python:3.15 AS builder
 
 WORKDIR /build
 
@@ -25,7 +25,7 @@ RUN REFLEX_FRONTEND_PATH=/drop reflex export --frontend-only --no-zip --no-ssr \
     && mv .web/build/client dist/drop \
     && rm -rf .web
 
-FROM python:3.14-slim@sha256:a2b82f3c48559aa0a8446d9af49826b6e2b2016f4cd2afabfe6013ec53729170
+FROM python:3.15-slim
 
 LABEL org.opencontainers.image.authors="mex@rki.de"
 LABEL org.opencontainers.image.description="Data upload and download service for the MEx project."
@@ -46,7 +46,7 @@ ENV REFLEX_ENV_MODE=prod
 
 WORKDIR /app
 
-COPY --from=builder /usr/local/lib/python3.14/site-packages /usr/local/lib/python3.14/site-packages
+COPY --from=builder /usr/local/lib/python3.15/site-packages /usr/local/lib/python3.15/site-packages
 COPY --from=builder /usr/local/bin/drop-api /usr/local/bin/drop-api
 COPY --from=builder /usr/local/bin/drop-frontend /usr/local/bin/drop-frontend
 COPY --from=builder --chown=10001 /build/assets assets
