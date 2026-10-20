@@ -109,7 +109,7 @@ def language_switcher_segment(locale: MExLocale) -> rx.Component:
             paddingLeft="var(--space-3)",
             paddingRight="var(--space-3)",
             fontWeight="var(--font-weight-bold)",
-            backgroundColor=rx.cond(
+            backgroundColor=rx.cond(  # type: ignore[call-overload]
                 is_current, "var(--nav-bar-button-bg)", "transparent"
             ),
             color="var(--nav-bar-fg)",
@@ -145,8 +145,8 @@ def nav_link(item: NavItem) -> rx.Component:
     return rx.link(
         rx.text(item.title, size="4", weight="medium"),
         href=item.raw_path,
-        underline=rx.cond(item.active, "always", "none"),
-        class_name=rx.cond(item.active, "nav-item nav-item-active", "nav-item"),
+        underline=rx.cond(item.active, "always", "none"),  # type: ignore[call-overload]
+        class_name=rx.cond(item.active, "nav-item nav-item-active", "nav-item"),  # type: ignore[call-overload]
         # radix links are accent colored, which is unreadable on the accent fill
         style=rx.Style(
             color="var(--nav-bar-fg)",
