@@ -15,9 +15,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN uv export --no-dev --no-editable | uv pip install --system --no-deps -r -
 
 # pre-build the frontend for serving on `/` and on `/drop`, using a placeholder for
-# the api url that is replaced at runtime (see `mex/drop/frontend.py`)
+# the api url that is replaced at runtime (see `mex/drop/frontend.py`),
+# the root build uses an empty frontend path, because `/` breaks the vite base url
 ENV REFLEX_API_URL=http://mex-api-url-placeholder
-RUN REFLEX_FRONTEND_PATH=/ reflex export --frontend-only --no-zip --no-ssr \
+RUN REFLEX_FRONTEND_PATH= reflex export --frontend-only --no-zip --no-ssr \
     && mkdir dist \
     && mv .web/build/client dist/root \
     && rm -rf .web
