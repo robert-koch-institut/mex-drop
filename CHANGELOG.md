@@ -24,7 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-- set security headers (CSP, HSTS, `nosniff`, referrer policy, frame options, cache control) on all api and frontend responses
+- set security headers (CSP, HSTS, nosniff, referrer policy, frame options,
+  cache control) on all api and frontend responses
 
 ## [1.9.0] - 2026-10-07
 
