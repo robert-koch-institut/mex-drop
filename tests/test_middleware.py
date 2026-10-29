@@ -37,7 +37,11 @@ def test_get_frontend_csp(api_url: str, expected: str) -> None:
 )
 def test_add_security_headers(path: str, expected_csp: str) -> None:
     app = FastAPI()
-    app.get("/")(dict)
+
+    @app.get("/")
+    def root() -> dict[str, str]:
+        return {}
+
     add_security_headers(app, API_CSP, "no-store")
 
     with TestClient(app) as client:
