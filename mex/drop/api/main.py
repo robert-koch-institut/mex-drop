@@ -25,6 +25,7 @@ from mex.drop.files_io import (
     validate_file_extension,
     write_to_file,
 )
+from mex.drop.middleware import API_CSP, add_security_headers
 from mex.drop.security import get_current_authorized_x_systems, is_authorized
 from mex.drop.settings import DropSettings
 from mex.drop.sinks.json import json_sink
@@ -35,7 +36,9 @@ api = FastAPI(
     version="v0",
     contact={"name": "MEx Team", "email": "mex@rki.de"},
     description="Upload and download data for the MEx service.",
+    redoc_url=None,
 )
+add_security_headers(api, API_CSP, "no-store")
 
 
 @api.post(
