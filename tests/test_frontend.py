@@ -96,3 +96,16 @@ def test_create_frontend_app(tmp_path: Path, prefix: str) -> None:
 
     response = client.get(f"{base}assets/missing.js")
     assert response.status_code == 404
+
+
+def test_create_frontend_app_csp_follows_request_host(tmp_path: Path) -> None:
+    write_build(tmp_path)
+    app = create_frontend_app(tmp_path, "/", "http://localhost:8021")
+
+    with TestClient(app, base_url="http://127.0.0.1:8020") as client:
+        response = client.get("/")
+
+    assert (
+        "connect-src 'self' http://127.0.0.1:8021 ws://127.0.0.1:8021;"
+        in response.headers["Content-Security-Policy"]
+    )
