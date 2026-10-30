@@ -13,21 +13,50 @@ from mex.drop.middleware import (
 
 
 @pytest.mark.parametrize(
-    ("api_url", "expected"),
+    ("api_url", "frontend_url", "expected"),
     [
         (
             "http://localhost:8021",
+            "http://localhost:8020/",
             "connect-src 'self' http://localhost:8021 ws://localhost:8021;",
         ),
         (
             "https://dev.example.org/drop-api/",
+            "https://dev.example.org/drop/",
             "connect-src 'self' https://dev.example.org wss://dev.example.org;",
         ),
+        (
+            "http://localhost:8021",
+            "http://127.0.0.1:8020/",
+            "connect-src 'self' http://127.0.0.1:8021 ws://127.0.0.1:8021;",
+        ),
+        (
+            "http://0.0.0.0:8021",
+            "http://[::1]:8020/",
+            "connect-src 'self' http://[::1]:8021 ws://[::1]:8021;",
+        ),
+        (
+            "http://localhost:8021",
+            "https://drop.example.org/",
+            "connect-src 'self' https://drop.example.org wss://drop.example.org;",
+        ),
+        (
+            "http://api.example.org:8021",
+            "http://127.0.0.1:8020/",
+            "connect-src 'self' http://api.example.org:8021 ws://api.example.org:8021;",
+        ),
     ],
-    ids=["http", "https-with-path"],
+    ids=[
+        "http",
+        "https-with-path",
+        "same-domain-ip",
+        "same-domain-ipv6",
+        "same-domain-https",
+        "other-domain",
+    ],
 )
-def test_get_frontend_csp(api_url: str, expected: str) -> None:
-    assert expected in get_frontend_csp(api_url)
+def test_get_frontend_csp(api_url: str, frontend_url: str, expected: str) -> None:
+    assert expected in get_frontend_csp(api_url, frontend_url)
 
 
 @pytest.mark.parametrize(
