@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 
 - upgrade python to 3.15
-- update reflex to `>=0.9.12,<0.10`
+- update reflex to `>=0.10.1,<0.11`
 
 ### Deprecated
 
@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - disable unused redoc api documentation, swagger ui at `/docs` stays
 
 ### Fixed
+
+- allow the api in the frontend csp under the hostname the frontend is opened
+  with, because reflex swaps `localhost` for it (e.g. `127.0.0.1`)
 
 ### Security
 
