@@ -76,7 +76,11 @@ def create_frontend_app(
 ) -> FastAPI:
     """Create an app serving the pre-built frontend with the given api url."""
     app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
-    add_security_headers(app, get_frontend_csp(api_url), "no-cache")
+    add_security_headers(
+        app,
+        lambda request: get_frontend_csp(api_url, str(request.url)),
+        "no-cache",
+    )
     for env_chunk in build_directory.glob("**/assets/reflex-env-*.js"):
         content = render_env_chunk(env_chunk.read_text(encoding="utf-8"), api_url)
         app.get(f"/{env_chunk.relative_to(build_directory).as_posix()}")(
