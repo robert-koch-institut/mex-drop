@@ -1,6 +1,7 @@
 import reflex as rx
 
 from mex.drop.layout import page
+from mex.drop.settings import DropSettings
 from mex.drop.upload.models import TempFile
 from mex.drop.upload.state import UploadState
 
@@ -92,6 +93,7 @@ def create_drag_and_drop() -> rx.Component:
                 ),
                 id="file_upload_area",
                 max_files=100,
+                max_size=DropSettings.get().drop_max_upload_size,
                 style=rx.Style(
                     border="var(--card-border-width) dotted var(--accent-8)",
                     borderRadius="calc(var(--base-card-border-radius) - var(--base-card-border-width))",  # noqa: E501

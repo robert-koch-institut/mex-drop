@@ -1,15 +1,20 @@
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from pytest import MonkeyPatch
+from starlette.responses import PlainTextResponse
+from starlette.types import Receive, Scope, Send
 
 from mex.drop.api.main import api
 from mex.drop.middleware import (
     API_CSP,
     DOCS_CSP,
     SECURITY_HEADERS,
+    RequestSizeLimitMiddleware,
     add_security_headers,
     get_frontend_csp,
 )
+from mex.drop.settings import DropSettings
 
 
 @pytest.mark.parametrize(
@@ -84,3 +89,22 @@ def test_add_security_headers(path: str, expected_csp: str) -> None:
 
 def test_redoc_is_disabled() -> None:
     assert api.redoc_url is None
+
+
+def test_request_size_limit_middleware_without_exception_handling(
+    settings: DropSettings, monkeypatch: MonkeyPatch
+) -> None:
+    monkeypatch.setattr(settings, "drop_max_upload_size", 10)
+
+    async def raw_app(scope: Scope, receive: Receive, send: Send) -> None:
+        while (await receive()).get("more_body"):
+            pass
+        await PlainTextResponse("ok")(scope, receive, send)
+
+    client = TestClient(RequestSizeLimitMiddleware(raw_app))
+    response = client.post("/", content=iter([b"x" * 8, b"x" * 8]))
+    assert response.status_code == 413
+    assert response.json() == {
+        "detail": "Request body exceeds the maximum size of 10 bytes."
+    }
+    assert client.post("/", content=iter([b"x" * 4, b"x" * 4])).text == "ok"
