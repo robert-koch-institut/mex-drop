@@ -55,6 +55,13 @@ class DropSettings(BaseSettings):
         "absolute or relative to `work_dir`.",
         validation_alias="MEX_DROP_DIRECTORY",
     )
+    drop_max_upload_size: int = Field(
+        100 * 1024 * 1024,
+        gt=0,
+        description="Maximum size in bytes of a single upload request to the drop "
+        "server. Also used as the per-file limit of the upload page.",
+        validation_alias="MEX_DROP_MAX_UPLOAD_SIZE",
+    )
     drop_api_key_database: UserDatabase = Field(
         UserDatabase({}),
         description="Database of API keys.",

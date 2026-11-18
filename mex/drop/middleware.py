@@ -1,10 +1,18 @@
 from typing import TYPE_CHECKING
 from urllib.parse import urlsplit
 
+from starlette import status
+from starlette.datastructures import Headers
+from starlette.exceptions import HTTPException
+from starlette.responses import JSONResponse
+
+from mex.drop.settings import DropSettings
+
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable
 
     from fastapi import FastAPI, Request, Response
+    from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 SECURITY_HEADERS = {
     "Strict-Transport-Security": "max-age=31536000",
@@ -89,3 +97,75 @@ def add_security_headers(
             )
         response.headers.setdefault("Cache-Control", cache_control)
         return response
+
+
+class RequestTooLargeError(HTTPException):
+    """Raised when a request body exceeds the configured upload size.
+
+    Subclasses `HTTPException`, because fastapi turns any other error raised while
+    reading the body into a 400 response.
+    """
+
+    def __init__(self, max_size: int) -> None:
+        """Create a 413 error for the given maximum size."""
+        super().__init__(
+            status_code=status.HTTP_413_CONTENT_TOO_LARGE,
+            detail=f"Request body exceeds the maximum size of {max_size} bytes.",
+        )
+
+
+class RequestSizeLimitMiddleware:
+    """Reject http requests whose body exceeds `drop_max_upload_size`.
+
+    Requests announcing a too large `Content-Length` are rejected right away,
+    others are counted while the body is being read, so chunked uploads are
+    capped too and never fully buffered.
+    """
+
+    def __init__(self, app: ASGIApp) -> None:
+        """Wrap the given asgi app."""
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        """Handle a request, responding with 413 if its body is too large."""
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+        max_size = DropSettings.get().drop_max_upload_size
+        content_length = Headers(scope=scope).get("content-length", "")
+        if content_length.isdigit() and int(content_length) > max_size:
+            await self._reject(RequestTooLargeError(max_size), scope, receive, send)
+            return
+
+        received = 0
+        response_started = False
+
+        async def limited_receive() -> Message:
+            nonlocal received
+            message = await receive()
+            if message["type"] == "http.request":
+                received += len(message.get("body", b""))
+                if received > max_size:
+                    raise RequestTooLargeError(max_size)
+            return message
+
+        async def tracking_send(message: Message) -> None:
+            nonlocal response_started
+            if message["type"] == "http.response.start":
+                response_started = True
+            await send(message)
+
+        try:
+            await self.app(scope, limited_receive, tracking_send)
+        except RequestTooLargeError as error:
+            # fallback for apps that do not turn the HTTPException into a response
+            if response_started:
+                raise
+            await self._reject(error, scope, receive, send)
+
+    @staticmethod
+    async def _reject(
+        error: RequestTooLargeError, scope: Scope, receive: Receive, send: Send
+    ) -> None:
+        response = JSONResponse({"detail": error.detail}, error.status_code)
+        await response(scope, receive, send)

@@ -437,3 +437,53 @@ def test_prometheus_metrics(monkeypatch: MonkeyPatch, client: TestClient) -> Non
 
     assert response.status_code == 200, response.text
     assert response.text == expected_output
+
+
+@pytest.mark.parametrize(
+    ("chunked"),
+    [False, True],
+    ids=["content-length", "chunked"],
+)
+def test_drop_data_too_large(
+    client: TestClient,
+    settings: DropSettings,
+    monkeypatch: MonkeyPatch,
+    chunked: bool,  # noqa: FBT001
+) -> None:
+    monkeypatch.setattr(settings, "drop_max_upload_size", 10)
+    body = b"a,b\n" * 10
+    response = client.post(
+        "/v0/test_system/foo",
+        content=iter([body[:20], body[20:]]) if chunked else body,
+        headers={"X-API-Key": "api-test-key", "Content-Type": "text/csv"},
+    )
+    assert response.status_code == 413, response.text
+    assert response.json() == {
+        "detail": "Request body exceeds the maximum size of 10 bytes."
+    }
+    assert not (settings.drop_directory / "test_system").exists()
+
+
+def test_drop_multiple_files_too_large(
+    client: TestClient, settings: DropSettings, monkeypatch: MonkeyPatch
+) -> None:
+    monkeypatch.setattr(settings, "drop_max_upload_size", 100)
+    response = client.post(
+        "/v0/test_system",
+        files=[("files", ("foo.csv", b"a,b\n" * 100, "text/csv"))],
+        headers={"X-API-Key": "api-test-key"},
+    )
+    assert response.status_code == 413, response.text
+    assert not (settings.drop_directory / "test_system").exists()
+
+
+def test_drop_data_within_limit(
+    client: TestClient, settings: DropSettings, monkeypatch: MonkeyPatch
+) -> None:
+    monkeypatch.setattr(settings, "drop_max_upload_size", 100)
+    response = client.post(
+        "/v0/test_system/foo",
+        content=b"a,b\n1,2\n",
+        headers={"X-API-Key": "api-test-key", "Content-Type": "text/csv"},
+    )
+    assert response.status_code == 200, response.text
