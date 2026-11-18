@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+- set a max upload size limit of 100mb
+
 ## [1.10.0] - 2026-11-10
 
 ### Changes
