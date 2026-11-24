@@ -25,7 +25,7 @@ def test_refresh_missing_directory(
     mock_toast_error = Mock()
     monkeypatch.setattr("mex.drop.browse.state.rx.toast.error", mock_toast_error)
 
-    browse_state.refresh()  # type: ignore[operator]
+    browse_state.refresh()
 
     mock_toast_error.assert_called_once_with(
         LocaleService.get().get_ui_label("de", "browse.x_system_not_found"),
@@ -43,7 +43,7 @@ def test_refresh_success(settings: DropSettings, browse_state: BrowseState) -> N
     mock_file = mock_x_system_dir / "test_file.csv"
     mock_file.touch()
 
-    browse_state.refresh()  # type: ignore[operator]
+    browse_state.refresh()
 
     expected_file_list = [
         FileDetails(
