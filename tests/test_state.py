@@ -11,7 +11,7 @@ def test_default_locale_is_german(drop_state: State) -> None:
 
 
 def test_change_locale(drop_state: State) -> None:
-    drop_state.change_locale("en")  # type: ignore[operator]
+    drop_state.change_locale("en")
 
     assert drop_state.current_locale == "en"
 
@@ -26,7 +26,7 @@ def test_change_locale(drop_state: State) -> None:
 def test_nav_items_translated(
     drop_state: State, locale_id: str, expected_titles: list[str]
 ) -> None:
-    drop_state.change_locale(locale_id)  # type: ignore[operator]
+    drop_state.change_locale(locale_id)
 
     assert [item.title for item in drop_state.nav_items_translated] == expected_titles
 
@@ -58,7 +58,7 @@ def test_nav_items_translated_reflects_active_flag(drop_state: State) -> None:
 def test_label_nav_bar_logout_button(
     drop_state: State, locale_id: str, expected_label: str
 ) -> None:
-    drop_state.change_locale(locale_id)  # type: ignore[operator]
+    drop_state.change_locale(locale_id)
 
     assert drop_state.label_nav_bar_logout_button == expected_label
 
@@ -70,7 +70,7 @@ def test_locale_service_lookup_follows_current_locale(drop_state: State) -> None
 
     assert lookup(drop_state.current_locale, label_id) == "Absenden"
 
-    drop_state.change_locale("en")  # type: ignore[operator]
+    drop_state.change_locale("en")
 
     assert lookup(drop_state.current_locale, label_id) == "Submit"
 
@@ -81,9 +81,9 @@ def test_logout_keeps_the_chosen_locale(
 ) -> None:
     """`reset` would clear `current_locale` too, so `logout` has to restore it."""
     drop_state.user = User(x_system="test_system", api_key=get_test_key("test_system"))
-    drop_state.change_locale("en")  # type: ignore[operator]
+    drop_state.change_locale("en")
 
-    drop_state.logout()  # type: ignore[operator]
+    drop_state.logout()
 
     assert drop_state.user is None
     assert drop_state.current_locale == "en"

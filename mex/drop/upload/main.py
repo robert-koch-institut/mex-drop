@@ -49,7 +49,7 @@ def create_file_row(temp_file: TempFile) -> rx.Component:
                 color_scheme="tomato",
                 variant="ghost",
                 custom_attrs={"data-testid": "remove-file-button"},
-                on_click=UploadState.cancel_upload(temp_file.title),  # type: ignore[operator]
+                on_click=UploadState.cancel_upload(temp_file.title),
             ),
             style=rx.Style(width="100%"),
         ),
@@ -100,7 +100,7 @@ def create_drag_and_drop() -> rx.Component:
                     padding="var(--space-4)",
                     margin="var(--space-8) auto",
                 ),
-                on_drop=UploadState.handle_upload(  # type: ignore[operator]
+                on_drop=UploadState.handle_upload(
                     rx.upload_files(upload_id="file_upload_area")
                 ),
             ),

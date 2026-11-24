@@ -100,7 +100,7 @@ def language_switcher_segment(locale: MExLocale) -> rx.Component:
     is_current = State.current_locale == locale.id
     return rx.button(
         locale.code,
-        on_click=State.change_locale(locale.id),  # type: ignore[operator]
+        on_click=State.change_locale(locale.id),
         title=locale.label,
         variant="ghost",
         radius="none",
